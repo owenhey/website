@@ -1,2 +1,23 @@
+// Colors
+$background-edge: #202020;
+$background-middle: #424242;
+$content-border: black;
+
+
 body {
-  background-color: #202020; }
+  background-color: #202020;
+  background: linear-gradient(to right, $background-edge, $background-middle, $background-edge);
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  width: 1000px;
+  height: 100vh;
+  margin: 0 auto;
+  background-color: rgb(190, 219, 238);
+  padding: 20px;
+  border-left: solid 10px;
+  border-right: solid 10px;
+  border-color: $content-border;
+}
