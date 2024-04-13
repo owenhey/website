@@ -1,15 +1,20 @@
 {
+  "type": "module",
   "name": "website",
   "version": "1.0.0",
   "description": "Owen's website",
   "main": "index.js",
   "scripts": {
-    "test": "dev"
+    "dev": "node server.js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/owenhey/website"
   },
   "author": "Owen Hey",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "open": "^10.1.0"
+  }
 }
