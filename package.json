@@ -5,7 +5,9 @@
   "description": "Owen's website",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "npm run compile-scss && node server.js",
+    "compile-scss": "node-sass src/scss/main.scss -o src/css",
+    "auto-compile-scss": "node-sass --watch src/scss -o src/css"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,9 @@
   "dependencies": {
     "express": "^4.19.2",
     "open": "^10.1.0"
+  },
+  "devDependencies": {
+    "node-sass": "^9.0.0",
+    "sass": "^1.75.0"
   }
 }
