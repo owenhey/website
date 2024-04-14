@@ -5,7 +5,8 @@ body {
   padding: 0; }
 
 .main-content {
-  width: 1000px;
+  width: 80vw;
+  max-width: 800px;
   height: 100vh;
   margin: 0 auto;
   background-color: #bedbee;
@@ -13,3 +14,45 @@ body {
   border-left: solid 10px;
   border-right: solid 10px;
   border-color: black; }
+
+.color-pallete {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 75px;
+  background-color: white;
+  left: 0;
+  top: 0;
+  border-bottom-right-radius: 5px;
+  background-color: antiquewhite;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  box-shadow: 3px 3px 3px 5px rgba(0, 0, 0, 0.233); }
+
+.color-swatch {
+  padding: 10px;
+  border: 2px solid black;
+  margin: 5px;
+  aspect-ratio: 1/1;
+  border-radius: 5px; }
+
+.color-swatch:nth-child(1) {
+  background-color: #780000; }
+
+.color-swatch:nth-child(2) {
+  background-color: #c1121f; }
+
+.color-swatch:nth-child(3) {
+  background-color: #fdf0d5; }
+
+.color-swatch:nth-child(4) {
+  background-color: #003049; }
+
+.color-swatch:nth-child(5) {
+  background-color: #669bbc; }
+
+.color-swatch:hover {
+  background-color: white;
+  border-radius: 10px;
+  transition-duration: .1s;
+  margin-left: 3px; }

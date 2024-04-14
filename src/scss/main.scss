@@ -2,6 +2,12 @@
 $background-edge: #202020;
 $background-middle: #424242;
 $content-border: black;
+$pallete-1: #780000;
+$pallete-2: #c1121f;
+$pallete-3: #fdf0d5;
+$pallete-4: #003049;
+$pallete-5: #669bbc;
+$palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5;
 
 
 body {
@@ -12,7 +18,8 @@ body {
 }
 
 .main-content {
-  width: 1000px;
+  width: 80vw;
+  max-width: 800px;
   height: 100vh;
   margin: 0 auto;
   background-color: rgb(190, 219, 238);
@@ -20,4 +27,41 @@ body {
   border-left: solid 10px;
   border-right: solid 10px;
   border-color: $content-border;
+}
+
+.color-pallete {
+  display: flex;
+  flex-direction: column;
+  position:absolute;
+  width: 75px;
+  background-color: white;
+  left: 0;
+  top: 0;
+  border-bottom-right-radius: 5px;
+  background-color: antiquewhite;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  box-shadow: 3px 3px 3px 5px rgba(0, 0, 0, 0.233);
+}
+
+.color-swatch {
+  padding: 10px;
+  border: 2px solid black;
+  margin: 5px;
+  aspect-ratio: 1/1;
+  border-radius: 5px;
+}
+
+// This is SASS loop, making a variable i as an index
+@for $i from 1 through length($palettes) {
+  .color-swatch:nth-child(#{$i}) {
+    background-color: nth($palettes, $i);
+  }
+}
+
+.color-swatch:hover{
+  background-color: white;
+  border-radius: 10px;
+  transition-duration: .1s;
+  margin-left: 3px;
 }
