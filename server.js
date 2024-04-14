@@ -1,6 +1,5 @@
 import express from 'express'; // Webserver
 import open from 'open'; // Allows for opening links
-import sass from 'sass'; // .scss files
 
 const app = express();
 const port = 3000; // Port can be whatever really
