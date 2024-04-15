@@ -1,18 +1,16 @@
 // Colors
-$background-edge: #202020;
-$background-middle: #424242;
 $content-border: black;
 $pallete-1: #780000;
 $pallete-2: #c1121f;
 $pallete-3: #fdf0d5;
+$pallete-3-1: #dbccad;
 $pallete-4: #003049;
 $pallete-5: #669bbc;
 $palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5;
 
 
 body {
-  background-color: #202020;
-  background: linear-gradient(to right, $background-edge, $background-middle, $background-edge);
+  background-color: $pallete-3;
   margin: 0;
   padding: 0;
 }
@@ -72,9 +70,20 @@ body {
   width: 50px;
   height: 50px;
   border: 2px solid black;
-  border-radius: 3px;
+  border-radius: 50%;
   background-color: $pallete-2;
   z-index: 2;
   cursor: pointer;
-  transition: left 0.5s ease-in-out, top 0.5s ease-in-out;
+  transition: left 0.35s ease-in-out, top 0.35s ease-in-out;
+}
+
+.background-bottom {
+  position: fixed;
+  z-index: -1;
+  width: 100%;
+  bottom: -100px;
+  opacity: 0;
+  transition: 
+    opacity 3s,
+    bottom 3s
 }
