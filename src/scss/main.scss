@@ -1,5 +1,4 @@
 // Colors
-$content-border: black;
 $pallete-1: #780000;
 $pallete-2: #c1121f;
 $pallete-3: #fdf0d5;
@@ -20,11 +19,20 @@ body {
   max-width: 800px;
   height: 100vh;
   margin: 0 auto;
+  padding: 0;
   background-color: rgb(190, 219, 238);
-  padding: 20px;
-  border-left: solid 10px;
-  border-right: solid 10px;
-  border-color: $content-border;
+  border-left: solid 7px;
+  border-right: solid 7px;
+  border-color: $pallete-4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  font-size: 48pt;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 .color-pallete {
@@ -84,6 +92,6 @@ body {
   bottom: -100px;
   opacity: 0;
   transition: 
-    opacity 3s,
-    bottom 3s
+    opacity 5s,
+    bottom 5s
 }
