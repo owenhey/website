@@ -9,6 +9,7 @@ $pallete-6: #e5d0ee;
 $pallete-7: #713b8a;
 $pallete-8: #c5a2d4;
 $palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5, $pallete-6, $pallete-7, $pallete-8;
+$shadow-width: 20px;
 
 body {
   background-color: $pallete-3;
@@ -23,14 +24,35 @@ body {
   height: 100vh;
   margin: 0 auto;
   padding: 0;
-  background-color: rgb(190, 219, 238);
-  border-left: solid 7px;
-  border-right: solid 7px;
-  border-color: $pallete-4;
+  background-color: $pallete-6;
+  // border-left: solid 7px;
+  // border-right: solid 7px;
+  // border-color: black;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px;
+}
+
+.shadow-left{
+  position: absolute;
+  z-index: -1;
+  width: $shadow-width;
+  left: -$shadow-width;
+  top: -10px;
+  height: calc(100% + 10px);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0,0,0,0));
+}
+
+.shadow-right{
+  position: absolute;
+  z-index: -1;
+  width: $shadow-width;
+  right: -$shadow-width;
+  top: -10px;
+  height: calc(100% + 10px);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0,0,0,0));
 }
 
 p {
@@ -89,6 +111,7 @@ p {
   cursor: pointer;
   transition: left 0.4s ease-in-out, top 0.4s ease-in-out;
   display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   color: white;

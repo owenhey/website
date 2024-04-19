@@ -10,14 +10,30 @@ body {
   height: 100vh;
   margin: 0 auto;
   padding: 0;
-  background-color: #bedbee;
-  border-left: solid 7px;
-  border-right: solid 7px;
-  border-color: #003049;
+  background-color: #e5d0ee;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 10px; }
+
+.shadow-left {
+  position: absolute;
+  z-index: -1;
+  width: 20px;
+  left: -20px;
+  top: -10px;
+  height: calc(100% + 10px);
+  background: linear-gradient(to left, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)); }
+
+.shadow-right {
+  position: absolute;
+  z-index: -1;
+  width: 20px;
+  right: -20px;
+  top: -10px;
+  height: calc(100% + 10px);
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0)); }
 
 p {
   font-size: 48pt;
@@ -88,6 +104,7 @@ p {
   cursor: pointer;
   transition: left 0.4s ease-in-out, top 0.4s ease-in-out;
   display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
   color: white;
@@ -101,7 +118,7 @@ p {
   width: 100%;
   bottom: -100px;
   opacity: 0;
-  transition: opacity 5s, bottom 5s; }
+  transition: opacity 5s, bottom 5s; }
 
 .header {
   height: 50px;
@@ -119,7 +136,7 @@ p {
   border-radius: 8px;
   background-color: #e5d0ee;
   border: #713b8a solid 2px;
-  transition: border-radius .1s ease-in-out,  background-color .1s ease-in-out, border .1s ease-in-out, color .1s ease-in-out; }
+  transition: border-radius .1s ease-in-out,  background-color .1s ease-in-out, border .1s ease-in-out, color .1s ease-in-out; }
 
 .button:hover {
   border: #c5a2d4 solid 2px;
