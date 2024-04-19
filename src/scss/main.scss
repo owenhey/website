@@ -5,13 +5,17 @@ $pallete-3: #fdf0d5;
 $pallete-3-1: #dbccad;
 $pallete-4: #003049;
 $pallete-5: #669bbc;
-$palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5;
+$pallete-6: #e5d0ee;
+$pallete-7: #713b8a;
+$pallete-8: #c5a2d4;
+$palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5, $pallete-6, $pallete-7, $pallete-8;
 
 
 body {
   background-color: $pallete-3;
   margin: 0;
   padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .main-content {
@@ -27,12 +31,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 10px;
 }
 
 p {
   font-size: 48pt;
-  font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
+  user-select: none;
 }
 
 .color-pallete {
@@ -81,8 +86,16 @@ p {
   border-radius: 50%;
   background-color: $pallete-2;
   z-index: 2;
+  text-align: center;
   cursor: pointer;
-  transition: left 0.35s ease-in-out, top 0.35s ease-in-out;
+  transition: left 0.4s ease-in-out, top 0.4s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 20pt;
+  font-weight: bold;
+  user-select: none;
 }
 
 .background-bottom {
@@ -94,4 +107,40 @@ p {
   transition: 
     opacity 5s,
     bottom 5s
+}
+
+.header{
+  height: 50px;
+  width: 100%;
+  display: flex;
+  gap: 10px;
+}
+
+.button{
+  display: inline-block;
+  width: auto;
+  font-size: 20px;
+  color: $pallete-7;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: 8px;
+  background-color: $pallete-6;
+  border: $pallete-7 solid 2px;
+  transition: 
+    border-radius .1s ease-in-out, 
+    background-color .1s ease-in-out,
+    border .1s ease-in-out,
+    color .1s ease-in-out
+}
+
+.button:hover {
+  border: $pallete-8 solid 2px;
+  border-radius: 12px;
+  background-color: $pallete-8;
+}
+
+.button:active {
+  border: $pallete-7 solid 2px;
+  background-color: $pallete-7;
+  color: white;
 }
