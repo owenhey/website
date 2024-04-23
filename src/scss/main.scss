@@ -134,6 +134,7 @@ p {
 }
 
 .header{
+  z-index: 1;
   height: 50px;
   width: 100%;
   display: flex;
@@ -149,17 +150,27 @@ p {
   padding-right: 15px;
   border-radius: 8px;
   background-color: $pallete-6;
-  border: $pallete-7 solid 2px;
+  border: solid 2px;
   transition: 
-    border-radius .1s ease-in-out, 
     background-color .1s ease-in-out,
     border .1s ease-in-out,
     color .1s ease-in-out
 }
 
+$radial-center: rgba(255, 255, 255, 50);
+$radial-edge: rgba(0,0,0,0);
+
+.background-gradient{
+  position: absolute;
+  z-index: auto;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: radial-gradient(at 50% 50%, $radial-center 0, $radial-edge 40%);
+}
+
 .button:hover {
   border: $pallete-8 solid 2px;
-  border-radius: 12px;
   background-color: $pallete-8;
 }
 

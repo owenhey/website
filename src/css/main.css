@@ -123,6 +123,7 @@ p {
   transition: opacity 5s, bottom 5s; }
 
 .header {
+  z-index: 1;
   height: 50px;
   width: 100%;
   display: flex;
@@ -137,12 +138,19 @@ p {
   padding-right: 15px;
   border-radius: 8px;
   background-color: #e5d0ee;
-  border: #713b8a solid 2px;
-  transition: border-radius .1s ease-in-out,  background-color .1s ease-in-out, border .1s ease-in-out, color .1s ease-in-out; }
+  border: solid 2px;
+  transition: background-color .1s ease-in-out, border .1s ease-in-out, color .1s ease-in-out; }
+
+.background-gradient {
+  position: absolute;
+  z-index: auto;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: radial-gradient(at 50% 50%, white 0, rgba(0, 0, 0, 0) 40%); }
 
 .button:hover {
   border: #c5a2d4 solid 2px;
-  border-radius: 12px;
   background-color: #c5a2d4; }
 
 .button:active {
