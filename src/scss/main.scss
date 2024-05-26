@@ -20,26 +20,29 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.title{
+  font-size: 3rem;
+  font-weight: bold;
+}
+
 .main-content {
   width: 80vw;
   max-width: 800px;
   height: 100vh;
   margin: 0 auto;
-  padding: 0;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: $pallete-6;
-  // border-left: solid 7px;
-  // border-right: solid 7px;
-  // border-color: black;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  gap: 10px;
 }
 
 .shadow-left{
   position: absolute;
-  z-index: -1;
+  z-index: inherit - 1;
   width: $shadow-width;
   left: -$shadow-width;
   top: -10px;
@@ -49,18 +52,12 @@ body {
 
 .shadow-right{
   position: absolute;
-  z-index: -1;
+  z-index: inherit - 1;
   width: $shadow-width;
   right: -$shadow-width;
   top: -10px;
   height: calc(100% + 10px);
   background: linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0,0,0,0));
-}
-
-p {
-  font-size: 48pt;
-  font-weight: bold;
-  user-select: none;
 }
 
 .color-pallete {
@@ -99,32 +96,9 @@ p {
   transition-duration: .1s;
 }
 
-.random {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 50px;
-  height: 50px;
-  border: 2px solid black;
-  border-radius: 50%;
-  background-color: $pallete-2;
-  z-index: 2;
-  text-align: center;
-  cursor: pointer;
-  transition: left 0.4s ease-in-out, top 0.4s ease-in-out;
-  display: flex;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 20pt;
-  font-weight: bold;
-  user-select: none;
-}
-
 .background-bottom {
   position: fixed;
-  z-index: -1;
+  z-index: -3;
   width: 100%;
   bottom: -100px;
   opacity: 0;
@@ -143,11 +117,11 @@ p {
 
 .button{
   display: inline-block;
+  text-decoration: none;
   width: auto;
   font-size: 20px;
   color: $pallete-7;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding: 10px 20px;
   border-radius: 8px;
   background-color: $pallete-6;
   border: solid 2px;
@@ -157,16 +131,16 @@ p {
     color .1s ease-in-out
 }
 
-$radial-center: rgba(255, 255, 255, 50);
+$radial-center: #ffffff49;
 $radial-edge: rgba(0,0,0,0);
 
 .background-gradient{
   position: absolute;
-  z-index: auto;
   width: 100%;
   aspect-ratio: 1;
+  z-index: inherit - 3;
   overflow: hidden;
-  background: radial-gradient(at 50% 50%, $radial-center 0, $radial-edge 40%);
+  background: radial-gradient(at 50% 50%, $radial-center 0, $radial-edge 80%);
 }
 
 .button:hover {

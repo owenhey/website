@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Website</title>
+  <title>Owen Hey</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
   <img class="background-bottom" src="/png/background-bottom.png" onload="this.style.opacity = 1; this.style.bottom = 0">
-  <div id='random' class="random">
-    0
-  </div>
   <div class="color-pallete">
     <div class="color-swatch"></div>
     <div class="color-swatch"></div>
@@ -20,16 +17,20 @@
     <div class="color-swatch"></div>
   </div>
   <div class="main-content">
-    <div id="gradient" class="background-gradient"></div>
+    <!-- <div id="gradient" class="background-gradient"></div> -->
     <div class="shadow-left"></div>
     <div class="shadow-right"></div>
+    <div class="spacer"></div>
     <div class="header">
-      <button class="button">About</button>
-      <button class="button">Work</button>
-      <button class="button">A larger button</button>
+      <a href="/" class="button">Home</a>
+      <a href="/about" class="button">About</a>
+      <a href="/portfolio" class="button">Portfolio</a>
+    </div>
+    <div class="title"><%- title %></div>
+    <div id="page-content">
+      <%- body %>
     </div>
   </div>
-  
-  <script src='script.js'></script>
+  <!-- <script src='background-effect.js'></script> -->
 </body>
 </html>
