@@ -15,14 +15,21 @@ body {
   max-width: 800px;
   height: 100vh;
   margin: 0 auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
   background-color: #e5d0ee;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; }
+  gap: 20px; }
+
+.page-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: inherit;
+  width: calc(100% - $basic-padding); }
 
 .shadow-left {
   position: absolute;
@@ -105,7 +112,8 @@ body {
   height: 50px;
   width: 100%;
   display: flex;
-  gap: 10px; }
+  justify-content: center;
+  gap: 20px; }
 
 .button {
   display: inline-block;
@@ -119,6 +127,16 @@ body {
   border: solid 2px;
   transition: background-color .1s ease-in-out, border .1s ease-in-out, color .1s ease-in-out; }
 
+.button.selected {
+  border: #713b8a solid 2px;
+  background-color: #713b8a;
+  color: white; }
+
+.button:active {
+  border: #713b8a solid 2px;
+  background-color: #713b8a;
+  color: white; }
+
 .background-gradient {
   position: absolute;
   width: 100%;
@@ -131,7 +149,20 @@ body {
   border: #c5a2d4 solid 2px;
   background-color: #c5a2d4; }
 
-.button:active {
-  border: #713b8a solid 2px;
-  background-color: #713b8a;
-  color: white; }
+.circular-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid black;
+  overflow: hidden; }
+
+.circular-image img {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.2);
+  object-fit: cover; }
+
+.about-section {
+  width: 100%;
+  font-size: 16pt;
+  text-align: left; }

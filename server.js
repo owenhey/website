@@ -20,15 +20,15 @@ app.set('view engine', 'ejs');
 
 // Define routes for different pages
 app.get('/', (req, res) => {
-  res.render('home', { title: 'Home' });
+  res.render('home', { title: 'Home', page: 'home' });
 });
 
 app.get('/about', (req, res) => {
-  res.render('about', { title: 'About' });
+  res.render('about', { title: 'About', page: 'about' });
 });
 
 app.get('/portfolio', (req, res) => {
-  res.render('portfolio', { title: 'Portfolio' });
+  res.render('portfolio', { title: 'Portfolio', page: 'portfolio' });
 });
 
 // Start the server

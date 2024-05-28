@@ -10,6 +10,7 @@ $pallete-7: #713b8a;
 $pallete-8: #c5a2d4;
 $palettes: $pallete-1, $pallete-2, $pallete-3, $pallete-4, $pallete-5, $pallete-6, $pallete-7, $pallete-8;
 $shadow-width: 20px;
+$basic-padding: 20px;
 
 body {
   background-color: $pallete-3;
@@ -30,14 +31,22 @@ body {
   max-width: 800px;
   height: 100vh;
   margin: 0 auto;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: $basic-padding;
+  padding-right: $basic-padding;
   background-color: $pallete-6;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: $basic-padding;
+}
+
+.page-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: inherit;
+  width: calc(100% - $basic-padding);
 }
 
 .shadow-left{
@@ -112,7 +121,8 @@ body {
   height: 50px;
   width: 100%;
   display: flex;
-  gap: 10px;
+  justify-content: center;
+  gap: $basic-padding;
 }
 
 .button{
@@ -129,6 +139,18 @@ body {
     background-color .1s ease-in-out,
     border .1s ease-in-out,
     color .1s ease-in-out
+}
+
+.button.selected {
+  border: $pallete-7 solid 2px;
+  background-color: $pallete-7;
+  color: white;
+}
+
+.button:active {
+  border: $pallete-7 solid 2px;
+  background-color: $pallete-7;
+  color: white;
 }
 
 $radial-center: #ffffff49;
@@ -148,8 +170,23 @@ $radial-edge: rgba(0,0,0,0);
   background-color: $pallete-8;
 }
 
-.button:active {
-  border: $pallete-7 solid 2px;
-  background-color: $pallete-7;
-  color: white;
+.circular-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 5px solid black;
+  overflow: hidden;
+}
+
+.circular-image img {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.2);
+  object-fit: cover;
+}
+
+.about-section{
+  width: 100%;
+  font-size: 16pt;
+  text-align: left;
 }
