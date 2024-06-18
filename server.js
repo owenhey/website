@@ -31,6 +31,10 @@ app.get('/portfolio', (req, res) => {
   res.render('portfolio', { title: 'Portfolio', page: 'portfolio' });
 });
 
+app.get('/flags', (req, res) => {
+  res.render('flags', { title: 'Flags', page: 'flags' });
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

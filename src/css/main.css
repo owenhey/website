@@ -209,3 +209,10 @@ body {
       margin: 0px; }
     .portfolio-card > .portfolio-card-content > h2 {
       font-size: 1.75rem; }
+
+.flag-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px; }
