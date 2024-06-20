@@ -37,7 +37,6 @@ KM,Comoros,https://upload.wikimedia.org/wikipedia/commons/9/94/Flag_of_the_Comor
 CR,Costa Rica,https://upload.wikimedia.org/wikipedia/commons/f/f2/Flag_of_Costa_Rica.svg
 HR,Croatia,https://upload.wikimedia.org/wikipedia/commons/1/1b/Flag_of_Croatia.svg
 CU,Cuba,https://upload.wikimedia.org/wikipedia/commons/b/bd/Flag_of_Cuba.svg
-CY,Cyprus,https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Cyprus.svg
 DK,Denmark,https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Denmark.svg
 DJ,Djibouti,https://upload.wikimedia.org/wikipedia/commons/3/34/Flag_of_Djibouti.svg
 DM,Dominica,https://upload.wikimedia.org/wikipedia/commons/c/c4/Flag_of_Dominica.svg
@@ -98,7 +97,7 @@ MH,Marshall Islands,https://upload.wikimedia.org/wikipedia/commons/2/2e/Flag_of_
 MR,Mauritania,https://upload.wikimedia.org/wikipedia/commons/4/43/Flag_of_Mauritania.svg
 MU,Mauritius,https://upload.wikimedia.org/wikipedia/commons/7/77/Flag_of_Mauritius.svg
 MX,Mexico,https://upload.wikimedia.org/wikipedia/commons/f/fc/Flag_of_Mexico.svg
-FM,Micronesia (Federated States of),https://upload.wikimedia.org/wikipedia/commons/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg
+FM,Micronesia,https://upload.wikimedia.org/wikipedia/commons/e/e4/Flag_of_the_Federated_States_of_Micronesia.svg
 MC,Monaco,https://upload.wikimedia.org/wikipedia/commons/e/ea/Flag_of_Monaco.svg
 MN,Mongolia,https://upload.wikimedia.org/wikipedia/commons/4/4c/Flag_of_Mongolia.svg
 ME,Montenegro,https://upload.wikimedia.org/wikipedia/commons/6/64/Flag_of_Montenegro.svg
@@ -172,28 +171,26 @@ CK,Cook Islands,https://upload.wikimedia.org/wikipedia/commons/3/35/Flag_of_the_
 NU,Niue,https://upload.wikimedia.org/wikipedia/commons/0/01/Flag_of_Niue.svg
 VN,Viet Nam,https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg
 VC,Saint Vincent and the Grenadines,https://upload.wikimedia.org/wikipedia/commons/6/6d/Flag_of_Saint_Vincent_and_the_Grenadines.svg
-SO,Somalia,https://upload.wikimedia.org/wikipedia/commons/4/4d/Flag_of_Somaliland.svg
-BI,Burundi,https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Brunei.svg
+SO,Somalia,https://upload.wikimedia.org/wikipedia/commons/a/a0/Flag_of_Somalia.svg
 GM,Gambia,https://upload.wikimedia.org/wikipedia/commons/7/77/Flag_of_The_Gambia.svg
 CD,Democratic Republic of the Congo,https://upload.wikimedia.org/wikipedia/commons/6/6f/Flag_of_the_Democratic_Republic_of_the_Congo.svg
 MD,Moldova,https://upload.wikimedia.org/wikipedia/commons/2/27/Flag_of_Moldova.svg
 US,United States of America,https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg
-CN,China,https://upload.wikimedia.org/wikipedia/commons/7/72/Flag_of_the_Republic_of_China.svg
 PS,Palestine,https://upload.wikimedia.org/wikipedia/commons/0/00/Flag_of_Palestine.svg
 RU,Russian Federation,https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg
 TZ,Tanzania,https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Tanzania.svg
 SY,Syrian Arab Republic,https://upload.wikimedia.org/wikipedia/commons/5/53/Flag_of_Syria.svg
-VE,Venezuela (Bolivarian Republic of),https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg
-BO,Bolivia (Plurinational State of),https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Bolivia.svg
-CY,Cyprus,https://upload.wikimedia.org/wikipedia/commons/1/1e/Flag_of_the_Turkish_Republic_of_Northern_Cyprus.svg
+VE,Venezuela,https://upload.wikimedia.org/wikipedia/commons/0/06/Flag_of_Venezuela.svg
+BO,Bolivia,https://upload.wikimedia.org/wikipedia/commons/4/48/Flag_of_Bolivia.svg
+CY,Cyprus,https://upload.wikimedia.org/wikipedia/commons/d/d4/Flag_of_Cyprus.svg
 GB,United Kingdom of Great Britain and Northern Ireland,https://upload.wikimedia.org/wikipedia/en/a/ae/Flag_of_the_United_Kingdom.svg
-LA,Lao People's Democratic Republic,https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Laos.svg
+LA,Laos,https://upload.wikimedia.org/wikipedia/commons/5/56/Flag_of_Laos.svg
 AW,Aruba,https://upload.wikimedia.org/wikipedia/commons/f/f6/Flag_of_Aruba.svg
 BM,Bermuda,https://upload.wikimedia.org/wikipedia/commons/b/bf/Flag_of_Bermuda.svg
 BN,Brunei Darussalam,https://upload.wikimedia.org/wikipedia/commons/9/9c/Flag_of_Brunei.svg
-CI,C�te d'Ivoire,https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg
+CI,Côte d'Ivoire,https://upload.wikimedia.org/wikipedia/commons/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg
 CV,Cape Verde,https://upload.wikimedia.org/wikipedia/commons/3/38/Flag_of_Cape_Verde.svg
-CW,Cura�ao,https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Cura%C3%A7ao.svg
+CW,Curacao,https://upload.wikimedia.org/wikipedia/commons/b/b1/Flag_of_Cura%C3%A7ao.svg
 CZ,Czech Republic,https://upload.wikimedia.org/wikipedia/commons/c/cb/Flag_of_the_Czech_Republic.svg
 EH,Western Sahara,https://upload.wikimedia.org/wikipedia/commons/2/26/Flag_of_the_Sahrawi_Arab_Democratic_Republic.svg
 GF,French Guiana,https://upload.wikimedia.org/wikipedia/commons/2/29/Flag_of_French_Guiana.svg
@@ -210,7 +207,7 @@ MQ,Martinique,https://upload.wikimedia.org/wikipedia/commons/2/27/Flag-of-Martin
 MS,Montserrat,https://upload.wikimedia.org/wikipedia/commons/d/d0/Flag_of_Montserrat.svg
 PF,French Polynesia,https://upload.wikimedia.org/wikipedia/commons/d/db/Flag_of_French_Polynesia.svg
 PR,Puerto Rico,https://upload.wikimedia.org/wikipedia/commons/2/28/Flag_of_Puerto_Rico.svg
-RE,R�union,https://upload.wikimedia.org/wikipedia/commons/8/8e/Proposed_flag_of_R%C3%A9union_%28VAR%29.svg
+RE,Réunion,https://upload.wikimedia.org/wikipedia/commons/8/8e/Proposed_flag_of_R%C3%A9union_%28VAR%29.svg
 SZ,Eswatini (Swaziland),https://upload.wikimedia.org/wikipedia/commons/f/fb/Flag_of_Eswatini.svg
 TC,Turks and Caicos Islands,https://upload.wikimedia.org/wikipedia/commons/a/a0/Flag_of_the_Turks_and_Caicos_Islands.svg
 TL,East Timor,https://upload.wikimedia.org/wikipedia/commons/2/26/Flag_of_East_Timor.svg

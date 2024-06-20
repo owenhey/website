@@ -1,11 +1,16 @@
+<h2 id="flags-question-text"></h2>
  <div class="flags">
-    <div class="flag-container">
-        <svg width="100%">       
-            <image id="flag-svg" width="100%" height="100%" xlink:href="https://upload.wikimedia.org/wikipedia/commons/3/36/Flag_of_Albania.svg"/>    
-        </svg>
+    <div class="flag-container">     
+        <div class="svg-container">
+            <img id="flag-svg" src="https://upload.wikimedia.org/wikipedia/commons/3/36/Flag_of_Albania.svg" class="svg-image">
+        </div>
         <div id="country-name"></div>
+        <button id="flags-choose-button" class="button">Choose</button>
     </div>
 </div>
-<button id="next-flag-button" class="button">Next Flag</button>
-<input class="flags-number" type="number" id="numberInput" inputmode="numeric" pattern="[2-8]*" step="1" value="4">
+<h3 id="flags-response-text" style="display: hidden"></h3>
+<div class="flag-options">
+    <button id="flags-game-mode" class="button" style="width: 175px;">Flag Mode</button>
+    <input class="flags-number" type="number" id="numberInput" inputmode="numeric" pattern="[2-8]*" step="1" value="4">
+</div>
 <script src="flags.js"></script>
