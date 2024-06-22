@@ -246,22 +246,23 @@ $radial-edge: rgba(0,0,0,0);
 }
 
 .flag-container{
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 200px;
-  height: 200px;
+  height: auto;
   text-align: center;
   padding: 10px;
   gap: 10px;
+  padding-bottom: 30px;
 
   .svg-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 0;
   }
 
   .svg-image {
@@ -269,18 +270,45 @@ $radial-edge: rgba(0,0,0,0);
     height: 100%;
     object-fit: contain;
   }
+
+  .country-name{
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+
+  .button {
+    position: absolute;
+    bottom: -25px;
+  }
 }
 
-.flags{
+.flag-answers{
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  row-gap: 50px;
   justify-content: center;
+  padding-bottom: 25px;
 }
 
 .flags-number{
+  margin-left: $basic-padding;
   width: 40px;
   height: 40px;
   font-size: 2rem;
   text-align: center;
+}
+
+.flags-response-text{
+  height: 40px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.flags-streak-text{
+  position: absolute;
+  left: $basic-padding;
+  top: $basic-padding + 80px;
+  font-weight: bold;
+  font-size: 2rem;
 }
