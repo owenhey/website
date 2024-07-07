@@ -40,6 +40,7 @@ function parseCSV(csv) {
   .then(response => response.text())
   .then(data => {
     allFlagData = parseCSV(data);
+    generateRegionDropdown(); // This can only be called after it has been fetched
     generateQuestion(); // Generate the first question when finished
   })
   .catch(error => {
@@ -72,6 +73,31 @@ function generateElements(){
   questionFlagElement.querySelector('.button').remove();
 }
 
+// Generates the region dropdown menu
+function generateRegionDropdown(){
+  const selectElement = document.getElementById('flags-region-select');
+  const regions = new Set();
+
+  // Ensure unique regions
+  allFlagData.forEach(flag => {
+    if (flag.Region) {
+      regions.add(flag.Region);
+    }
+  });
+
+  // Sort regions alphabetically
+  const sortedRegions = Array.from(regions).sort();
+
+  // Add region options to the select element
+  sortedRegions.forEach(region => {
+    const option = document.createElement('option');
+    option.value = region;
+    option.textContent = region;
+    option.className = 'flags-region-option';
+    selectElement.appendChild(option);
+  });
+}
+
 // Called when a guess is chosen
 function checkAnswer(chosenIndex) {
   const responseText = document.getElementById('flags-response-text');
@@ -81,7 +107,6 @@ function checkAnswer(chosenIndex) {
     generateQuestion();
     streak++;
   } else {
-    console.log(answerMap);
     responseText.innerHTML = "Wrong, that's " + answerMap[chosenIndex].Country;
     streak = 0;
   }
@@ -137,11 +162,22 @@ function generateQuestion() {
 function getUniqueFlags(numFlags) {
   const uniqueFlags = [];
   const usedIndexes = new Set();
+  
+  // Get the currently selected region
+  const selectedRegion = document.getElementById('flags-region-select').value;
+  
+  // Filter the allFlagData based on the selected region
+  const filteredFlags = selectedRegion === "All Regions" 
+    ? allFlagData  // If no-region, then just return the whole flag data
+    : allFlagData.filter(flag => flag.Region === selectedRegion);
 
-  while (uniqueFlags.length < numFlags) {
-    const randomIndex = Math.floor(Math.random() * allFlagData.length);
+  // Ensure we don't try to get more flags than available
+  const flagsToGet = Math.min(numFlags, filteredFlags.length);
+
+  while (uniqueFlags.length < flagsToGet) {
+    const randomIndex = Math.floor(Math.random() * filteredFlags.length);
     if (!usedIndexes.has(randomIndex)) {
-      uniqueFlags.push(allFlagData[randomIndex]);
+      uniqueFlags.push(filteredFlags[randomIndex]);
       usedIndexes.add(randomIndex);
     }
   }

@@ -264,3 +264,17 @@ body {
   top: 100px;
   font-weight: bold;
   font-size: 2rem; }
+
+#flags-region-select {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 8px;
+  background-color: #c5a2d4;
+  border-radius: 5px;
+  border: none;
+  appearance: none; }
+  #flags-region-select .dropdown-menu-toggle {
+    font-size: 20px; }

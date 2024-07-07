@@ -312,3 +312,19 @@ $radial-edge: rgba(0,0,0,0);
   font-weight: bold;
   font-size: 2rem;
 }
+
+#flags-region-select{
+  position: absolute;
+  right: $basic-padding;
+  top: $basic-padding + 80px;
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 8px;
+  background-color: $pallete-8;
+  border-radius: 5px;
+  border: none;
+  appearance: none;
+  .dropdown-menu-toggle {
+    font-size: 20px;
+  }
+}
