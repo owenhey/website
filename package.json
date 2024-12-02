@@ -1,28 +1,27 @@
 {
-  "type": "module",
-  "name": "website",
-  "version": "1.0.0",
-  "description": "Owen's website",
-  "main": "index.js",
+  "name": "owens-website",
+  "version": "0.0.0",
   "scripts": {
-    "dev": "npm run compile-scss && node server.js",
-    "compile-scss": "node-sass src/scss/main.scss -o src/css",
-    "auto-compile-scss": "node-sass --watch src/scss -o src/css"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4174"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/owenhey/website"
-  },
-  "author": "Owen Hey",
-  "license": "MIT",
   "dependencies": {
-    "ejs": "^3.1.10",
-    "express": "^4.19.2",
-    "express-ejs-layouts": "^2.5.1",
-    "open": "^10.1.0"
+    "mersenne-twister": "^1.1.0",
+    "pinia": "^2.0.22",
+    "vue": "^3.2.38",
+    "vue-router": "^4.1.5",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "node-sass": "^9.0.0",
-    "sass": "^1.75.0"
+    "@tsconfig/node18": "^18.2.4",
+    "@types/mersenne-twister": "^1.1.7",
+    "@types/node": "^18.19.54",
+    "@vitejs/plugin-vue": "^3.0.3",
+    "@vitejs/plugin-vue-jsx": "^2.0.1",
+    "@vue/cli-plugin-typescript": "^5.0.8",
+    "@vue/tsconfig": "^0.5.1",
+    "typescript": "^5.6.2",
+    "vite": "^3.0.9"
   }
 }
