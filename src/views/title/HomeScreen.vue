@@ -3,11 +3,11 @@
 		<main class="main-content">
 			<nav class="header">
 				<ul class="header-list">
-					<button class="header-button">home</button>
-					<button class="header-button">portfolio</button>
-					<button class="header-button">blog</button>
-					<button class="header-button">flags</button>
-					<button class="header-button">about</button>
+					<VineButton>home</VineButton>
+					<VineButton>portfolio</VineButton>
+					<VineButton>blog</VineButton>
+					<VineButton>flags</VineButton>
+					<VineButton>about</VineButton>
 				</ul>
 			</nav>
 			<div class="scrolling-content">
@@ -18,23 +18,23 @@
 	</div>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 	import '@/assets/base.css'
 
-	import { onMounted } from 'vue'
+    import { PropType, defineComponent, computed, onMounted } from 'vue';
 	import { useRouter } from 'vue-router'
+	import VineButton from './VineButton.vue';
 
-	export default{
-		setup(){
-			const router = useRouter()
+    export default defineComponent({
+        name: 'HomeScreen',
+		components: {
+			VineButton
+		},
+        setup() {
+			const router = useRouter();
 
-			onMounted(() => {
-				
-			})
-
-			return{
-				router
-			}
-		}
-	}
+            return {router }
+        },
+    }
+);
 </script>

@@ -1,5 +1,5 @@
 :root {
-  --background-color: #e8cda4;
+  --background-color: #f7e9d5;
   --really-dark: #111111;
   --background-light: rgb(242, 221, 182);
   --background-dark: rgb(249, 229, 164);
@@ -10,18 +10,28 @@
   --green: #6a9666ff;
   --darkgreen: rgb(37, 77, 34);
   --orange: #e28650ff;
-  --lightbrown: #ecb77dff;
   --lightbrown: rgb(231, 197, 161);
+  --shadowbrown: rgb(202, 175, 146);
+  --grid-color: #ecb77d88;
   --black: #373737;
+}
+
+.raleway {
+  font-family: "Raleway", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 }
 
 * { 
   box-sizing: border-box; 
   margin: 0;
   padding: 0;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: 'Raleway';
   color: var(--brown);
+  font-weight: 400;
 }
+
 
 ul{
   list-style: none;
@@ -31,39 +41,29 @@ body{
   overflow: hidden;
 }
 
+h1, h2, h3, h4, h5, h6, button{
+  font-weight: 600;
+}
+
 .background{
   position: absolute;
   height: 100%;
   width: 100%;
-  background-color: var(--lightwhite);
+  background-color: var(--background-color);
   user-select: none;
   z-index: -1000;
 }
 
 .background-grid{
-  --color: #ecb67d99;
   position: absolute;
   height: 100%;
   width: 100%;
-  user-select: none;
+  background-image: linear-gradient(0, var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow: hidden;
   z-index: -999;
-  background-image: 
-    linear-gradient(var(--color) 2px, transparent 2px),
-    linear-gradient(90deg, var(--color) 2px, transparent 2px);
-  background-size: 60px 60px;
-  display: none;
 }
 
-.background-grid-2{
-  --color: rgba(236, 182, 125, 0.51);
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  user-select: none;
-  z-index: -999;
-  background-image: radial-gradient(circle, var(--color) 2px, transparent 2px);
-  background-size: 30px 30px;
-}
 
 .center-horizontally{
   position: absolute;
@@ -88,7 +88,8 @@ body{
   max-width: 80%;
   height: 100%;
   background-color: var(--lightbrown);
-  box-shadow: 0 0 20px rgba(67, 44, 24, 0.504);
+  box-shadow:  inset -15px 0 8px -5px var(--shadowbrown),
+               inset 15px 0 8px -5px var(--shadowbrown);
   padding: 20px;
   padding-top: 20px;
   position: relative;
@@ -101,7 +102,7 @@ body{
   flex-grow: 0;
   top: 0;
   width: 100%;
-  height: 60px;
+  height: 70px;
 }
 
 .header-list{
@@ -111,23 +112,59 @@ body{
   height: 100%;
 }
 
-.header-button{
+.vine-button{
   width: 200px;
   height: 100%;
   border-radius: 10px;
   border: none;
   font-size: 20pt;
-  font-weight: bold;
   background-color: var(--lightgreen);
-  box-shadow: 3px 6px 3px rgba(67, 44, 24, 0.2);
+  box-shadow: 3px 6px 3px var(--shadowbrown);
+  position: relative;
+  transition-duration: .25s;
+  transition-property: padding-bottom;
 }
 
-.header-button:hover{
+.vine-button:hover{
   background-color: var(--darkgreen);
   color: var(--lightwhite);
+  padding-bottom: 15px;
+}
+
+.vine-button:hover > .vine-mask{
+  width: 90%;
+}
+
+.vine-mask{
+  position: absolute;
+  width: 10%;
+  transition-duration: .5s;
+  transition-property: width;
+  height: 50px;
+  bottom: -30px;
+  overflow: hidden;
+  border-radius: 0 35px 35px 0;
+}
+
+.vine-img{
+  position: absolute;
+  top: 0px;
+  left: 26px;
+  height: 45px;
+  width: auto;
 }
 
 .scrolling-content{
   flex-grow: 1;
   overflow-y: scroll;
+}
+
+.scrolling-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.scrolling-content {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }

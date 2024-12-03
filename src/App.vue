@@ -1,7 +1,6 @@
 <template>
 	<div class="background"></div>
 	<div class="background-grid"></div>
-	<div class="background-grid-2"></div>
 	<RouterView />
 </template>
 
