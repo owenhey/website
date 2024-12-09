@@ -2,7 +2,7 @@
     <button class="vine-button" @click="handleClick">
         <slot></slot>
         <div class="vine-mask">
-            <img class="vine-img" src="@/assets/png/vine.png">
+            <img class="vine-img" src="@/assets/png/vine3.png">
         </div>
     </button>
 </template>

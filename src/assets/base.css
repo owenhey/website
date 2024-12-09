@@ -39,6 +39,7 @@ ul{
 
 body{
   overflow: hidden;
+  --vine-size: 50%;
 }
 
 h1, h2, h3, h4, h5, h6, button{
@@ -88,10 +89,9 @@ h1, h2, h3, h4, h5, h6, button{
   max-width: 80%;
   height: 100%;
   background-color: var(--lightbrown);
-  box-shadow:  inset -15px 0 8px -5px var(--shadowbrown),
-               inset 15px 0 8px -5px var(--shadowbrown);
-  padding: 20px;
-  padding-top: 20px;
+  box-shadow:  -15px 0 8px -5px var(--shadowbrown),
+               15px 0 8px -5px var(--shadowbrown);
+  padding: 20px 50px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -128,7 +128,6 @@ h1, h2, h3, h4, h5, h6, button{
 .vine-button:hover{
   background-color: var(--darkgreen);
   color: var(--lightwhite);
-  padding-bottom: 15px;
 }
 
 .vine-button:hover > .vine-mask{
@@ -137,11 +136,12 @@ h1, h2, h3, h4, h5, h6, button{
 
 .vine-mask{
   position: absolute;
-  width: 10%;
+  width: 0%;
   transition-duration: .5s;
   transition-property: width;
   height: 50px;
-  bottom: -30px;
+  bottom: -25.5px;
+  left: 10px;
   overflow: hidden;
   border-radius: 0 35px 35px 0;
 }
@@ -149,9 +149,59 @@ h1, h2, h3, h4, h5, h6, button{
 .vine-img{
   position: absolute;
   top: 0px;
-  left: 26px;
-  height: 45px;
+  left: 0px;
+  height: 50px;
   width: auto;
+}
+
+@keyframes expand {
+  from {
+      height: 0;
+  }
+  to {
+      height: 120%;
+  }
+}
+
+.vine-left-mask{
+  position: absolute;
+  height: var(--vine-size);
+  top: 0;
+  left: -49px;
+  border-radius: 0 0 200px 200px;
+  animation: expand 5s linear forwards;
+}
+
+.vert-vine-left{
+  position: absolute;
+  left: -43px;
+  height: 100%;
+  width: 150px;
+  background-image: url(src/assets/png/vert-vine.png);
+  background-size: 150px;
+  z-index: 1;
+}
+
+.vine-right-mask {
+  position: absolute;
+  height: var(--vine-size);
+  width: 100px;
+  bottom: 0;
+  right: -54px; 
+  border-radius: 0 0 200px 200px;
+  overflow: hidden;
+  animation: expand 5s linear forwards;
+}
+
+.vert-vine-right { 
+  position: absolute;
+  left: -25px;
+  bottom: 0;
+  height: 100%;
+  width: 150px;
+  background-image: url(src/assets/png/vert-vine-r.png);
+  background-size: 150px;
+  z-index: 1;
 }
 
 .scrolling-content{

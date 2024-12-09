@@ -1,6 +1,12 @@
 <template>
 	<div class="center-main-content">
 		<main class="main-content">
+			<div class="vine-left-mask">
+				<div class="vert-vine-left"></div>
+			</div>
+			<div class="vine-right-mask">
+				<div class="vert-vine-right"></div>
+			</div>
 			<nav class="header">
 				<ul class="header-list">
 					<VineButton>home</VineButton>
