@@ -43,7 +43,7 @@
 
 				setTimeout(() => {
 					if (leafData.value[0]) {
-						leafData.value.splice(0, 1);
+						leafData.value.shift();
 					}
 				}, 5000);
 			}
