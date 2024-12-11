@@ -27,9 +27,10 @@
 <script lang="ts">
 	import '@/assets/base.css'
 
-    import { PropType, defineComponent, computed, onMounted } from 'vue';
+    import { PropType, defineComponent, computed, onMounted, ref } from 'vue';
 	import { useRouter } from 'vue-router'
 	import VineButton from './VineButton.vue';
+
 
     export default defineComponent({
         name: 'HomeScreen',
