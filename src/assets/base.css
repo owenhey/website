@@ -122,8 +122,6 @@ h1, h2, h3, h4, h5, h6, button{
   background-color: var(--lightgreen);
   box-shadow: 3px 6px 3px var(--shadowbrown);
   position: relative;
-  transition-duration: .25s;
-  transition-property: padding-bottom;
 }
 
 .vine-button:hover{
@@ -132,7 +130,7 @@ h1, h2, h3, h4, h5, h6, button{
 }
 
 .vine-button:hover > .vine-mask{
-  width: 90%;
+  width: 100%;
 }
 
 .vine-mask{
@@ -141,8 +139,8 @@ h1, h2, h3, h4, h5, h6, button{
   transition-duration: .5s;
   transition-property: width;
   height: 50px;
-  bottom: -25.5px;
-  left: 10px;
+  bottom: -28px;
+  left: 5px;
   overflow: hidden;
   border-radius: 0 35px 35px 0;
 }
@@ -151,7 +149,7 @@ h1, h2, h3, h4, h5, h6, button{
   position: absolute;
   top: 0px;
   left: 0px;
-  height: 50px;
+  height: 45px;
   width: auto;
 }
 
@@ -242,7 +240,7 @@ h1, h2, h3, h4, h5, h6, button{
   position: absolute;
   width: 100px;
   height: 100px;
-  animation: moveDownFade 5s infinite linear;
+  animation: moveDownFade 5s forwards linear;
 }
 
 .leaf{
@@ -255,8 +253,11 @@ h1, h2, h3, h4, h5, h6, button{
 
 @keyframes moveDownFade{
   0% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scale(0);
     opacity: 100%;
+  }
+  1%{
+    transform: translate(0, 2px) scale(1);
   }
   50% {
     transform: translate(0, 100px);

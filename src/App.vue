@@ -20,7 +20,7 @@
 	const appBody = ref<HTMLElement | null>(null);
 
 	interface LeafSpawnData {
-		xPos: number; yPos: number;
+		xPos: number; yPos: number; timeSpawned: Date
 	}
 
 	export default defineComponent({
@@ -35,15 +35,24 @@
 			const leafData = ref<LeafSpawnData[]>([]);
 
 			function spawnLeaf(mouseEvent : MouseEvent){
-				console.log("hee");
 				leafData.value.push({
 					xPos: mouseEvent.pageX - 15, // Use mouse event coordinates
 					yPos: mouseEvent.pageY - 25,
+					timeSpawned: new Date()
 				});
 
 				setTimeout(() => {
-					if (leafData.value[0]) {
-						leafData.value.shift();
+					let removeAll = true;
+					const now = new Date().getTime();
+					leafData.value.forEach(leaf => {
+						const secondsBetween = (now - leaf.timeSpawned.getTime()) / 1000;
+						if(secondsBetween < 5){
+							removeAll = false;
+						}
+					});
+
+					if(removeAll){
+						leafData.value = [];
 					}
 				}, 5000);
 			}
