@@ -36,8 +36,8 @@
 
 			function spawnLeaf(mouseEvent : MouseEvent){
 				leafData.value.push({
-					xPos: mouseEvent.pageX - 15, // Use mouse event coordinates
-					yPos: mouseEvent.pageY - 25,
+					xPos: mouseEvent.pageX - 103, // Use mouse event coordinates
+					yPos: mouseEvent.pageY - 103,
 					timeSpawned: new Date()
 				});
 
