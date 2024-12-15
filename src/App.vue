@@ -1,7 +1,8 @@
 <template>
 	<div class="background"></div>
 	<div class="background-grid" @click="spawnLeaf">
-		<div class="leaves">
+		<div class="leaves" draggable="false">
+			<p style="margin: 10px;">click me!</p>
 			<Leaf v-for="leaf in leafData"
 				:x-pos="leaf.xPos"
 				:y-pos="leaf.yPos">
@@ -36,8 +37,8 @@
 
 			function spawnLeaf(mouseEvent : MouseEvent){
 				leafData.value.push({
-					xPos: mouseEvent.pageX - 103, // Use mouse event coordinates
-					yPos: mouseEvent.pageY - 103,
+					xPos: mouseEvent.pageX - (Math.random() * 20 + 5), // Use mouse event coordinates
+					yPos: mouseEvent.pageY - (Math.random() * 20 + 5),
 					timeSpawned: new Date()
 				});
 
