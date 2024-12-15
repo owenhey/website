@@ -2,7 +2,7 @@
     <div class="leaf-parent" :style="positionStyle">
         <div class="leaf-x">
             <div class="leaf-y">
-                <img draggable="false" class="leaf" src="@/assets/png/leaf.png" :style="`animation-delay: -${xPos + yPos}s;`">
+                <img draggable="false" class="leaf" src="@/assets/png/leaf.png">
             </div>
         </div>
     </div>

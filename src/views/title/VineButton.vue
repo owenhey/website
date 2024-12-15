@@ -1,5 +1,5 @@
 <template>
-    <button class="vine-button" @click="handleClick">
+    <button class="vine-button" @click="handleClick" :class="tabSelected ? 'tab-selected' : ''">
         <slot></slot>
         <div class="vine-mask">
             <img class="vine-img" src="@/assets/png/vine3.png">
@@ -14,9 +14,10 @@
         name: 'VineButton',
         emits: ['click'],
         props: {
-            test: {
+            tabSelected: {
                 required: false,
-                default: 0
+                type: Boolean,
+                default: false
             }
         },
         setup(props, {emit}) {

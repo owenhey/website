@@ -124,11 +124,18 @@ h1, h2, h3, h4, h5, h6, button{
   position: relative;
 }
 
+.vine-button.tab-selected,
+.vine-button:active,
+.vine-button:focus,
 .vine-button:hover{
   background-color: var(--darkgreen);
   color: var(--lightwhite);
+  outline: none;
 }
 
+.vine-button.tab-selected > .vine-mask,
+.vine-button:active > .vine-mask,
+.vine-button:focus > .vine-mask,
 .vine-button:hover > .vine-mask{
   width: 100%;
 }

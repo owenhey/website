@@ -9,11 +9,11 @@
 			</div>
 			<nav class="header">
 				<ul class="header-list">
-					<VineButton>home</VineButton>
-					<VineButton>portfolio</VineButton>
-					<VineButton>blog</VineButton>
-					<VineButton>flags</VineButton>
-					<VineButton>about</VineButton>
+					<VineButton :tab-selected="isCurrentRoute('/')">home</VineButton>
+					<VineButton :tab-selected="isCurrentRoute('/portfolio')">portfolio</VineButton>
+					<VineButton :tab-selected="isCurrentRoute('/blog')">blog</VineButton>
+					<VineButton :tab-selected="isCurrentRoute('/flags')">flags</VineButton>
+					<VineButton :tab-selected="isCurrentRoute('/about')">about</VineButton>
 				</ul>
 			</nav>
 			<div class="scrolling-content">
@@ -28,7 +28,7 @@
 	import '@/assets/base.css'
 
     import { PropType, defineComponent, computed, onMounted, ref } from 'vue';
-	import { useRouter } from 'vue-router'
+	import { useRouter, useRoute } from 'vue-router'
 	import VineButton from './VineButton.vue';
 
 
@@ -37,10 +37,21 @@
 		components: {
 			VineButton
 		},
+		methods: {
+			isCurrentRoute(path: string) : boolean {
+				console.log(this.route.path);
+				const ret = this.route.path === path;
+				console.log(ret);
+				return ret;
+			}
+		},
         setup() {
 			const router = useRouter();
+			const route = useRoute();
 
-            return {router }
+			return {
+				router, route
+			}
         },
     }
 );
