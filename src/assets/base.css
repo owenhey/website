@@ -122,6 +122,13 @@ h1, h2, h3, h4, h5, h6, button{
   background-color: var(--lightgreen);
   box-shadow: 3px 6px 3px var(--shadowbrown);
   position: relative;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Raleway';
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .vine-button.tab-selected,

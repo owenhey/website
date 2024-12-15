@@ -15,7 +15,7 @@
 <script lang="ts">
 	import { ref, onMounted, computed, defineComponent } from 'vue';
 	import { useRoute, useRouter } from 'vue-router';
-	import Leaf from './views/title/Leaf.vue';
+	import Leaf from './views/Leaf.vue';
 
 	const appDiv = ref<HTMLElement | null>(null);
 	const appBody = ref<HTMLElement | null>(null);
