@@ -1,7 +1,7 @@
 <template>
 	<div class="center-main-content">
 		<MainContent>
-			<Nav></Nav>
+			<Nav class="header"></Nav>
 			<div class="scrolling-content">
 				<h1>welcome to my website</h1>
 				<p>here is some information about me</p>

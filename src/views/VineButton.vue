@@ -24,7 +24,7 @@
                 required: false,
                 type: Boolean,
                 default: false
-            }
+            },
         },
         setup(props) {
             const router = useRouter();

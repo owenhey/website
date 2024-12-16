@@ -1,6 +1,6 @@
 <template>
 	<div class="background"></div>
-	<div class="background-grid" @click="spawnLeaf">
+	<div class="background-grid" @mousedown="spawnLeaf">
 		<div class="leaves" draggable="false">
 			<p style="margin: 10px;">click me!</p>
 			<Leaf v-for="leaf in leafData"
@@ -36,6 +36,7 @@
 			const leafData = ref<LeafSpawnData[]>([]);
 
 			function spawnLeaf(mouseEvent : MouseEvent){
+				console.log("leaf added");
 				leafData.value.push({
 					xPos: mouseEvent.pageX - (Math.random() * 20 + 5), // Use mouse event coordinates
 					yPos: mouseEvent.pageY - (Math.random() * 20 + 5),
