@@ -11,6 +11,9 @@
   --darkgreen: rgb(37, 77, 34);
   --orange: #e28650ff;
   --lightbrown: rgb(231, 197, 161);
+  --lesslightbrown: rgb(207, 164, 117);
+  --lighterbrown: rgb(252, 210, 166);
+  --darkbrown: rgb(206, 156, 104);
   --shadowbrown: rgb(202, 175, 146);
   --grid-color: #ecb77d88;
   --black: #373737;
@@ -353,4 +356,74 @@ h1, h2, h3, h4, h5, h6, button{
   100%{
     transform: translate(0, 0);
   }
+}
+
+.home-content{
+  margin-top: 20px;
+}
+
+.home-content > h1, h2, h3{
+  margin-bottom: 20px;
+}
+
+.home-content > p{
+  margin-bottom: 10px;
+}
+
+.window-links{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
+  gap: 40px;
+  width: 75%;
+  margin-bottom: 50px;
+}
+
+.window-link-content{
+  aspect-ratio: 1;
+  background-image: linear-gradient(rgb(194, 222, 235), rgb(185, 240, 255));
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 5px;
+  padding: 10px 30px;
+  box-shadow: 15px 15px 10px rgba(105, 48, 15, 0.253);
+  border: 10px var(--lesslightbrown) solid;
+  overflow: hidden;
+  position: relative;
+}
+
+.window-link-content a{
+  font-size: 30pt;
+  color: var(--brown);
+  font-weight: bold;
+}
+
+.window-link-header{
+  font-size: 20pt;
+  font-weight: 600;
+}
+
+.window-slats{
+  position: absolute;
+  left: -12px;
+  top: 0px;
+  width: calc(100% + 20px);
+  height:  calc(100% + 20px);
+  user-select: none;
+  pointer-events: none;
+  background-image: linear-gradient(0, var(--lesslightbrown) 10px, transparent 0px), linear-gradient(90deg, var(--lesslightbrown) 10px, transparent 0px);
+  background-size: 50% 50%;
+  z-index: 1;
+}
+
+.window-link img{
+  position: absolute;
+  bottom: -100%;
+  left: 30%;
+  transition: bottom .5s, left .5s;
+}
+
+.window-link:hover img{
+  bottom: 20%;
+  left: 10%;
 }

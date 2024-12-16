@@ -12,8 +12,8 @@
 <script lang="ts">
     import '@/assets/base.css';
     import { PropType, defineComponent, computed, } from 'vue';
-import MainContent from './MainContent.vue';
-import Nav from './Nav.vue';
+    import MainContent from './MainContent.vue';
+    import Nav from './Nav.vue';
 
     export default defineComponent({
         name: 'About',
