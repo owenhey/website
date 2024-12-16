@@ -1,9 +1,9 @@
 <template>
     <main class="main-content">
-        <div class="vine-left-mask">
+        <div class="vine-left-mask" :style="animate ? '' : 'animation: sdsd'">
             <div class="vert-vine-left"></div>
         </div>
-        <div class="vine-right-mask">
+        <div class="vine-right-mask" :style="animate ? '' : 'animation: sdsd'">
             <div class="vert-vine-right"></div>
         </div>
         <slot></slot>
@@ -16,6 +16,12 @@
 
     export default defineComponent({
         name: 'MainContent',
+        props:{
+            animate: {
+                type: Boolean,
+                default: true
+            }
+        },
         setup() {
 
             return {}

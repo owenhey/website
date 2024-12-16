@@ -1,6 +1,6 @@
 <template>
     <div class="center-main-content">
-		<MainContent>
+		<MainContent :animate="false">
 			<Nav class="header"></Nav>
 			<div class="scrolling-content">
 				<h1>Here is the writing page</h1>

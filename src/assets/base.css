@@ -42,7 +42,6 @@ ul{
 
 body{
   overflow: hidden;
-  --vine-size: 50%;
 }
 
 h1, h2, h3, h4, h5, h6, button{
@@ -181,7 +180,7 @@ h1, h2, h3, h4, h5, h6, button{
 
 .vine-left-mask{
   position: absolute;
-  height: var(--vine-size);
+  height: 120%;
   top: 0;
   left: -49px;
   width: 100px;
@@ -206,7 +205,7 @@ h1, h2, h3, h4, h5, h6, button{
 
 .vine-right-mask {
   position: absolute;
-  height: var(--vine-size);
+  height: 120%;
   width: 100px;
   top: 0;
   right: -54px; 
