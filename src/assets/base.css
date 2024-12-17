@@ -186,7 +186,7 @@ h1, h2, h3, h4, h5, h6, button{
   width: 100px;
   border-radius: 0 0 200px 200px;
   overflow: hidden;
-  animation: expand 5s linear forwards;
+  animation: expand 3.5s linear forwards;
   pointer-events: none;
   user-select: none;
 }
@@ -211,7 +211,7 @@ h1, h2, h3, h4, h5, h6, button{
   right: -54px; 
   border-radius: 0 0 200px 200px;
   overflow: hidden;
-  animation: expand 5s linear forwards;
+  animation: expand 3.5s linear forwards;
   pointer-events: none;
   user-select: none;
 }
@@ -416,13 +416,13 @@ h1, h2, h3, h4, h5, h6, button{
 }
 
 .window-link img{
+  width: 120%;
   position: absolute;
   bottom: -100%;
-  left: 30%;
-  transition: bottom .5s, left .5s;
+  left: -10%;
+  transition: bottom .3s, left .3s;
 }
 
 .window-link:hover img{
-  bottom: 20%;
-  left: 10%;
+  bottom: 0%;
 }

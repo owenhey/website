@@ -9,11 +9,17 @@
 				<div style="display: flex; justify-content: center; align-items: center;">
 					<div class="window-links">
 						<WindowLink :link="'about'" :text="'Learn about me'">
-							<img src="@/assets/png/flag.png" style="width: 80%;">
+							<img src="@/assets/png/me.png">
 						</WindowLink>
-						<WindowLink :link="'about'" :text="'See what I\'ve worked on'"></WindowLink>
-						<WindowLink :link="'about'" :text="'Read dev notes'"></WindowLink>
-						<WindowLink :link="'about'" :text="'Play the flag game'"></WindowLink>
+						<WindowLink :link="'about'" :text="'See what I\'ve worked on'">
+							<img src="@/assets/png/whativedone.png">
+						</WindowLink>
+						<WindowLink :link="'about'" :text="'Read dev notes'">
+							<img src="@/assets/png/papers.png">
+						</WindowLink>
+						<WindowLink :link="'about'" :text="'Play the flag game'">
+							<img src="@/assets/png/flag.png">
+						</WindowLink>
 					</div>
 				</div>
 			</div>
