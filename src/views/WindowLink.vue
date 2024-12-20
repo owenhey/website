@@ -1,11 +1,9 @@
 <template>
-    <div class="window-link">
-        <a class="window-link-header" @click="router.push(link)">{{text}}</a>
-        <div class="window-link-content" @mousemove="handleMouseMove">
-            <div class="window-slats"></div>
-            <slot></slot>
-        </div>
-    </div>
+    <a tabindex="0" class="window-link" @click="router.push(link)">
+        <div class="window-link-gradient"></div>
+        <span class="window-link-title" style="z-index: 2; position: relative;">{{text}}</span>
+        <slot></slot>
+    </a>
 </template>
   
 <script lang="ts">

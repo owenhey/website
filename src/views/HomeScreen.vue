@@ -8,10 +8,18 @@
 				<h3>Explore my page: </h3>
 				<div style="display: flex; justify-content: center; align-items: center;">
 					<div class="window-links">
-						<span>Learn about me</span>
-						<span>Learn about me</span>
-						<span>Learn about me</span>
-						<span>Learn about me</span>
+						<WindowLink :text="'About'" :link="'/about'">
+							<img src="@/assets/png/me.png">
+						</WindowLink>
+						<WindowLink :text="'Flags'" :link="'/flags'">
+							<img src="@/assets/png/flag.png">
+						</WindowLink>
+						<WindowLink :text="'Writing'" :link="'/writing'">
+							<img src="@/assets/png/papers.png">
+						</WindowLink>
+						<WindowLink :text="'Portfolio'" :link="'/about'">
+							<img src="@/assets/png/whativedone.png">
+						</WindowLink>
 					</div>
 				</div>
 			</div>
