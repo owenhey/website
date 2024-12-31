@@ -29,8 +29,8 @@
 			Leaf
 		}, 
 		setup() {
-			const router = useRouter()
-			const route = useRoute()
+			const router = useRouter();
+			const route = useRoute();
 			const assetImport = import.meta.glob("./assets/**/*"); // Force imports everything in the assets folder
 
 			const leafData = ref<LeafSpawnData[]>([]);

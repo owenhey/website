@@ -233,6 +233,8 @@ h1, h2, h3, h4, h5, h6, button{
 .scrolling-content{
   flex-grow: 1;
   overflow-y: scroll;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .scrolling-content::-webkit-scrollbar {
@@ -441,4 +443,66 @@ h1, h2, h3, h4, h5, h6, button{
   height: 100%;
   left: 0;
   top: 0;
+}
+
+.post-button{
+  width: 100%;
+  display: flex;
+  position: relative;
+  padding: .5rem;
+  gap: .5rem;
+  height: 20%;
+  border: none;
+  background-color: var(--lightgreen);
+  border-radius: 1rem;
+  text-align: left;
+  font-size: 11pt;
+  box-shadow: 5px 5px 5px var(--shadowbrown);
+  transition: .15s background-color;
+  margin-bottom: 1rem;
+}
+
+.post-button .post-date{
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+}
+
+@media (max-width: 1000px) {
+  .post-button .post-date {
+    bottom: .75rem;
+    top: auto;
+  }
+}
+
+.post-button h4,
+.post-button span,
+.post-button p{
+  transition: .15s color;
+  color: var(--brown);
+  display: -webkit-box;
+  -webkit-line-clamp: 3; 
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.post-button:hover{
+  background-color: var(--darkgreen);
+}
+
+.post-button:hover h4,
+.post-button:hover span,
+.post-button:hover p{
+  color: var(--lightwhite);
+}
+
+.post-button h4{
+  margin-bottom: .5rem;
+  font-size: 18pt;
+}
+
+.post-button img{
+  aspect-ratio: 1;
+  height: 100%;
+  border-radius: 1rem;
 }
