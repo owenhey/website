@@ -5,7 +5,7 @@ import Portfolio from '@/views/Portfolio.vue'
 import Writing from '@/views/Writing.vue'
 import Flags from '@/views/Flags.vue'
 import AllPosts from '@/views/AllPosts.vue'
-import PythonPost from '@/views/Posts/PythonPost.vue'
+import Post from '@/views/Posts/Post.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -29,16 +29,12 @@ const router = createRouter({
       path: '/writing',
       name: 'writing',
       component: Writing,
+      props: true,
       children:[
-        {
-          path: 'all-posts',
-          name: 'allPosts',
-          component: AllPosts,
-        },
         {
           path: 'python',
           name: 'python',
-          component: PythonPost,
+          component: Post,
         }
       ]
     },

@@ -445,13 +445,13 @@ h1, h2, h3, h4, h5, h6, button{
   top: 0;
 }
 
-.post-button{
+.post-button-latest{
   width: 100%;
   display: flex;
   position: relative;
   padding: .5rem;
   gap: .5rem;
-  height: 20%;
+  height: clamp(10%, 20vw, 20%);
   border: none;
   background-color: var(--lightgreen);
   border-radius: 1rem;
@@ -462,22 +462,22 @@ h1, h2, h3, h4, h5, h6, button{
   margin-bottom: 1rem;
 }
 
-.post-button .post-date{
+.post-button-latest .post-date{
   position: absolute;
   top: .75rem;
   right: .75rem;
 }
 
 @media (max-width: 1000px) {
-  .post-button .post-date {
+  .post-button-latest .post-date {
     bottom: .75rem;
     top: auto;
   }
 }
 
-.post-button h4,
-.post-button span,
-.post-button p{
+.post-button-latest h4,
+.post-button-latest span,
+.post-button-latest p{
   transition: .15s color;
   color: var(--brown);
   display: -webkit-box;
@@ -486,23 +486,68 @@ h1, h2, h3, h4, h5, h6, button{
   overflow: hidden;
 }
 
-.post-button:hover{
+.post-button-latest:hover{
   background-color: var(--darkgreen);
 }
 
-.post-button:hover h4,
-.post-button:hover span,
-.post-button:hover p{
+.post-button-latest:hover h4,
+.post-button-latest:hover span,
+.post-button-latest:hover p{
   color: var(--lightwhite);
 }
 
-.post-button h4{
+.post-button-latest h4{
   margin-bottom: .5rem;
-  font-size: 18pt;
+  font-size: clamp(10pt, 2.5vw, 18pt);
 }
 
-.post-button img{
+.post-button-latest img{
   aspect-ratio: 1;
   height: 100%;
   border-radius: 1rem;
+}
+
+.post-button-card {
+  text-align: left;
+  width: 100%;
+  border: none;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: var(--lightgreen);
+  padding-bottom: .5rem;
+  transition: .15s color, .15s background-color;
+  box-shadow: 5px 5px 5px var(--shadowbrown);
+}
+
+.post-button-card:hover,
+.post-button-card:active,
+.post-button-card:focus {
+  background-color: var(--darkgreen);
+  color: var(--lightwhite);
+}
+
+.post-button-card > img {
+  max-width: 100%;
+  /* border-radius: 1rem; */
+}
+
+.post-button-card > h4, p, span{
+  margin: .25rem .5rem;
+  color: inherit;
+}
+
+.post-button-card > h4{
+  font-size: 12pt;
+}
+
+.post-button-card > p, span{
+  font-size: 10pt;
+}
+
+.post-card-grid{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Creates 2 equal columns */
+  gap: 20px;
+  place-items: center;
+  position: relative;
 }
