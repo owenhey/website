@@ -3,7 +3,7 @@
         <ul class="header-list">
             <VineButton :link="'/'" :tab-selected="isCurrentRoute('/', true)">home</VineButton>
             <VineButton :link="'/portfolio'" :tab-selected="isCurrentRoute('/portfolio')">portfolio</VineButton>
-            <VineButton :link="'/writing/allposts'" :tab-selected="isCurrentRoute('/writing/allposts')">writing</VineButton>
+            <VineButton :link="'/writing/allposts'" :tab-selected="isCurrentRoute('/writing')">writing</VineButton>
             <VineButton :link="'/flags'" :tab-selected="isCurrentRoute('/flags')">flags</VineButton>
             <VineButton :link="'/about'" :tab-selected="isCurrentRoute('/about')">about</VineButton>
         </ul>

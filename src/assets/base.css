@@ -460,6 +460,7 @@ h1, h2, h3, h4, h5, h6, button{
   box-shadow: 5px 5px 5px var(--shadowbrown);
   transition: .15s background-color;
   margin-bottom: 1rem;
+  outline: none;
 }
 
 .post-button-latest .post-date{
@@ -480,19 +481,28 @@ h1, h2, h3, h4, h5, h6, button{
 .post-button-latest p{
   transition: .15s color;
   color: var(--brown);
+  color: inherit;
   display: -webkit-box;
   -webkit-line-clamp: 3; 
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.post-button-latest:hover{
+.post-button-latest:hover,
+.post-button-latest:active,
+.post-button-latest:focus{
   background-color: var(--darkgreen);
 }
 
-.post-button-latest:hover h4,
+.post-button-latest:hover p,
+.post-button-latest:active p,
+.post-button-latest:focus p,
 .post-button-latest:hover span,
-.post-button-latest:hover p{
+.post-button-latest:active span,
+.post-button-latest:focus span,
+.post-button-latest:hover h4,
+.post-button-latest:active h4,
+.post-button-latest:focus h4{
   color: var(--lightwhite);
 }
 
@@ -517,6 +527,7 @@ h1, h2, h3, h4, h5, h6, button{
   padding-bottom: .5rem;
   transition: .15s color, .15s background-color;
   box-shadow: 5px 5px 5px var(--shadowbrown);
+  outline: none;
 }
 
 .post-button-card:hover,
