@@ -531,7 +531,9 @@ h1, h2, h3, h4, h5, h6, button{
   /* border-radius: 1rem; */
 }
 
-.post-button-card > h4, p, span{
+.post-button-card > h4,
+.post-button-card > p,
+.post-button-card > span{
   margin: .25rem .5rem;
   color: inherit;
 }
@@ -540,7 +542,8 @@ h1, h2, h3, h4, h5, h6, button{
   font-size: 12pt;
 }
 
-.post-button-card > p, span{
+.post-button-card > p, 
+.post-button-card > span{
   font-size: 10pt;
 }
 

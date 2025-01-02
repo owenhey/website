@@ -1,6 +1,6 @@
 <template>
     <button :class="type === 'latest' ? 'post-button-latest' : 'post-button-card'" 
-        @click="router.push('/writing/' + postData.url)">
+        @click="onClick">
         <img v-if="type === 'latest'" :src="`/src/assets/png/${imgFileName}.png`">
         <div v-if="type === 'latest'" >
             <h4> {{postData.title}} </h4>
@@ -43,10 +43,18 @@
                 required: true,
             }
         },
-        setup() {
+        emits:[
+            'onSelect'
+        ],
+        setup(props, {emit}) {
             const router = useRouter();
 
-            return {router}
+            function onClick(){
+                console.log("sf");
+                emit('onSelect', props.postData);
+            }
+
+            return {router, onClick}
         },
     }
 );
