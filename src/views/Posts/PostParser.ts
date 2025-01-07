@@ -36,8 +36,6 @@ export function CreatePostData(postFile : string) : PostData{
 
     // Find the end of each section (next newline)
     const titleEnd = postFile.indexOf('\n', titleStart);
-    const descriptionEnd = postFile.indexOf('\n', descriptionStart);
-    const dateEnd = postFile.indexOf('\n', dateStart);
     const urlEnd = postFile.indexOf('\n', urlStart);
 
     // Extract and trim the values
@@ -50,6 +48,18 @@ export function CreatePostData(postFile : string) : PostData{
     const [month, day, year] = dateStr.split('/').map(Number);
     const date = new Date(year, month - 1, day);
 
+    // Next, find the start of the file after the long series of -----
+    const postStart = postFile.indexOf('----\n') + 5;
+
+    let startIndex = postStart;
+    for (let index = 0; index < 3; index++) {
+        const ret = SearchForNextSection(postFile, startIndex);
+        console.log(ret?.text);
+        startIndex += ret!.text.length;
+    }
+    // Now, we loop and look for things within brackets
+    SearchForNextSection(postFile, postStart);
+
     return {
         title: title,
         description: description,
@@ -57,4 +67,49 @@ export function CreatePostData(postFile : string) : PostData{
         url: url,
         sections: []
     }
+}
+
+const sectionStringKeys = [
+    '[title]',
+    '[subtitle]',
+    '[paragraph]',
+    '[dotlist]',
+    '[numlist]',
+]
+
+function SearchForNextSection(file : string, startIndex : number){
+    // First, grab the type of section we are looking at
+    const closeBracketIndex = file.indexOf(']', startIndex);
+    const typeOfSection = file.substring(startIndex + 1, closeBracketIndex);
+
+    const nextOccurrences = sectionStringKeys
+        .map(phrase => ({
+            phrase,
+            index: file.indexOf(phrase, closeBracketIndex + 1)
+        }))
+        .filter(occurrence => occurrence.index !== -1);
+    
+    // If no next phrase is found
+    if (nextOccurrences.length === 0) {
+        console.log("nothing found!");
+        console.log(file.slice(closeBracketIndex + 1).trim());
+        return;
+    }
+    
+    // Find the closest next phrase
+    const nextOccurrence = nextOccurrences.reduce((closest, current) => 
+        current.index < closest.index ? current : closest
+    );
+
+    return{
+        sectionType: ToSectionType(typeOfSection),
+        text: file.slice(closeBracketIndex + 1, nextOccurrence.index).trim(),
+    }
+}
+
+function ToSectionType(key : string) : SectionType{
+    if(key === 'title'){
+        return key;
+    }
+    return 'title';
 }
