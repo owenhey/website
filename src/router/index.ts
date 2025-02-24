@@ -36,13 +36,18 @@ const router = createRouter({
           component: AllPosts
         },
         {
-          path: 'python',
-          name: 'python',
+          path: 'steelroserevolution',
+          name: 'steelroserevolution',
           component: Post,
         },
         {
-          path: 'post1',
-          name: 'post1',
+          path: 'planets',
+          name: 'planets',
+          component: Post,
+        },
+        {
+          path: 'daily-data',
+          name: 'daily-data',
           component: Post,
         }
       ]

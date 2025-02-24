@@ -5,7 +5,6 @@
         @on-select="handlePostClick"
         :post-data="posts[0]"
         :type="'latest'"
-        :img-file-name="'blogpost'"
         >
     </PostButton>
     <h2  style="margin-top: 2rem;">Other posts</h2>
@@ -14,7 +13,7 @@
             <PostButton 
                 v-if="index !== 0"
                 @on-select="handlePostClick"
-                :post-data="posts[1]"
+                :post-data="posts[index]"
                 :img-file-name="'blogpost'"
                 >
             </PostButton>

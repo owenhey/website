@@ -1,0 +1,7 @@
+_title_: How the term "AI" is hurting itself
+_description_: Thoughts about public opinion of artificial intelligence and how the generalization of that term has harmed it.
+_date_: 10/16/2024
+_thumbnail_: chatgpt
+_url_: char-chase
+-------------------------------
+[paragraph] Char chase is a game about

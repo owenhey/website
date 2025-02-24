@@ -22,7 +22,6 @@
 .raleway {
   font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
-  font-weight: 300;
   font-style: normal;
 }
 
@@ -31,8 +30,10 @@
   margin: 0;
   padding: 0;
   font-family: 'Raleway';
+}
+
+body{
   color: var(--brown);
-  font-weight: 400;
 }
 
 
@@ -455,6 +456,7 @@ h1, h2, h3, h4, h5, h6, button{
   border: none;
   background-color: var(--lightgreen);
   border-radius: 1rem;
+  color: var(--brown);
   text-align: left;
   font-size: 11pt;
   box-shadow: 5px 5px 5px var(--shadowbrown);
@@ -480,7 +482,6 @@ h1, h2, h3, h4, h5, h6, button{
 .post-button-latest span,
 .post-button-latest p{
   transition: .15s color;
-  color: var(--brown);
   color: inherit;
   display: -webkit-box;
   -webkit-line-clamp: 3; 
@@ -492,17 +493,6 @@ h1, h2, h3, h4, h5, h6, button{
 .post-button-latest:active,
 .post-button-latest:focus{
   background-color: var(--darkgreen);
-}
-
-.post-button-latest:hover p,
-.post-button-latest:active p,
-.post-button-latest:focus p,
-.post-button-latest:hover span,
-.post-button-latest:active span,
-.post-button-latest:focus span,
-.post-button-latest:hover h4,
-.post-button-latest:active h4,
-.post-button-latest:focus h4{
   color: var(--lightwhite);
 }
 
@@ -522,12 +512,16 @@ h1, h2, h3, h4, h5, h6, button{
   width: 100%;
   border: none;
   border-radius: 1rem;
+  min-height: 100%;
   overflow: hidden;
   background-color: var(--lightgreen);
   padding-bottom: .5rem;
   transition: .15s color, .15s background-color;
   box-shadow: 5px 5px 5px var(--shadowbrown);
+  color: var(--brown);
   outline: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .post-button-card:hover,
@@ -537,24 +531,33 @@ h1, h2, h3, h4, h5, h6, button{
   color: var(--lightwhite);
 }
 
-.post-button-card > img {
+.post-button-card > .img-container {
   max-width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
   /* border-radius: 1rem; */
 }
 
-.post-button-card > h4,
-.post-button-card > p,
-.post-button-card > span{
-  margin: .25rem .5rem;
-  color: inherit;
+.post-button-card > .img-container > img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: .5rem;
+  border-radius: 1rem;
 }
 
-.post-button-card > h4{
+.post-button-card h4,
+.post-button-card p,
+.post-button-card span{
+  margin: .25rem .5rem;
+}
+
+.post-button-card h4{
   font-size: 12pt;
 }
 
-.post-button-card > p, 
-.post-button-card > span{
+.post-button-card p, 
+.post-button-card span{
   font-size: 10pt;
 }
 

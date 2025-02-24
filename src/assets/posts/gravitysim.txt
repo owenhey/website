@@ -1,0 +1,164 @@
+_title_: Deterministic Gravity
+_description_: Simulating things like the Solar System deterministically
+_date_: 02/17/2025
+_thumbnail_: planets
+_url_: planets
+-------------------------------
+[paragraph] I was watching [link]Sebastian Lague's,https://www.youtube.com/@SebastianLague[link] recent video
+about fluids on planets when I was struck with some inspiration. He was showing off how planets orbit around
+each other in space, and visualized it with these pretty paths:
+[image]/src/assets/jpg/seblagueplanets.jpg
+[link]His excellent video,https://www.youtube.com/watch?v=8nIB7e_eds4[link]
+
+[paragraph] This single image brought up two things I've wanted to try for a while:
+[numlist]
+Create a [b]deterministic[b] physics simulation.
+Simulate the Three-Body Problem for myself.
+
+[paragraph] Let's look at each of these in more detail.
+
+[subtitle] Deterministic Physics
+
+[paragraph] Classically, when doing any sort of basic physics yourself in a game engine, you can ignore
+variable framerate and just multiply everything by [code]deltaTime[code]. This works in most cases, but
+when [i]acceleration[i] is involved, it can cause small inaccuracies.
+
+[paragraph] In real life, the universe doesn't have a [code]deltaTime[code]. It applies forces continuously,
+so a discrete step-based approach that makes sense on a computer isn't quite accurate. And even worse,
+that inaccuracy is [i]determined[i] by the framerate - lower framerates lead to higher inaccuracy. This makes
+sense, as calculus has taught us that "continuous" calculations can be thought of as a limit as the
+step size gets smaller. So in our case, the larger the [code]deltaTime[code], the less accurate the simulation.
+
+[paragraph] The simulation will never be 100% accurate on account of the fundamental difference in method, but, we can
+at least have it be [i]deterministic[i], that is, it has the same result every time it runs.
+
+[subtitle] The Three-Body Problem
+
+[paragraph] In Liu Cixin's [i]Three-Body Problem[i] series, one of the key plot points is 
+the struggles of a civilization whose planet orbits
+in and around three suns. In physics, three gravitational bodies orbiting one another is known as 
+a [i]chaotic[i] system. Their positions and velocities are [i]extremely[i] sensative to
+initial conditions. Because of this, the civilization is unable to 
+predict the movement of the suns well enough to have a stable society, even with their advanced
+technology.
+
+[paragraph] The book is named after [link]this exact problem,https://en.wikipedia.org/wiki/Three-body_problem[link].
+It is well known to physicists that this problem — predicting exactly where these bodies are going to be after
+some about of time [code]t[code] — does not have a closed-form solution. That means there is no
+(and it has been proved to not exist) finite-termed equation you can just plug the [code]t[code] into
+and learn where the bodies will be. On top of that, [i]minute[i] changes in the starting conditions lead
+to wildly difficult outcomes — so even if you were able to simulate it perfectly, 
+imperfect starting information could also lead to an inaccurate result.
+
+[paragraph] I'm not here to dispute the mathematically proven fact that a closed-form solution is impossible.
+It does feel weird to me, after all, isn't that exactly what calculus is supposed to solve? And doesn't 
+the fact that there is a [i]single[i] definitive answer to any starting conditions and a [code]t[code]
+make it feel like there should be a way to skip the brute-force calculation? Of course I 100% believe the physicists on this one,
+but it still sits a little strangely in my head.
+
+[paragraph] However, the larger issue I had with the book series was this idea that the civilization
+couldn't predict where the suns would be. They would be minding their business in the book when
+suddenly one of the suns would rise up into the sky and burn them all. 
+
+[paragraph] Yes, there is no closed-form solution. And yes, even the most rigorous
+simuations are still slightly inaccurate. But those inaccuracies, in the scale of
+whether or a sun is right next to your planet or not, are trivial! AND, those inaccuracies
+should only pose a problem when you try to predict well into the future! What is stopping
+this civilization from just running the calculation every hour for constant very accurate results?
+
+[paragraph] Anyway. 
+
+[paragraph]I still enjoyed the series immensely, and this slight annoyance mostly gave me
+inspiration to try and simulate it myself.
+
+[title] The Simulation
+
+[paragraph] Making the simulation "deterministic" is actually very easy. Rather than relying on the
+engine's built in [code]deltaTime[code], you just set it yourself. I set my physics [code]timeStep[code] as 
+1/10 of a "unit" of time. I say "unit" generically here because as you'll see later, I adjust what
+a "unit" means as I simulate different things.
+
+[paragraph] Then, when you want to see the simulation at some certain [code]t[code], you just have
+it loop until it's caught up to right before your [code]t[code], while only taking steps of [code]timeStep[code].
+
+[paragraph] Practically: 
+
+[codeblock] 
+function simulateTo(targetTime){
+[tab]while(simTime + timeStep < targetTime){
+[tab][tab]simulate();
+[tab][tab]simTime += timeStep;
+[tab]}
+}
+
+[paragraph] Or in other words, advance the simulation up to where it should be, but while only
+taking fixed time steps. This keeps it deterministic, and also makes it very easy to "speed up" time.
+Just multiply your [code]targetTime[code] by some factor when you pass it in.
+
+[paragraph] Next was to write the [code]simulate()[code] function, which basically just loops over
+all the bodies in the sim and updates their velocities and positions accordingly.
+
+[codeblock]
+public simulate(body, timeStep) {
+[tab]foreach (otherBody in body) {
+[tab][tab]if(otherBody.Id == Id) continue; // ignore ourself
+
+[tab][tab]distance = distance(otherBody.Position, Position);
+[tab][tab]distance = Mathf.Max(Size, distance);
+[tab][tab]force = (GravConstant * Mass * otherBody.Mass) / (distance * distance);
+[tab][tab]forceRaw = (otherBody.Position - Position).normalized * force;
+[tab][tab]velocityChange = forceRaw / Mass;
+
+[tab][tab]Velocity += (velocityChange * timeStep);
+[tab]}
+[tab]
+[tab]Position = Position + (dt * Velocity);
+}
+
+[paragraph] The last thing to do is to figure out the [code]GravConstant[code]. This is the factor "G"
+that provides a basis for generically how strong in a system the force of gravity is.
+
+[paragraph] G in real life is [code]6.6743×10^−11 m^3 kg^−1 s^−2[code]. I could use this, but there is
+a problem: floating point inaccuracy. In order to simulate anything interesting (like the solar system), the
+bodies need to be immensely dense and extremely far away from each other. I could plug in that the earth
+is almost 150 billion meters from the sun, but floating point numbers lose a lot of precision at values
+that high. So, instead, we'll multiply everything by a factor and update G accordingly.
+
+[subtitle] "Owen Units"
+[dotlist]
+1 "Owen Second" = 1 day, or [code]60 * 60 * 24 = 86400[code] seconds.
+1 "Owen Kilogram" = 10^24 Kilograms.
+1 "Owen Meter" = [code]1,000,000,000[code] meters (one billion).
+
+[paragraph] With these values, G calculates out to about .0005, and the earth is a reasonable
+150 units away from the sun. Floating point numbers are more than accurate enough at this magnitude.
+
+[title] Showcase
+[paragraph] With that, let's look at some of the simulations!
+[video]/src/assets/mp4/moonearth.mp4
+Moon around the sun
+
+[video]/src/assets/mp4/moon earth different angle.mp4
+Moon around sun, offset angle
+
+[video]/src/assets/mp4/inner planets.mp4
+The four inner planets
+
+[video]/src/assets/mp4/solar system.mp4
+The Solar System
+
+[subtitle] How chaotic are three bodies?
+
+[paragraph] Now that the simulation was working, I could try out a basic Three-Body problem to see how chaotic it is.
+[video]/src/assets/mp4/three planets.mp4
+In short: very chaotic
+
+[subtitle] Closing thoughts
+[paragraph] This was a fun project! Making it "deterministic" was a lot easier than I expected it to be, and
+it was really cool to plug in numbers from NASA and see the simulation agree about how long the orbits of the planets
+should take.
+
+[paragraph] I'm still skeptical of the civilization in the [i]Three-Body Problem[i]'s inability to predict
+where their suns would be, but it's still very cool to see such simple rules lead to such chaotic behavior.
+
+[paragraph] I'd like to explore other chaotic systems in the future, and maybe try to base a game around them. 

@@ -1,26 +1,121 @@
 @import url(base.css);
 
-h1, h2, h3, h4, h5, h6, p{
+.single-post h1, 
+.single-post h2, 
+.single-post h3, 
+.single-post h4, 
+.single-post h5, 
+.single-post h6, 
+.single-post p,
+.single-post span{
     margin: 0;
 }
 
-h1{
+.single-post b{
+    font-weight: 700;
+}
+
+.single-post a:link,
+.single-post a:visited{
+    color: var(--brown)
+}
+
+.single-post h1{
     margin-bottom: 2rem;
 }
 
-h3{
+.single-post h2{
+    margin-bottom: 1rem;
+}
+
+.single-post h4{
     margin-bottom: 1rem;
     font-size: 16pt;
 }
 
-p{
+.single-post p > span,
+.single-post li > span,
+.single-post p,
+.single-post > span{
     margin-bottom: 1rem;
     font-size: 13pt;
     line-height: 1.25;
 }
 
-.single-post-date{
+.single-post ul{
+    margin-bottom: 1rem;
+}
+
+.single-post ol{
+    margin-bottom: 1rem;
+}
+
+.single-post ul li{
+    list-style: disc;
+    margin-left: 1rem;
+}
+
+.single-post ol li{
+    list-style: decimal;
+    margin-left: 1rem;
+}
+
+.single-post .code-block{
+    width: 100%;
+    background-color: rgba(222, 222, 222, 0.6);
+    color:rgb(184, 26, 9);
+    border-radius: 5px;
+    font-family: monospace;
+    padding: 3px;
+}
+
+.single-post .code-block span{
+    font-family: monospace;
+    font-size: 11pt;
+    padding: 0;
+}
+
+.single-post .single-post-date{
     float: right;
     text-align: right;
     margin-top: .4rem;
+}
+
+.single-post .image-section{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+    gap: 1rem;
+}
+
+.single-post .video-section video{
+    margin-bottom: .25rem;
+}
+
+.single-post img{
+    margin: auto;
+    width: 300px;
+    margin-bottom: 1rem;
+}
+
+.single-post .code-font{
+    color: rgb(184, 26, 9);
+    background-color: rgba(222, 222, 222, 0.6);
+    border: 2px solid transparent;
+    padding-left: 3px;
+    padding-right: 3px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: .9em;
+}
+
+.single-post .video-section{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
 }

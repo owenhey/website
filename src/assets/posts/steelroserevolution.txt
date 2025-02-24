@@ -1,0 +1,43 @@
+_title_: Retrospective: Steel Rose Revolution
+_description_: Looking at a game I made for the 2025 Boss Rush game jam.
+_date_: 02/05/2025
+_thumbnail_: steelroserevolution
+_url_: steelroserevolution
+-------------------------------
+[paragraph] One of my goals for 2025 was to participate in more game jams. So over the month
+of January, my friend [link]Andrew,https://www.linkedin.com/in/andrewkhans/[link] and I did just that.
+We signed up for the [link]2025 Boss Rush Game Jam,https://itch.io/jam/boss-rush-jam-2025[link], where
+this year's theme was [i]spin[i]. We ended up making a cute little game called [i]Steel Rose Revolution[i]
+where you play as a hopeless romantic knight who kills various creatures.
+
+[paragraph] Here is a trailer I made for the game.
+
+[html]<iframe width="560" height="315" src="https://www.youtube.com/embed/OlGU9s1o-Bs?si=USq50_isolnLFyxG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[title] Highlights
+[paragraph] I want to highlight a few things that I'm particularily proud of.
+
+[subtitle] The shader
+
+[paragraph] Pretty much every single approach to outlines has some artifact / drawback.
+[dotlist]
+Pure depth-based ones struggle with very steep normals relative to the camera. 
+Inverted hull outlines can look really bad on cerain meshes.
+Fresnel outlines only work on super smooth objects. 
+Rendering to another channel looks great but takes time to setup
+[link](Roystan's great article about outlines talks a little about this),https://roystan.net/articles/outline-shader/[link].
+
+[paragraph] Mine is no exception, but the drawback is in performance, which wasn't really a factor in 
+this game. Other than that it actually solves a lot of the problems mentioned above. 
+In our case, there simply wasn't enough going on for performance to be an issue, 
+but I would certainly take another pass at the shader for a larger more complicated game.
+
+[paragraph] Here are the basic steps. There are two cameras:
+[numlist]
+All objects that want outlines automatically duplicate their mesh, and attach it to a child object of themselves.
+This new mesh is put on a separate layer and gets a special shader:
+The shader takes the objects world position and hashes it into a color. This has the effect of rendering all objects as a slightly different color from one another. The hash also takes object normals into account, which helps distinguish sharp edges on meshes.
+A second camera renders just these objects to a low-resolution texture before the main camera runs.
+The main camera reads the output of this camera, and performs a [link]roberts cross, https://en.wikipedia.org/wiki/Roberts_cross[link] on it with [b]extremely low[b] tolerance.
+Since all separate objects are practically guranteed to hash differently, the roberts cross picks up all individual objects / any sharp edges.
+The final result adds the output of that to what the normal camera renders.

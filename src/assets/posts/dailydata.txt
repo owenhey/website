@@ -1,0 +1,7 @@
+_title_: Tracking 2024
+_description_: I rated every day throughout 2024 and plotted it
+_date_: 01/01/2025
+_thumbnail_: dailyratings
+_url_: dailydata
+-------------------------------
+[title]Here is the title
