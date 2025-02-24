@@ -49,6 +49,11 @@ const router = createRouter({
           path: 'daily-data',
           name: 'daily-data',
           component: Post,
+        },
+        {
+          path: 'post-creation',
+          name: 'post-creation',
+          component: Post,
         }
       ]
     },

@@ -1,0 +1,7 @@
+_title_: This website's writing CMS
+_description_: How I created the "blog post" system that runs this part of the website.
+_date_: 01/15/2025
+_thumbnail_: post-creation
+_url_: post-creation
+-------------------------------
+[title]Here is the title

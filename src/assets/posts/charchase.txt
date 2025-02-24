@@ -2,6 +2,6 @@ _title_: Retrospective: Char Chase
 _description_: Looking at a game I made for Ludum Dare 56
 _date_: 10/20/2024
 _thumbnail_: charchase
-_url_: char-chase
+_url_: charchase
 -------------------------------
 [paragraph] Char chase is a game about
