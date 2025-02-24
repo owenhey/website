@@ -1,5 +1,5 @@
 _title_: Deterministic Gravity
-_description_: Simulating things like the Solar System deterministically
+_description_: Simulating the Solar System
 _date_: 02/17/2025
 _thumbnail_: planets
 _url_: planets
