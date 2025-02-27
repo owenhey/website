@@ -568,3 +568,84 @@ h1, h2, h3, h4, h5, h6, button{
   place-items: center;
   position: relative;
 }
+
+.portfolio-spotlight{
+  margin-top: 1rem;
+  width: 100%;
+  min-height: 200px;
+  background-color: var(--lightgreen);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px var(--shadowbrown);
+  display: flex;
+  position: relative;
+}
+
+.portfolio-spotlight-image-section{
+  margin: .5rem;
+  width: calc(50% - 1rem);
+  position: relative;
+  border-radius: 10x;
+  overflow: hidden;
+}
+
+.portfolio-spotlight-image-section img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.portfolio-spotlight-image-section .caroseul-buttons{
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: end;
+  position: absolute;
+  justify-content: space-between;
+  padding: 0 .5rem;
+  padding-bottom: .5rem;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.535), rgba(0, 0, 0, 0));
+  border-radius: 0 0 10px 10px;
+}
+
+.portfolio-spotlight-text-section{
+  margin: .5rem;
+  width: 50%;
+  height: fit-content;
+}
+
+.p-s-caroseul-button{
+  width: 20%;
+  aspect-ratio: 1;
+  border-radius: 25px;
+  background-color: var(--lightgreen);
+  transition: background-color .15s, color .15s;
+  position: relative;
+  border: none;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.516);
+}
+
+.p-s-caroseul-button:hover,
+.p-s-caroseul-button:active{
+  background-color: var(--darkgreen);
+}
+
+.p-s-caroseul-button:hover svg,
+.p-s-caroseul-button:active svg{
+  stroke: var(--lightwhite);
+}
+
+.p-s-caroseul-button svg{
+  width: 60%;
+  height: 60%;
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}

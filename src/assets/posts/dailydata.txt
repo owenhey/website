@@ -2,6 +2,89 @@ _title_: Tracking 2024
 _description_: I rated every day throughout 2024 and plotted it
 _date_: 01/01/2025
 _thumbnail_: dailyratings
-_url_: dailydata
+_url_: daily-data
 -------------------------------
-[title]Here is the title
+[paragraph] Every day last year, as a task of introspection and because I was interested in the eventual graph,
+I decided to score my happiness / quality of day and write a quick blurb. I exported the data, fed it into Python, and 
+graphed it using [link]Plotly,https://plotly.com/[link].
+
+[subtitle] A note:
+[paragraph] The scale: I ranked every day from 1 to 10, but there's
+some nuance to what each score means.
+[dotlist]
+[b]1-3[b]: These are really bad days, anything below a three is already actively very bad, and a one is catestrophically bad.
+[b]4-5[b]: I'm not super happy with these days, but nothing really bad happened on them. Often disappointing, but not devastating.
+[b]6-7[b]: These days are average. 6s are generally "fine" days where I was a little bored, 7s are "fine" days where I wasn't.
+[b]8-10[b]: These are actively good days. Something special happened that made me enjoy them more than an average day.
+
+[subtitle] Core of the data
+[dotlist]
+Average Rating: ............ [b]7.18[b]
+Median Rating: .............. [b]7[b]
+Mode Rating: .................. [b]7[b]
+Standard Deviation: ... [b]1.15[b]
+
+[image]/src/assets/jpg/10dayaverage.jpg
+I was generally happier in the middle of the year.
+
+[image]/src/assets/jpg/parity.jpg
+Overall a pretty good year!
+
+[image]/src/assets/jpg/labeled2024.jpg
+Major events
+
+[paragraph] I think the main takeaway here is that, as you would expect, warm weather and vacations are nice. 
+I was expecting a little more deviation across the year (the 10-day average hides that a little), but overall
+I was happier when it was warm and when exciting things were happening around me, and not as happy otherwise.
+
+[image]/src/assets/jpg/daysofweek.jpg
+Wednesdays were the worst day, Saturdays were the best
+
+[paragraph] Also, as you would expect, I was generally happier on the weekends and less happy in the middle of the week.
+
+[title] Fun trends
+[paragraph] Writing a blurb about each day down allows me to look at trends for
+various keywords throughout the year.
+
+[subtitle] My Partner
+[paragraph] I started seeing someone around the middle of March. We're still together now, and she's been a 
+really positive part of my life. Here's how that looks in the data:
+
+[image]/src/assets/jpg/partner.jpg
+She was mentioned in 70 different days
+
+[paragraph] Clearly, she has been a very consistently good part of my life. Other stats about her:
+[dotlist]
+Her improving my day is [b]statistically significant[b], with a p-value of [b].02[b].
+She was involved in all three of my 10-rated days
+
+[subtitle] Tottenham
+[paragraph] The other easily trackable trend from my blurbs is Tottenham Hotspur, the soccer team
+I support. Here are some graphs about that:
+
+[image]/src/assets/jpg/tottenham.jpg
+Tottenham winning was a key factor in my happiness
+[image]/src/assets/jpg/tottenham2.jpg
+Some days where Tottenham won still got low scores, and vice-versa
+
+[paragraph] Something worth noting here is that in my time-zone, Tottenham usually plays in the morning.
+I would almost always rank the days at night before bed, and so its possible some of their effect would be lost
+due to lack of immediacy.
+
+[subtitle] Comparisons
+[paragraph] And for fun (and to potentially incriminate myself), let's compare how "important" 
+Tottenham is to my happiness per-day versus my partner.
+
+[image]/src/assets/jpg/differentcomparisons.jpg
+Not a great look for me...
+
+[paragraph] At first, it seems like Tottenham winning has more of an effect on my happiness than her, but 
+looking at p-values:
+[dotlist]
+Does mentioning my partner lead to better days? p-value: [b].02[b]
+Does Tottenham winning lead to better days? p-value: [b].035[b]
+
+[paragraph] Both are statistically significant, but I'd put my faith in the former in this case.
+
+[paragraph] Thank you for reading! I hope to do this next year – I want to take better
+notes of what happened, and be more rigorous about what each rating means.

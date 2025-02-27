@@ -1,7 +1,72 @@
-_title_: This website's writing CMS
-_description_: How I created the "blog post" system that runs this part of the website.
+_title_: This website's markup language
+_description_: How I created the "post" system that runs this part of the website.
 _date_: 01/15/2025
 _thumbnail_: post-creation
 _url_: post-creation
 -------------------------------
-[title]Here is the title
+[paragraph] In general, one of the best skills a programmer can have is the ability to use other
+people's code. Picking the right package, understanding the codebase, and integrating it smoothly into
+one's own project is invaluable. Despite this, coders tend to be very bad at this, and often want to
+solve a problem by making the solution ourselves. I think it stems from the reason why they got into coding
+to begin with – they want to solve problems – and something about taking someone else's solution for something
+feels like cheating.
+
+[paragraph] This is a really silly outlook. Every piece of code relies on someone else's work.
+That is true whether the code runs the machine your program is executing on, or is explicitly 
+declared in your [code]package.json[code]. 
+
+[paragraph] I say this, but am just as guilty of it as the next programmer. And when I was making 
+this website and was presented with the need for some kind of "post" system, I decided to make my own.
+I can recognize that it was a silly decision, but it has also been a fun challenge.
+
+[subtitle] What I was looking for
+[paragraph] I started by making a list of what I wanted this system, whether it was a fully-fleshed out 
+[link]CMS,https://en.wikipedia.org/wiki/Content_management_system[link] or just a markup format.
+[numlist]
+Write, edit and maintain posts easily
+Support rich text
+Easily add images, gifs, and videos
+Extremely customizable
+
+[paragraph] I ended up deciding on defining a new [i][link]Lightweight Markup Language,https://en.wikipedia.org/wiki/Lightweight_markup_language[link][i].
+Basically, I could define each post in a single text file, that uses a custom format to define things like
+paragraphs, italics, and lists.
+
+[subtitle] The format
+[paragraph] The system starts with a simple header section, that defines metadata for the file. Here is an example:
+[codeblock]
+_title_: This website's markup language
+_description_: How I created the "post" system that runs this part of the website.
+_date_: 01/15/2025
+_thumbnail_: post-creation
+_url_: post-creation
+
+[paragraph] The parser treats this data at the top of the text file as different from the "content", and
+uses it to sort, label, and grab an image for the post.
+
+[paragraph] Next, the content of the post is defined in a series of tags. A tag is a specific word enclosed
+by an open and closed bracket, like so:
+[dotlist]
+[code][startbracket]paragraph[endbracket][code]
+[code][startbracket]subtitle[endbracket][code]
+[code][startbracket]dotlist[endbracket][code]
+[code][startbracket]codeblock[endbracket][code]
+
+[paragraph] To get the list above to work, I had to implement special keywords that can display
+as the start and end brackets.
+
+[paragraph] Next, within each of these blocks, I defined rules for italicizing, bolding, or monospacing
+parts of the text.
+[dotlist]
+[code][startbracket]i[endbracket]some text[startbracket]i[endbracket][code] => [i]some text[i]
+[code][startbracket]b[endbracket]some text[startbracket]b[endbracket][code] => [b]some text[b]
+[code][startbracket]code[endbracket]some text[startbracket]code[endbracket][code] => [code]some text[code]
+
+[paragraph] Finally, I could write a parser to read all of these, turn it into a list of [code]PostSections[code],
+and then parse it using Vue 3. I've written three posts so far using it, and have found it very easy 
+and fun to use! Overall, I'm glad I deviated from standard advice on this one. And best of all, it's now
+super quick and easy for me to add functionality in the future.
+
+[paragraph] Here's what the file for this post looks like. Note how close it looks to the end result,
+which is important for a markup language.
+[image]/src/assets/jpg/post-example.jpg

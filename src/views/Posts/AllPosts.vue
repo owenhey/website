@@ -1,5 +1,5 @@
 <template>
-    <h2 >Latest post</h2>
+    <h2 >Latest</h2>
     <PostButton
         v-if="posts.length > 0"
         @on-select="handlePostClick"
@@ -7,7 +7,7 @@
         :type="'latest'"
         >
     </PostButton>
-    <h2  style="margin-top: 2rem;">Other posts</h2>
+    <h2  style="margin-top: 2rem;">Archive</h2>
     <div class="post-card-grid">
         <template v-for="(post, index) in posts">
             <PostButton 

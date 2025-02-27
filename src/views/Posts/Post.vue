@@ -1,4 +1,7 @@
 <template>
+    <div class="single-post all-posts-link" style="margin-bottom: 2rem; text-decoration: underline;">
+        <a style="color: var(--brown);" @click="router.push('allposts')">All posts</a>
+    </div>
     <div class="single-post" style="margin: 0; padding: 0;">
         <span v-if="postData" class="single-post-date">{{ GetReadableDate(postData.date) }}</span>
         <h1>{{ postData?.title }}</h1>
@@ -58,7 +61,7 @@
             </figure>
         </template>
     </div>
-    <div class="single-post" style="display: flex; justify-content: center; margin-top: 3rem; margin-bottom: 3rem;">
+    <div class="single-post all-posts-link" style="display: flex; justify-content: center; margin-top: 3rem; margin-bottom: 3rem;">
         <a style="color: var(--brown);" @click="router.push('allposts')">Back to all posts</a>
     </div>
 </template>
@@ -68,7 +71,7 @@
     import { PropType, defineComponent, computed, ref, onMounted} from 'vue';
     import { CreatePostData, PostData } from './PostParser';
     import { useRoute, useRouter } from 'vue-router';
-    import { GetReadableDate } from '@/utils';
+    import { GetReadableDate, ParseString } from '@/utils';
 
     export default defineComponent({
         name: 'Post',
@@ -78,12 +81,7 @@
             },
 
             FormatText(text : string){
-                text = text.replace(/\[b\](.*?)\[b\]/g, '<b>$1</b>');
-                text = text.replace(/\[i\](.*?)\[i\]/g, '<i>$1</i>');
-                text = text.replace(/\[code\](.*?)\[code\]/g, '<span class="code-font">$1</span>');
-                text = text.replace(/\[link\](.*?),(.*?)\[link\]/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-                text = text.replace(/\[tab\]/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
-                return text;
+                return ParseString(text);
             }
         },
         setup() {

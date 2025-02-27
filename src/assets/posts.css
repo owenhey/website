@@ -38,7 +38,7 @@
 .single-post p,
 .single-post > span{
     margin-bottom: 1rem;
-    font-size: 13pt;
+    font-size: 12pt;
     line-height: 1.25;
 }
 
@@ -79,6 +79,7 @@
     float: right;
     text-align: right;
     margin-top: .4rem;
+    margin-left: 2rem;
 }
 
 .single-post .image-section{
@@ -88,7 +89,7 @@
     align-items: center;
     margin-bottom: 1rem;
     position: relative;
-    gap: 1rem;
+    text-align: center;
 }
 
 .single-post .video-section video{
@@ -97,8 +98,10 @@
 
 .single-post img{
     margin: auto;
-    width: 300px;
-    margin-bottom: 1rem;
+    min-width: 250px;
+    width: 80%;
+    margin-bottom: .5rem;
+    margin-top: 1rem;
 }
 
 .single-post .code-font{
@@ -118,4 +121,15 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+}
+
+.single-post.all-posts-link a{
+    user-select: none;
+    text-decoration: underline;
+}
+
+.single-post.all-posts-link a:hover,
+.single-post.all-posts-link a:active,
+.single-post.all-posts-link a:focus{
+    cursor: pointer;
 }
