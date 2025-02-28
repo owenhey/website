@@ -586,6 +586,7 @@ h1, h2, h3, h4, h5, h6, button{
   position: relative;
   border-radius: 10x;
   overflow: hidden;
+  aspect-ratio: 1;
 }
 
 .portfolio-spotlight-image-section img{
@@ -602,8 +603,8 @@ h1, h2, h3, h4, h5, h6, button{
   align-items: end;
   position: absolute;
   justify-content: space-between;
-  padding: 0 .5rem;
-  padding-bottom: .5rem;
+  padding: 0 .75rem;
+  padding-bottom: .75rem;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -619,7 +620,7 @@ h1, h2, h3, h4, h5, h6, button{
 }
 
 .p-s-caroseul-button{
-  width: 20%;
+  width: 15%;
   aspect-ratio: 1;
   border-radius: 25px;
   background-color: var(--lightgreen);
@@ -648,4 +649,69 @@ h1, h2, h3, h4, h5, h6, button{
   stroke-linecap: round;
   stroke-linejoin: round;
   pointer-events: none;
+}
+
+.portfolio-spotlight a{
+  color: var(--brown);
+}
+
+.portfolio-buttons{
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  position: relative;
+  justify-content: space-between;
+}
+
+.portfolio-button{
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  background-color: var(--lightgreen);
+  width: 200px;
+  max-width: 30%;
+  border-radius: 10px;
+  border: none;
+  overflow: hidden;
+  aspect-ratio: .9;
+  box-shadow: 5px 5px 5px var(--shadowbrown);
+  color: var(--brown);
+  position: relative;
+}
+
+.portfolio-button:hover,
+.portfolio-button:focus{
+  color: var(--lightwhite);
+}
+
+.portfolio-button:hover h4,
+.portfolio-button:focus h4{
+  background-image: linear-gradient(to bottom, var(--darkgreen) 75%, transparent 100%);
+}
+
+.portfolio-button h4{
+  font-size: clamp(11pt, 2vw, 16pt);
+  text-align: left;
+  position: absolute;
+  margin-bottom: 4rem;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: .5rem;
+  z-index: 1;
+  padding-bottom: 3rem;
+  background-image: linear-gradient(to bottom, var(--lightgreen) 65%, transparent 100%);
+}
+
+.portfolio-button .image-container{
+  width: 100%;
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.portfolio-button .image-container img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

@@ -1,0 +1,7 @@
+_title_: Identifying Rune Drawings
+_description_: The algorithm behind my game drawing runes to cast spells.
+_date_: 02/09/2025
+_thumbnail_: runedrawing
+_url_: rune-algorithm
+-------------------------------
+[paragraph] Hello
