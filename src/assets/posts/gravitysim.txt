@@ -130,6 +130,11 @@ that high. So, instead, we'll multiply everything by a factor and update G accor
 1 "Owen Kilogram" = 10^24 Kilograms.
 1 "Owen Meter" = [code]1,000,000,000[code] meters (one billion).
 
+[paragraph] From earlier, my physics "time steps" are only 1/10th of a unit, or every 12 hours. At first
+I was worried this would be way too infrequent for an accurate simulation, but it turns out to be
+totally fine when the objects in question only orbit around eachother once every 50x+ that duration. Obviously
+if we were simulating gravity on Earth we would need a much smaller step.
+
 [paragraph] With these values, G calculates out to about .0005, and the earth is a reasonable
 150 units away from the sun. Floating point numbers are more than accurate enough at this magnitude.
 

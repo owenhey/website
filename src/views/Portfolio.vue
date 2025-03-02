@@ -2,7 +2,7 @@
     <div class="center-main-content">
 		<MainContent :animate="false">
 			<Nav class="header"></Nav>
-			<div class="scrolling-content">
+			<div class="scrolling-content" ref="scrollingElement">
 				<h1 style="margin-top: 1rem; width: 100%; text-align: center;">Portfolio</h1>
                 <PortfolioSpotlight
                     :content="portfolioObjects[selectedIndex]">
@@ -39,40 +39,60 @@
         setup() {
             const selectedIndex = ref(0);
 
+            const scrollingElement = ref<HTMLElement>();
+
             const portfolioObjects = ref<PortfolioContent[]>([
                 {
                     title: "Isles of Ilkmaar",
                     images: ['/src/assets/png/isles.png'],
+                    date: "2022-present",
                     content: "Isles of Ilkmaar is a game.",
                 },
                 {
                     title: "Nunaka",
+                    date: "2022-2023",
                     images: ['/src/assets/png/isles.png'],
                     content: "Nunaka",
                 },
                 {
                     title: "Polygunners",
+                    date: "2022-2023",
                     images: ['/src/assets/jpg/polygunners.jpg'],
                     content: "Nunaka",
                 },
                 {
                     title: "Ludum Dare 56 - Char Chase",
+                    date: "2022-2023",
                     images: ['/src/assets/jpg/charchase.jpg'],
                     content: "[link]Char Chase,https://oysterhey.itch.io/char-chase[link] is a game made I made for ludum dare 56.",
                 },
                 {
+                    title: "Museums Around the World",
+                    date: "2022-2023",
+                    images: ['/src/assets/jpg/parity.jpg'],
+                    content: "[link]Char Chase,https://oysterhey.itch.io/char-chase[link] is a game made I made for ludum dare 56.",
+                },
+                {
                     title: "Boss Rush 2025 - Steel Rose Revolution",
+                    date: "2022-2023",
                     images: ['/src/assets/jpg/steelroserevolution.jpg'],
                     content: "[link]Char Chase,https://oysterhey.itch.io/char-chase[link] is a game made I made for ludum dare 56.",
                 },
                 {
-                    title: "Museum Suite",
-                    images: ['/src/assets/jpg/parity.jpg'],
-                    content: "[link]Char Chase,https://oysterhey.itch.io/char-chase[link] is a game made I made for ludum dare 56.",
+                    title: "4D Missile",
+                    date: "Sept 2024",
+                    images: ['/src/assets/jpg/steelroserevolution.jpg'],
+                    content: "A sequel to the classic flash game 3D-missile - made in 1 month.",
                 },
             ]);
 
             function onPieceSelected(data : PortfolioContent){
+                scrollingElement.value!.scroll({
+                    top: 0, 
+                    left: 0, 
+                    behavior: 'smooth' 
+                });
+
                 for (let index = 0; index < portfolioObjects.value.length; index++) {
                     const element = portfolioObjects.value[index];
                     if(element.title === data.title){
@@ -82,7 +102,7 @@
                 }
             }
 
-            return { portfolioObjects, onPieceSelected, selectedIndex }
+            return { portfolioObjects, onPieceSelected, selectedIndex, scrollingElement }
         },
     }
 );

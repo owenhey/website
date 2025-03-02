@@ -1,16 +1,17 @@
 :root {
-  --background-color: #f7e9d5;
+  --background-color: #f3e8d5;
   --really-dark: #111111;
   --background-light: rgb(242, 221, 182);
   --background-dark: rgb(249, 229, 164);
   --brown: rgb(107, 48, 11);
   --white: #FAFAFA;
   --lightwhite: rgb(255, 241, 221);
-  --lightgreen: rgb(169, 201, 166);
+  --lightgreen: rgb(157, 194, 133);
   --green: #6a9666ff;
-  --darkgreen: rgb(37, 77, 34);
+  --darkgreen: rgb(48, 85, 45);
+  --darkergreen: rgb(33, 59, 31);
   --orange: #e28650ff;
-  --lightbrown: rgb(231, 197, 161);
+  --lightbrown: rgb(233, 193, 150);
   --lesslightbrown: rgb(207, 164, 117);
   --lighterbrown: rgb(252, 210, 166);
   --darkbrown: rgb(206, 156, 104);
@@ -586,10 +587,12 @@ h1, h2, h3, h4, h5, h6, button{
   position: relative;
   border-radius: 10x;
   overflow: hidden;
-  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .portfolio-spotlight-image-section img{
+  aspect-ratio: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -598,19 +601,35 @@ h1, h2, h3, h4, h5, h6, button{
 
 .portfolio-spotlight-image-section .caroseul-buttons{
   display: flex;
-  gap: 1rem;
+  gap: .5rem;
   justify-content: center;
-  align-items: end;
-  position: absolute;
-  justify-content: space-between;
-  padding: 0 .75rem;
-  padding-bottom: .75rem;
+  align-items: center;
+  padding: .5rem;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 50px;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.535), rgba(0, 0, 0, 0));
+  height: fit-content;
+  position: relative;;
   border-radius: 0 0 10px 10px;
+}
+
+.caroseul-buttons .circles{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: .1rem;
+}
+
+.caroseul-buttons .circles div{
+  width: clamp(10px, 1vw, 20px);
+  aspect-ratio: 1;
+  border-radius: 100%;
+  background-color: var(--green);
+}
+
+.caroseul-buttons .circles div.selected{
+  background-color: var(--darkgreen);
 }
 
 .portfolio-spotlight-text-section{
@@ -623,11 +642,11 @@ h1, h2, h3, h4, h5, h6, button{
   width: 15%;
   aspect-ratio: 1;
   border-radius: 25px;
-  background-color: var(--lightgreen);
+  background-color: var(--green);
   transition: background-color .15s, color .15s;
   position: relative;
   border: none;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.516);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.516);
 }
 
 .p-s-caroseul-button:hover,
@@ -635,16 +654,11 @@ h1, h2, h3, h4, h5, h6, button{
   background-color: var(--darkgreen);
 }
 
-.p-s-caroseul-button:hover svg,
-.p-s-caroseul-button:active svg{
-  stroke: var(--lightwhite);
-}
-
 .p-s-caroseul-button svg{
   width: 60%;
   height: 60%;
   fill: none;
-  stroke: var(--brown);
+  stroke: var(--lightwhite);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -659,7 +673,7 @@ h1, h2, h3, h4, h5, h6, button{
   margin-top: 1rem;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 3%;
   position: relative;
   justify-content: space-between;
 }
@@ -671,6 +685,7 @@ h1, h2, h3, h4, h5, h6, button{
   background-color: var(--lightgreen);
   width: 200px;
   max-width: 30%;
+  margin-bottom: 1rem;
   border-radius: 10px;
   border: none;
   overflow: hidden;
@@ -714,4 +729,31 @@ h1, h2, h3, h4, h5, h6, button{
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.about-top{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.about-top > *{
+  background-color: red;
+}
+
+.resume-button{
+  background-color: var(--darkgreen);
+  color: var(--lightwhite);
+  padding: 1rem;
+  margin: 1rem 0;
+  border: none;
+  border-radius: 10px;
+  font-size: 14pt;
+  transition: background-color .15s;
+}
+
+.resume-button:hover,
+.resume-button:active,
+.resume-button:focus{
+  background-color: var(--darkergreen);
 }
