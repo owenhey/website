@@ -27,7 +27,7 @@
         <div class="portfolio-spotlight-text-section">
             <h2 style="margin-bottom: .15rem;"><span v-html="FormatText(content.title)"></span></h2>
             <span><i>{{ content.date }}</i></span>
-            <p style="margin-top: 1rem;"><span v-html="FormatText(content.content)"></span></p>
+            <p v-for="paragraph in content.content" style="margin-top: 1rem;"><span v-html="FormatText(paragraph)"></span></p>
         </div>
     </div>
 </template>
