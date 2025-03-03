@@ -50,6 +50,7 @@
                         "[i]Isles of Ilkmaar[i] is a multiplayer game, trying to ignite an interest in data science in middle schoolers.",
                         "Players work together to forage resources, craft items, interact with creatures, and restore balance to the isles.",
                         "Everything that happens is sent to a database, which players can query to ask questions about trends and patterns in the world.",
+                        "This game is still in development and not available to the public."
                     ],
                 },
                 {
@@ -57,9 +58,10 @@
                     date: "2022-2023",
                     images: ['/src/assets/png/isles.png'],
                     content: [
-                        "[i]Nunaka[i] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with the Chugachmiut organization to create something that would excite their youth about their culture.",
+                        "[link][i]Nunaka: My Village[i],https://www.fablevisionstudios.com/game-nunaka[link] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with the Chugachmiut organization to create something that would excite their youth about their culture.",
                         "The game takes place in a styalized replica of the tribe's town, with elders and talking animals to guide the player through various minigames and activities.",
                         "The minigames focus on individual aspects of daily life, including fishing, cooking, and bead-jewlery making.",
+                        "Nunaka: My Village can be found on the iOS and Android app stores.",
                     ],
                 },
                 {
@@ -67,7 +69,7 @@
                     date: "2022-2023",
                     images: ['/src/assets/jpg/polygunners.jpg'],
                     content: [
-                        "An intense cooperative bullet-hell game released on Steam in 2022, played by over 60,000 players.",
+                        "An intense cooperative bullet-hell game [link]released on Steam in 2022,https://store.steampowered.com/app/1853840/Polygunners/[link], played by over 60,000 players.",
                         "Players navigate three distinct areas with increasing difficulty, gathering weapons and abilities along the way.",
                         "The game supports 1-4 players and Steam remote play. There are hundreds of items to collect, as well as dozens of abilities and NPCs to play with with across the campaign.",
                     ],
@@ -79,7 +81,8 @@
                     content: [
                         "Made for Ludum Dare 56, [link]Char Chase,https://oysterhey.itch.io/char-chase[link].",
                         "Collect letters, spell words, and try to get the highest score you can in under two minutes!",
-                        "The highest score as of March 2nd, 2025, is [b]792[b]. Email me if you beat it!"
+                        "The highest score as of March 2nd, 2025, is [b]792[b]. Email me if you beat it!",
+                        "[link]Source Code,https://github.com/owenhey/ludum-dare-2024[link]"
                     ],
                 },
                 {
@@ -98,7 +101,12 @@
                     title: "Boss Rush 2025 - Steel Rose Revolution",
                     date: "2022-2023",
                     images: ['/src/assets/jpg/steelroserevolution.jpg'],
-                    content: ["[link]Char Chase,https://oysterhey.itch.io/char-chase[link] is a game made I made for ludum dare 56."],
+                    content: [
+                        "[link]Steel Rose Revolution,https://oysterhey.itch.io/steel-rose-revolution[link] was made in one month for the Boss Rush 2025 game jam.",
+                        "You play as a knight on a quest for love, battling through three tough enemies and a final boss.",
+                        "Music made by my friend Andrew K.",
+                        "[link]Source code,https://github.com/owenhey/owen-andrew-boss-rush-2025/[link]"
+                    ],
                 },
                 {
                     title: "4D Missile",
