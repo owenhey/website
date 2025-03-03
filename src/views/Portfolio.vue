@@ -5,6 +5,7 @@
 			<div class="scrolling-content" ref="scrollingElement">
 				<h1 style="margin-top: 1rem; width: 100%; text-align: center;">Portfolio</h1>
                 <PortfolioSpotlight
+                    ref="portfolioSpotlight"
                     :content="portfolioObjects[selectedIndex]">
                 </PortfolioSpotlight>
                 <h2 style="margin-top: 2rem;">Other Projects</h2>
@@ -41,6 +42,8 @@
 
             const scrollingElement = ref<HTMLElement>();
 
+            const portfolioSpotlight = ref<InstanceType<typeof PortfolioSpotlight>>();
+
             const portfolioObjects = ref<PortfolioContent[]>([
                 {
                     title: "Isles of Ilkmaar",
@@ -54,9 +57,15 @@
                     ],
                 },
                 {
-                    title: "Nunaka",
+                    title: "Nunaka: My Village",
                     date: "2022-2023",
-                    images: ['/src/assets/png/isles.png'],
+                    images: [
+                        '/src/assets/jpg/chugach4.jpg',
+                        '/src/assets/jpg/chugach1.jpg',
+                        '/src/assets/jpg/chugach2.jpg',
+                        '/src/assets/jpg/chugach3.jpg',
+                        '/src/assets/jpg/chugach5.jpg',
+                    ],
                     content: [
                         "[link][i]Nunaka: My Village[i],https://www.fablevisionstudios.com/game-nunaka[link] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with the Chugachmiut organization to create something that would excite their youth about their culture.",
                         "The game takes place in a styalized replica of the tribe's town, with elders and talking animals to guide the player through various minigames and activities.",
@@ -134,9 +143,13 @@
                         break;
                     }
                 }
+
+                portfolioSpotlight.value?.setToImage0();
             }
 
-            return { portfolioObjects, onPieceSelected, selectedIndex, scrollingElement }
+            return { portfolioObjects, onPieceSelected, selectedIndex, scrollingElement,
+                    portfolioSpotlight
+            }
         },
     }
 );
