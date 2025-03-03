@@ -14,7 +14,7 @@
 						<WindowLink :text="'Flags'" :link="'/flags'">
 							<img src="@/assets/png/flag.png">
 						</WindowLink>
-						<WindowLink :text="'Writing'" :link="'/writing'">
+						<WindowLink :text="'Writing'" :link="'/writing/allposts/'">
 							<img src="@/assets/png/papers.png">
 						</WindowLink>
 						<WindowLink :text="'Portfolio'" :link="'/about'">

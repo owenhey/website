@@ -112,7 +112,11 @@
                     title: "4D Missile",
                     date: "Sept 2024",
                     images: ['/src/assets/jpg/steelroserevolution.jpg'],
-                    content: ["A sequel to the classic flash game 3D-missile - made in 1 month."],
+                    content: [
+                        "A sequel to the classic flash game 3D-missile - made as a challenge to myself in 1 month.",
+                        "Emphasis on good project structure and coding patterns.",
+                        "[link]Source code,https://github.com/owenhey/4d-missile/[link]"
+                    ],
                 },
             ]);
 
