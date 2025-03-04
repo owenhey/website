@@ -90,7 +90,7 @@ h1, h2, h3, h4, h5, h6, button{
 
 .main-content{
   width: 80%;
-  max-width: 800px;
+  max-width: 900px;
   height: 100%;
   background-color: var(--lightbrown);
   box-shadow:  -15px 0 8px -5px var(--shadowbrown),

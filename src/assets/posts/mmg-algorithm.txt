@@ -4,4 +4,43 @@ _date_: 02/09/2025
 _thumbnail_: runedrawing
 _url_: rune-algorithm
 -------------------------------
-[paragraph] Hello
+[paragraph] You don't run into situations needing a "new" algorithm when programming very often. Most things have been done before,
+and usually the algorithms you would use in day-to-day coding are pretty mundane. So when I was working on a side project about spells
+and was presented with a unique challenge, I jumped at the opportunity.
+
+[subtitle] The objective
+[dotlist]
+Create a system that allows the user to draw "runes" on their screen.
+Outline a data structure for how runes are defined.
+Make an algorithm that can parse the user's drawing and guess which rune they were trying to draw.
+
+[paragraph] What is a rune? In this case, a "rune" is a glyph that can be drawn with a single stroke. What the resultant glyph looks like
+doesn't really matter, what's important is that the player can draw it using a single stroke of their mouse.
+
+[paragraph] For example, a simple rune could be the letter 'N', where the user starts at the bottom left and traces the letter until they
+release in the top left. That might look like this: 
+
+[paragraph] Runes could take other shapes too - an 'L', a circle, or a box. It could even cross over itself if desired (say, if they were drawing the letter 'T').
+
+[paragraph] Anyway, the eventual goal was to have the user draw these runes on their screen using the mouse, and then use this algorithm to determine
+which rune their drawing matched. I would then link runes to spells, and the player could cast a spell using this system. The algorithm
+also outputting a score describing how closely the player's drawing matched the rune would be useful too, so I could give bonuses if
+the player drew the rune particularily well.
+
+[subtitle] Drawing on the screen
+[paragraph] The ability to draw a rune on screen was actually pretty easy, I used a basic compute shader to render mouse positions to a 
+texture, then applied a soft blur over time to give it more of a magical feel. Here's how that looks:
+
+[subtitle] Defining Runes
+[paragraph] I defined each rune as a list of points in 2D space between 0 and 1. (0,0) being the bottom left and (1,1) being the
+top right. I could then enter in points to describe a certain glyph - for example, a "square" rune starting in the top left might be the values:
+
+[numlist]
+(0,1)
+(0,0)
+(1,0)
+(1,1)
+(0,1)
+
+[paragraph] Note that where I start the list matters - the player is [b]not[b] drawing a [i]shape[i], they are drawing a box starting in the top
+left that ends up looking like a square. It wouldn't count if they drew it from the bottom right first.
