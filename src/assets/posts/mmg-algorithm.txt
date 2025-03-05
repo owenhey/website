@@ -10,7 +10,7 @@ and was presented with a unique challenge, I jumped at the opportunity.
 
 [subtitle] The objective
 [dotlist]
-Create a system that allows the user to draw "runes" on their screen.
+Create a system that allows the user to draw lines on their screen.
 Outline a data structure for how runes are defined.
 Make an algorithm that can parse the user's drawing and guess which rune they were trying to draw.
 
@@ -44,3 +44,113 @@ top right. I could then enter in points to describe a certain glyph - for exampl
 
 [paragraph] Note that where I start the list matters - the player is [b]not[b] drawing a [i]shape[i], they are drawing a box starting in the top
 left that ends up looking like a square. It wouldn't count if they drew it from the bottom right first.
+
+[subtitle] The Rune Parser
+[paragraph] Some key considerations I wanted this algorithm to handle:
+[dotlist]
+It should be very quick. No sitting around and waiting for what the algorithm thinks the glyph is. This pretty much rules out any neural-network detection.
+It should be deterministic. Two drawings should always have the same output "rune".
+It should be size-agnostic. The player should be able to draw the rune as large as they want on their screen.
+It should also return data about how good the player's drawing was – how accurately did they trace the rune?
+
+[paragraph] First is getting the data. From the drawing algorithm above, we can get a stream of 2D points over 
+the course of the drawing and pipe them into my algorithm. These points come in UI space, so first we remap all
+the points to 0-1 space based on the min/max bounds of the set of points, which is the same space as our
+runes are defined. 
+
+[paragraph]
+This means that the regardless of how
+big or small the drawn glyph is, the right-most point will always have an [code]x[code] value of [code]1[code] and the left-most point 
+will always have an [code]x[code] value of [code]0[code]. This also has the nice side effect of making the algorithm ignore size, which
+was one of the goals.
+
+[paragraph]
+The objective is to see which rune out of a set of runes the glpyh most closely matches, so we'll have to
+loop through all the runes and calculate some kind of score. Let's focus on an individual rune for the purposes
+of explaining, but know that this algorithm would be running on all runes and then choosing the closest match.
+
+[paragraph]
+Since both the rune's points and the drawn glyph's points are in [code]0-1[code] space, a naive solution would be to loop
+through all the points in the rune, and find the closest point to them from the drawn points. This has two major
+flaws.
+
+[paragraph]
+Since both the rune's points and the drawn glyph's points are in [code]0-1[code] space, a naive solution would be to loop
+through all the points in the rune, and find the closest point to them from the drawn points. Then you could
+then reward score for having points that have very close minimums to the desired points. This has two major
+flaws.
+
+[numlist]
+It doesn't enforce [i]order[i]. The player could draw the glyph backwards or entirely out of order, and the algorithm would still give a high score.
+It's slow - it is [code]O(runePoints x drawnPoints)[code], which when running all at once at the end of the drawing, over all possible runes, could cause a small performance hiccup.
+
+[paragraph] My solution solves both of these problems. Let's look at enforcing order first.
+
+[paragraph]
+The trick is to only calculate these "minimum distances" in the order that the points are laid out
+in the rune. If we are looping through all the drawn points, and we are at the beginning of the list, 
+we should [b]not[b] be considering those points as viable options for the closest point to the end of the
+target rune. 
+
+[paragraph] So, my algorithm has two points from the rune. First, is the [code]targetPoint[code], which is the point
+we are currently comparing our drawn points again. And second is the [code]nextPoint[code], which is the point 
+(or lackthereof) immediately following the [code]targetPoint[code] in the rune. At the beginning of the algorithm,
+the [code]targetPoint[code] is the first point on the rune, and the [code]nextPoint[code] is the second point.
+
+[paragraph] As we loop through points in our drawing, we keep track of the closest we've found to our [code]targetPoint[code].
+If we happen upon a drawn point that is closer to the [code]targetPoint[code] than the previous closest
+point, we update it to be the new point. 
+
+[paragraph] At the same time, we are also calculating distance to the [code]nextPoint[code]. If at [b]any time[b],
+the distance to the [code]nextPoint[code] is [i]less than[i] the distance to the [code]targetPoint[code], we move on.
+
+[paragraph] Moving on in this case means setting in stone whatever we found to be the closest point to the [code]targetPoint[code]. 
+We will no longer ever update the minimum distance for that point. Then, we set the [code]targetPoint[code] to be
+the [code]nextPoint[code], and start calculating minimum distances for that.
+
+[paragraph] The idea here is pretty simple - we are basically only calculating how closesly our drawing
+aligns with the part of the rune that it makes sense to be drawing at that point. At the start of the drawing,
+the player should be drawing the start of the rune, so we only look at that point. "Jumping" to the next point
+in the rune when we get closer to it than the previous point ensures that we step along the target rune
+as we go through our drawn points.
+
+[paragraph] It's worth noting that if we are running this algorithm on a rune totally different than the 
+one that is drawn, it's possible it will get "stuck" and never make it through all the points. Basically, 
+if the drawn points don't have the quality that their minimum distances to the points all come in the same order
+as the rune. But if that happens, we can just discard the score and say the user probably was not trying to draw
+that rune.
+
+[paragraph] The other good thing about doing it this way is that it is [code]O(drawnPoints)[code]. Since you're
+only looking at two rune points at a time, it's significantly faster than the other version, especially if 
+your runes have lots of points.
+
+[subtitle] Scoring
+[paragraph] So now, we have a list of minimum distances to the rune points, with the added assurance that these
+distances came in the correct order. I tried out several ways of scoring this:
+
+[dotlist]
+A simple average of the distances. A higher average means a worse score.
+An average of the squared distances - punishes more for points that are extra far away.
+Allowing a range of tolerance that is considered perfect, then doing an average.
+Allowing a maximum distance away that was as large as a distance could be scored as, then an average.
+
+[paragraph] After some testing, the scoring technique that felt the best was doing a simple
+average on a set of clamped distances. I would say that some minimum distance away was as close as you could
+reasonably expect to get, and some maximum distance was as bad as I would punish you for. Then, take 
+the average of these values.
+
+[paragraph] With these averages calculated, I could choose the score with the smallest average distance
+as the one the drawing matched. And, I could look at that score and determine generally how good the drawing 
+was (low scores == better drawings).
+
+[subtitle] One last consideration.
+
+[paragraph] There was one thing missing from this method - aspect ratio. Remember when we remapped all the drawn point
+from their original space to 0-1? Well, by doing that, you lose information about how [i]wide[i] or [i]tall[i] the drawing
+is. A really wide rectangle ends up mapping to the same set of points as a square. To fix this, I kept track of 
+the original aspect ratio of the drawing, and compared that to the desired one of the rune. Even if the
+closest distance score from above was very good, if that value was off, the rune would still not get many points.
+
+[title] Showcase!
+
+[paragraph] Here is the algorithm detecting runes!
