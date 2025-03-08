@@ -76,7 +76,12 @@
                 {
                     title: "Polygunners",
                     date: "2022-2023",
-                    images: ['/src/assets/jpg/polygunners.jpg'],
+                    images: [
+                        '/src/assets/jpg/polygunners.jpg',
+                        '/src/assets/mp4/polygunners.mp4',
+                        '/src/assets/jpg/polygunners1.jpg',
+                        '/src/assets/jpg/polygunners2.jpg',
+                    ],
                     content: [
                         "An intense cooperative bullet-hell game [link]released on Steam in 2022,https://store.steampowered.com/app/1853840/Polygunners/[link], played by over 60,000 players.",
                         "Players navigate three distinct areas with increasing difficulty, gathering weapons and abilities along the way.",
@@ -84,12 +89,19 @@
                     ],
                 },
                 {
-                    title: "Ludum Dare 56 - Char Chase",
+                    title: "Char Chase (Ludum Dare 56)",
                     date: "2022-2023",
-                    images: ['/src/assets/jpg/charchase.jpg'],
+                    images: [
+                        '/src/assets/jpg/charchase.jpg',
+                        '/src/assets/jpg/charchase2.jpg',
+                        '/src/assets/jpg/charchase3.jpg',
+                        '/src/assets/jpg/charchase4.jpg',
+                        '/src/assets/jpg/charchase5.jpg',
+                    ],
                     content: [
                         "Made for Ludum Dare 56, [link]Char Chase,https://oysterhey.itch.io/char-chase[link].",
                         "Collect letters, spell words, and try to get the highest score you can in under two minutes!",
+                        "Independently designed and developed over a single weekend.",
                         "The highest score as of March 2nd, 2025, is [b]792[b]. Email me if you beat it!",
                         "[link]Source Code,https://github.com/owenhey/ludum-dare-2024[link]"
                     ],
@@ -97,13 +109,19 @@
                 {
                     title: "Museums Around the World",
                     date: "2022-2023",
-                    images: ['/src/assets/jpg/parity.jpg'],
+                    images: [
+                        '/src/assets/jpg/ami4.jpg',
+                        '/src/assets/jpg/ami2.jpg',
+                        '/src/assets/jpg/ami3.jpg',
+                        '/src/assets/jpg/ami1.jpg'
+                    ],
                     content: [
                         "I've developed games and interactives for museums around the world:",
                         "The [link]Plimoth Patuxet museums,https://plimoth.org/[link] in Plymouth, MA",
                         "The [link]Swiss National Museum,https://www.nationalmuseum.ch/en[link], in Zürich",
                         "the [link]SFMOMA,https://www.sfmoma.org/[link] in San Fransisco",
                         "The [link]Museum Aargau,https://www.myswitzerland.com/en-us/experiences/museum-aargau-experience-history-where-it-took-place/[link] in Aargau, Switzerland.",
+                        "All the games and interactives are screen-reader accessible."
                     ],
                 },
                 {

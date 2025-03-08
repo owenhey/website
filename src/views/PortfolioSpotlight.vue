@@ -1,7 +1,12 @@
 <template>
     <div class="portfolio-spotlight">
         <div class="portfolio-spotlight-image-section">
-            <img :src="content.images[selectedImage]">
+            <img v-if="ShowingMediaIsPicture()" :src="content.images[selectedImage]">
+            <div v-else class="video-container">
+                <video style="width: 100%; height: 100%; object-fit: contain;" autoplay muted controls>
+                    <source :src="content.images[selectedImage]" type="video/mp4">
+                </video>
+            </div>
             <div class="caroseul-buttons">
                 <button class="p-s-caroseul-button" type="button" aria-label="Back"
                 @click="prevPicture">
@@ -47,6 +52,13 @@
         methods:{
             FormatText(text : string){
                 return ParseString(text);
+            },
+            ShowingMediaIsPicture(){
+                const media = this.content.images[this.selectedImage];
+                if(media[media.length - 1] === 'g'){
+                    return true;
+                }
+                return false;
             }
         },
         setup(props) {

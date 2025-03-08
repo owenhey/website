@@ -50,6 +50,7 @@
     import { PropType, defineComponent, computed, } from 'vue';
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
+    import resume from '../assets/downloads/Resume Owen Hey.pdf';
 
     export default defineComponent({
         name: 'About',
@@ -58,7 +59,12 @@
         },
         setup() {
             function downloadResume(){
-
+                const link = document.createElement('a');
+                link.href = resume;
+                link.download = 'Resume_Owen_Hey.pdf';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             }
 
             return {downloadResume}
