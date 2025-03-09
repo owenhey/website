@@ -10,11 +10,11 @@
                 </PortfolioSpotlight>
                 <h2 style="margin-top: 2rem;">Other Projects</h2>
                 <div class="portfolio-buttons">
-                    <template v-for="content in portfolioObjects">
+                    <template v-for="(content, index) in portfolioObjects">
                         <PortfolioButton 
                             :data="content"
-                            @on-select="onPieceSelected">
-
+                            @on-select="onPieceSelected"
+                            :class="index == selectedIndex ? 'selected' : ''">
                         </PortfolioButton>
                     </template>
                 </div>
@@ -47,7 +47,15 @@
             const portfolioObjects = ref<PortfolioContent[]>([
                 {
                     title: "Isles of Ilkmaar",
-                    images: ['/src/assets/png/isles.png'],
+                    images: [
+                        '/src/assets/jpg/isles1.jpg',
+                        '/src/assets/jpg/isles2.jpg',
+                        '/src/assets/jpg/isles3.jpg',
+                        '/src/assets/jpg/isles4.jpg',
+                        '/src/assets/jpg/isles5.jpg',
+                        '/src/assets/jpg/isles6.jpg',
+                        '/src/assets/jpg/isles7.jpg',
+                    ],
                     date: "2022-present",
                     content: [
                         "[i]Isles of Ilkmaar[i] is a multiplayer game, trying to ignite an interest in data science in middle schoolers.",
@@ -127,7 +135,13 @@
                 {
                     title: "Boss Rush 2025 - Steel Rose Revolution",
                     date: "2022-2023",
-                    images: ['/src/assets/jpg/steelroserevolution.jpg'],
+                    images: [
+                        '/src/assets/jpg/steelroserevolution.jpg',
+                        '/src/assets/mp4/steelrosejump.mp4',
+                        '/src/assets/jpg/steelrose1.jpg',
+                        '/src/assets/jpg/steelrose2.jpg',
+                        '/src/assets/jpg/steelrose3.jpg',
+                    ],
                     content: [
                         "[link]Steel Rose Revolution,https://oysterhey.itch.io/steel-rose-revolution[link] was made in one month for the Boss Rush 2025 game jam.",
                         "You play as a knight on a quest for love, battling through three tough enemies and a final boss.",
