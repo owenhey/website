@@ -98,7 +98,7 @@
                 },
                 {
                     title: "Char Chase (Ludum Dare 56)",
-                    date: "2022-2023",
+                    date: "Oct 2024",
                     images: [
                         '/src/assets/jpg/charchase.jpg',
                         '/src/assets/jpg/charchase2.jpg',
@@ -116,7 +116,7 @@
                 },
                 {
                     title: "Museums Around the World",
-                    date: "2022-2023",
+                    date: "2022-2025",
                     images: [
                         '/src/assets/jpg/ami4.jpg',
                         '/src/assets/jpg/ami2.jpg',
@@ -134,7 +134,7 @@
                 },
                 {
                     title: "Boss Rush 2025 - Steel Rose Revolution",
-                    date: "2022-2023",
+                    date: "Jan 2025",
                     images: [
                         '/src/assets/jpg/steelroserevolution.jpg',
                         '/src/assets/mp4/steelrosejump.mp4',
