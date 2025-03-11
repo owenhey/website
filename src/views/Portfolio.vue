@@ -152,7 +152,12 @@
                 {
                     title: "4D Missile",
                     date: "Sept 2024",
-                    images: ['/src/assets/jpg/steelroserevolution.jpg'],
+                    images: [
+                        '/src/assets/jpg/4dmissile2.jpg',
+                        '/src/assets/mp4/4dgameplay.mp4',
+                        '/src/assets/jpg/4dmissile1.jpg',
+                        '/src/assets/jpg/4dmissile3.jpg',
+                    ],
                     content: [
                         "A sequel to the classic flash game 3D-missile - made as a challenge to myself in 1 month.",
                         "Emphasis on good project structure and coding patterns.",
