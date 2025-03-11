@@ -599,6 +599,12 @@ h1, h2, h3, h4, h5, h6, button{
   overflow: hidden;
 }
 
+.portfolio-spotlight-image-section .video-container{
+  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
+}
+
 .portfolio-spotlight-image-section .caroseul-buttons{
   display: flex;
   gap: .5rem;
@@ -695,11 +701,13 @@ h1, h2, h3, h4, h5, h6, button{
   position: relative;
 }
 
+.portfolio-button.selected,
 .portfolio-button:hover,
 .portfolio-button:focus{
   color: var(--lightwhite);
 }
 
+.portfolio-button.selected h4,
 .portfolio-button:hover h4,
 .portfolio-button:focus h4{
   background-image: linear-gradient(to bottom, var(--darkgreen) 75%, transparent 100%);
