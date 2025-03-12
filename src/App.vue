@@ -39,7 +39,7 @@
 
 			const leafData = ref<LeafSpawnData[]>([]);
 			const isDragging = ref(false);
-			const minDragDistance = ref(30); // Minimum distance in pixels before spawning leaves
+			const minDragDistance = ref(100); // Minimum distance in pixels before spawning leaves
 			const minSpawnDistance = ref(30); // Minimum distance in pixels between spawns
 			const hasReachedThreshold = ref(false);
 			const lastSpawnX = ref(0);

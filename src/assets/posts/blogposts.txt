@@ -4,7 +4,7 @@ _date_: 01/15/2025
 _thumbnail_: post-creation
 _url_: post-creation
 -------------------------------
-[paragraph] In general, one of the best skills a programmer can have is the ability to use other
+[paragraph] One of the best skills a programmer can have is the ability to use other
 people's code. Picking the right package, understanding the codebase, and integrating it smoothly into
 one's own project is invaluable. Despite this, coders tend to be very bad at this, and often want to
 solve a problem by making the solution ourselves. I think it stems from the reason why they got into coding

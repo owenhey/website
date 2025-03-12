@@ -17,6 +17,7 @@
                             :class="index == selectedIndex ? 'selected' : ''">
                         </PortfolioButton>
                     </template>
+                    <div class="empty-portfolio-button"></div>
                 </div>
 			</div>
 		</MainContent>
@@ -150,6 +151,22 @@
                     ],
                 },
                 {
+                    title: "MMG",
+                    date: "2024",
+                    images: [
+                        '/src/assets/jpg/runedrawing.jpg',
+                        '/src/assets/mp4/showcase.mp4',
+                        '/src/assets/jpg/rune drawings.jpg',
+                        '/src/assets/mp4/detecting.mp4',
+                    ],
+                    content: [
+                        "A multiplayer magic game I worked on as a side project that I never finished, but that had some really cool mechanics",
+                        "Players could draw runes with their mice to cast spells.",
+                        "Used also as an exploration tool of new Unity packages / features, like VFX graph and Fishnet.",
+                        "[link]Source code,https://github.com/owenhey/multiplayer-magic-game[link]."
+                    ],
+                },
+                {
                     title: "4D Missile",
                     date: "Sept 2024",
                     images: [
@@ -159,11 +176,11 @@
                         '/src/assets/jpg/4dmissile3.jpg',
                     ],
                     content: [
-                        "A sequel to the classic flash game 3D-missile - made as a challenge to myself in 1 month.",
+                        "A spiritual successor to the classic flash game 3D-missile - made as a challenge to myself in 1 month.",
                         "Emphasis on good project structure and coding patterns.",
                         "[link]Source code,https://github.com/owenhey/4d-missile/[link]"
                     ],
-                },
+                }
             ]);
 
             function onPieceSelected(data : PortfolioContent){

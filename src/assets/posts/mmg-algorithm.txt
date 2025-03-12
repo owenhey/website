@@ -4,6 +4,9 @@ _date_: 02/09/2025
 _thumbnail_: runedrawing
 _url_: rune-algorithm
 -------------------------------
+[paragraph]
+[link]Source code,https://github.com/owenhey/multiplayer-magic-game[link].
+
 [paragraph] You don't run into situations needing a "new" algorithm when programming very often. Most things have been done before,
 and usually the algorithms you would use in day-to-day coding are pretty mundane. So when I was working on a side project about spells
 and was presented with a unique challenge, I jumped at the opportunity.
@@ -27,6 +30,9 @@ which rune their drawing matched. I would then link runes to spells, and the pla
 also outputting a score describing how closely the player's drawing matched the rune would be useful too, so I could give bonuses if
 the player drew the rune particularily well.
 
+[video]/src/assets/mp4/drawing.mp4
+The drawing system
+
 [subtitle] Drawing on the screen
 [paragraph] The ability to draw a rune on screen was actually pretty easy, I used a basic compute shader to render mouse positions to a 
 texture, then applied a soft blur over time to give it more of a magical feel. Here's how that looks:
@@ -44,6 +50,9 @@ top right. I could then enter in points to describe a certain glyph - for exampl
 
 [paragraph] Note that where I start the list matters - the player is [b]not[b] drawing a [i]shape[i], they are drawing a box starting in the top
 left that ends up looking like a square. It wouldn't count if they drew it from the bottom right first.
+
+[image]/src/assets/jpg/rune drawings.jpg
+Simple runes made with this system
 
 [subtitle] The Rune Parser
 [paragraph] Some key considerations I wanted this algorithm to handle:
@@ -154,3 +163,12 @@ closest distance score from above was very good, if that value was off, the rune
 [title] Showcase!
 
 [paragraph] Here is the algorithm detecting runes!
+[video]/src/assets/mp4/detecting.mp4
+The algorithm doesn't drop the frame rate even a bit, since most of the hard work is done during the drawing itself.
+
+[paragraph] And if you're interested to see what I actually did with this:
+[video]/src/assets/mp4/showcase.mp4
+Me faffing around with different spells I made
+
+[paragraph]
+[link]Source code,https://github.com/owenhey/multiplayer-magic-game[link] for the project.
