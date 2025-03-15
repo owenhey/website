@@ -3,10 +3,11 @@
   --really-dark: #111111;
   --background-light: rgb(242, 221, 182);
   --background-dark: rgb(249, 229, 164);
-  --brown: rgb(107, 48, 11);
+  --brown: #612907;
   --white: #FAFAFA;
   --lightwhite: rgb(255, 241, 221);
-  --lightgreen: rgb(157, 194, 133);
+  --lightgreen: #72a762;
+  --lightgreen: rgb(240, 221, 201);
   --green: #6a9666ff;
   --darkgreen: rgb(48, 85, 45);
   --darkergreen: rgb(33, 59, 31);
@@ -134,6 +135,7 @@ h1, h2, h3, h4, h5, h6, button{
   font-weight: 500;
   cursor: pointer;
   transition: .08s background-color linear, .08s color linear;
+  color: black;
 }
 
 .vine-button.tab-selected,
@@ -185,8 +187,8 @@ h1, h2, h3, h4, h5, h6, button{
   position: absolute;
   height: 120%;
   top: 0;
-  left: -7.5%;
-  width: 15%;
+  left: -5%;
+  width: 10%;
   border-radius: 0 0 200px 200px;
   overflow: hidden;
   animation: expand 3.5s linear forwards;
@@ -209,9 +211,9 @@ h1, h2, h3, h4, h5, h6, button{
 .vine-right-mask {
   position: absolute;
   height: 120%;
-  width: 15%;
+  width: 10%;
   top: 0;
-  right: -7.5%; 
+  right: -5%; 
   border-radius: 0 0 200px 200px;
   overflow: hidden;
   animation: expand 3.5s linear forwards;
