@@ -1,18 +1,11 @@
 :root {
-  --background-color: #f3e8d5;
-  --really-dark: #111111;
-  --background-light: rgb(242, 221, 182);
-  --background-dark: rgb(249, 229, 164);
-  --brown: #612907;
+  --brown: #6f2100;
   --white: #FAFAFA;
   --lightwhite: rgb(255, 241, 221);
-  --lightgreen: #72a762;
-  --lightgreen: rgb(240, 221, 201);
+  --buttonbase: #f7e6d4;
   --green: #6a9666ff;
-  --darkgreen: rgb(48, 85, 45);
-  --darkergreen: rgb(33, 59, 31);
-  --orange: #e28650ff;
-  --lightbrown: rgb(233, 193, 150);
+  --darkgreen: #005632;
+  --lightbrown: #e9c196;
   --lesslightbrown: rgb(207, 164, 117);
   --lighterbrown: rgb(252, 210, 166);
   --darkbrown: rgb(206, 156, 104);
@@ -31,13 +24,12 @@
   box-sizing: border-box; 
   margin: 0;
   padding: 0;
-  font-family: 'Raleway';
 }
 
 body{
   color: var(--brown);
+  font-family: 'Raleway';
 }
-
 
 ul{
   list-style: none;
@@ -49,6 +41,15 @@ body{
 
 h1, h2, h3, h4, h5, h6, button{
   font-weight: 600;
+  font-family: 'Raleway';
+}
+
+a{
+  color: var(--brown)
+}
+
+span, p, label{
+  font-weight: 400;
 }
 
 .background{
@@ -124,18 +125,16 @@ h1, h2, h3, h4, h5, h6, button{
   border-radius: .5em;
   border: none;
   font-size: clamp(8px, 2.5vw, 24px);
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   box-shadow: 3px 6px 3px var(--shadowbrown);
   position: relative;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Raleway';
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: .08s background-color linear, .08s color linear;
-  color: black;
 }
 
 .vine-button.tab-selected,
@@ -386,7 +385,7 @@ h1, h2, h3, h4, h5, h6, button{
 }
 
 .window-link{
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   /* border: 2px solid var(--brown); */
   box-shadow: 3px 6px 10px var(--shadowbrown);
   aspect-ratio: 1;
@@ -395,7 +394,6 @@ h1, h2, h3, h4, h5, h6, button{
   font-size: 16pt;
   position: relative;
   overflow: hidden;
-  color: var(--lightwhite);
   outline: none;
 }
 
@@ -457,7 +455,7 @@ h1, h2, h3, h4, h5, h6, button{
   gap: .5rem;
   height: clamp(10%, 20vw, 20%);
   border: none;
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   border-radius: 1rem;
   color: var(--brown);
   text-align: left;
@@ -517,7 +515,7 @@ h1, h2, h3, h4, h5, h6, button{
   border-radius: 1rem;
   min-height: 100%;
   overflow: hidden;
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   padding-bottom: .5rem;
   transition: .15s color, .15s background-color;
   box-shadow: 5px 5px 5px var(--shadowbrown);
@@ -576,7 +574,7 @@ h1, h2, h3, h4, h5, h6, button{
   margin-top: 1rem;
   width: 100%;
   min-height: 200px;
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   border-radius: 10px;
   box-shadow: 5px 5px 5px var(--shadowbrown);
   display: flex;
@@ -633,7 +631,7 @@ h1, h2, h3, h4, h5, h6, button{
   width: clamp(10px, 1vw, 15px);
   aspect-ratio: 1;
   border-radius: 100%;
-  background-color: var(--green);
+  background-color: var(--lightbrown);
 }
 
 .caroseul-buttons .circles div.selected{
@@ -650,7 +648,7 @@ h1, h2, h3, h4, h5, h6, button{
   width: 15%;
   aspect-ratio: 1;
   border-radius: 25px;
-  background-color: var(--green);
+  background-color: var(--lightbrown);
   transition: background-color .15s, color .15s;
   position: relative;
   border: none;
@@ -659,14 +657,14 @@ h1, h2, h3, h4, h5, h6, button{
 
 .p-s-caroseul-button:hover,
 .p-s-caroseul-button:active{
-  background-color: var(--darkgreen);
+  background-color: var(--lesslightbrown);
 }
 
 .p-s-caroseul-button svg{
   width: 60%;
   height: 60%;
   fill: none;
-  stroke: var(--lightwhite);
+  stroke: var(--black);
   stroke-width: 2;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -690,7 +688,7 @@ h1, h2, h3, h4, h5, h6, button{
   display: flex;
   flex-direction: column;
   justify-content: end;
-  background-color: var(--lightgreen);
+  background-color: var(--buttonbase);
   width: 200px;
   max-width: 30%;
   margin-bottom: 1rem;
@@ -731,7 +729,7 @@ h1, h2, h3, h4, h5, h6, button{
   padding: .5rem;
   z-index: 1;
   padding-bottom: 3rem;
-  background-image: linear-gradient(to bottom, var(--lightgreen) 65%, transparent 100%);
+  background-image: linear-gradient(to bottom, var(--buttonbase) 65%, transparent 100%);
 }
 
 .portfolio-button .image-container{
@@ -770,5 +768,6 @@ h1, h2, h3, h4, h5, h6, button{
 .resume-button:hover,
 .resume-button:active,
 .resume-button:focus{
-  background-color: var(--darkergreen);
+  background-color: var(--darkgreen);
+  text-decoration: underline;
 }
