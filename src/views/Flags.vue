@@ -1,16 +1,19 @@
 <template>
     <div class="flags-base">
-        <Nav class="flags-nav-header"></Nav>
-        <h1>Welcome to the flag game</h1>
-        <button class="vine-button" style="width: 10em; font-size: 14pt;" @click="openSettings">
-            Game Options
-        </button>
-        <span>{{ questionLeadIn }} <b> {{ questionTarget }}</b></span>
-        <div class="flag-answer-display">
-            <FlagAnswer
-                v-for="answer in answerList"
-                :answerData="answer">
-            </FlagAnswer>
+        <div class="flags-content">
+            <Nav class="flags-nav-header"></Nav>
+            <h1>Welcome to the flag game</h1>
+            <button class="vine-button" style="width: 10em; font-size: 14pt;" @click="openSettings">
+                Game Options
+            </button>
+            <span>{{ questionLeadIn }} <b> {{ questionTarget }}</b></span>
+            <div class="flag-answer-display">
+                <FlagAnswer
+                    v-for="(answer, index) in answerList"
+                    :answerData="answer"
+                    :display="'flag'">
+                </FlagAnswer>
+            </div>
         </div>
 	</div>
     <dialog ref="optionsDialogRef">

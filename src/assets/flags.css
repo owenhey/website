@@ -10,14 +10,22 @@
     width: 100%;
     display: flex;
     align-items: center;
-    margin-top: 20px;
-    margin-bottom: 50px;
-    overflow-y: scroll;
     flex-direction: column;
-    gap: 30px;
     pointer-events: none;
     padding: 0;
     border: none;
+}
+
+.flags-content{
+    overflow-y: scroll;
+    width: fit-content;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-direction: column;
+    position: relative;
 }
 
 .flags-base span{
@@ -66,5 +74,20 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
+}
+
+.flag-name-button{
+    background-color: var(--buttonbase);
+    box-shadow: 3px 6px 3px var(--shadowbrown);
+    border-radius: 5px;
+    padding: 1em;
+    border: none;
+    color: var(--brown);
+    transition: .08s background-color linear, .08s color linear;
+}
+
+.flag-name-button:hover{
+    background-color: var(--darkgreen);
+    color: var(--lightwhite);
 }
