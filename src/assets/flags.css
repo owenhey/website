@@ -10,10 +10,18 @@
     width: 100%;
     display: flex;
     align-items: center;
-    margin: 10px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    overflow-y: scroll;
     flex-direction: column;
     gap: 30px;
     pointer-events: none;
+    padding: 0;
+    border: none;
+}
+
+.flags-base span{
+    font-size: 16pt;
 }
 
 .flags-nav-header{
@@ -28,5 +36,35 @@
     position: relative;
     justify-content: space-between;
     height: 100%;
+    gap: 10px;
+}
+
+.flags-options-dialog{
+    width: 500px;
+    max-width: 90%;
+    border-radius: 10px;
+    margin: auto;
+    background-color: var(--lighterbrown);
+    padding: 10px;
+    border: none;
+}
+
+.flag-mode-settings{
+    display: flex;
+    gap: 10px;
+}
+
+.flag-mode-settings .vine-button{
+    width: fit-content;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+.flag-answer-display{
+    max-width: 800px;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }

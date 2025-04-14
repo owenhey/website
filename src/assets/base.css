@@ -26,6 +26,16 @@
   padding: 0;
 }
 
+dialog{
+  margin: auto;
+  border: none;
+  background-color: transparent;
+}
+
+dialog::backdrop{
+  background-color: rgba(0, 0, 0, 0.514);
+}
+
 body{
   color: var(--brown);
   font-family: 'Raleway';
@@ -130,6 +140,7 @@ span, p, label{
   position: relative;
   text-align: center;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   font-weight: 600;

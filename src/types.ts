@@ -4,3 +4,9 @@ export interface PortfolioContent{
     date: string,
     images: string[]
 }
+
+export interface FlagAnswerData{
+    countryName : string;
+    imageUrl : string;
+    area: string;
+}

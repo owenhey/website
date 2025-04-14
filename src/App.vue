@@ -6,7 +6,7 @@
 		@mouseup="stopDragging"
 		@mouseleave="stopDragging">
 		<div class="leaves" draggable="false">
-			<p style="margin: 10px;">click or drag me!</p>
+			<p style="margin: 10px;">click me!</p>
 			<Leaf v-for="leaf in leafData"
 				:x-pos="leaf.xPos"
 				:y-pos="leaf.yPos">
