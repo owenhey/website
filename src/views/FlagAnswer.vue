@@ -1,10 +1,10 @@
 <template>
-   <button class="flag-name-button" v-if="display==='name'">
+   <button @click="onClick" class="flag-name-button" v-if="display==='name'">
         {{answerData.countryName}}
    </button>
-   <div v-if="display==='flag'">
-        <img style="width: 10vw;" :src="answerData.imageUrl"> 
-   </div>
+   <button @click="onClick" v-if="display==='flag'" class="flag-button-holder">
+        <img :src="answerData.imageUrl"> 
+   </button>
 </template>
   
 <script lang="ts">
@@ -13,6 +13,9 @@
 
     export default defineComponent({
         name: 'Leaf',
+        emits: [
+            'onClick'
+        ],
         props:{
             display: {
                 required: true,
@@ -23,10 +26,12 @@
                 type: Object as PropType<FlagAnswerData>
             },
         },
-        setup(props) {
-            
+        setup(props, {emit}) {
+            function onClick(){
+                emit('onClick', props.answerData);
+            }
 
-            return { }
+            return { onClick }
         },
     }
 );

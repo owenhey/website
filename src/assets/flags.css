@@ -53,28 +53,37 @@
     border-radius: 10px;
     margin: auto;
     background-color: var(--lighterbrown);
-    padding: 10px;
+    padding: 15px;
     border: none;
+}
+
+.flags-options-dialog > h3{
+    margin: .5rem 0;
 }
 
 .flag-mode-settings{
     display: flex;
     gap: 10px;
+    margin-bottom: 1.5rem;
 }
 
-.flag-mode-settings .vine-button{
+.flag-mode-settings > .vine-button{
     width: fit-content;
     padding-left: 1em;
     padding-right: 1em;
 }
 
+.flag-mode-settings > .vine-button.selected {
+    background-color: red;
+}
+
 .flag-answer-display{
-    max-width: 800px;
+    max-width: 1000px;
     width: 90%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
+    gap: 2%;
 }
 
 .flag-name-button{
@@ -82,6 +91,7 @@
     box-shadow: 3px 6px 3px var(--shadowbrown);
     border-radius: 5px;
     padding: 1em;
+    margin-bottom: 1rem;
     border: none;
     color: var(--brown);
     transition: .08s background-color linear, .08s color linear;
@@ -90,4 +100,143 @@
 .flag-name-button:hover{
     background-color: var(--darkgreen);
     color: var(--lightwhite);
+}
+
+.flag-button-holder{
+    width: 18%;
+    min-width: 150px;
+    aspect-ratio: 1.25;
+    background-color: red;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 10px;
+    background-color: var(--lightwhite);
+    box-shadow: 3px 6px 3px var(--shadowbrown);
+    transition: .08s background-color linear, .08s color linear;
+    background-color: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 5px;
+}
+
+.flag-button-holder:not(.no-input):active,
+.flag-button-holder:not(.no-input):hover{
+    background-color: var(--green);
+}
+
+.flag-button-holder > img{
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+
+.flag-toggle-button{
+    width: fit-content;
+    height: 2.5em;
+    border-radius: .5em;
+    border: none;
+    font-size: 10pt;
+    background-color: var(--buttonbase);
+    box-shadow: 3px 6px 3px var(--shadowbrown);
+    position: relative;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    text-align: center;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .08s background-color linear, .08s color linear;
+}
+
+.flag-toggle-button.selected{
+    background-color: var(--darkgreen);
+    color: white;
+}
+
+.flag-toggle-button:not(.selected):active,
+.flag-toggle-button:not(.selected):hover {
+    background-color: var(--green);
+    color: var(--lightwhite);
+    outline: none;
+}
+
+.flag-feedback-text{
+    height: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.flag-count-slider{
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    background: var(--lightwhite);
+    outline: none;
+    border-radius: 5px;
+    box-shadow: 3px 6px 3px var(--shadowbrown);
+}
+
+.flag-count-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--darkgreen);
+    cursor: pointer;
+}
+
+.flag-count-slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: var(--darkgreen);
+    cursor: pointer;
+}
+
+.flag-game-input{
+    width: 20rem;
+    height: 2.25rem;
+    font-size: 16pt;
+    padding: .25rem;
+    border: 2px solid black;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color .15s linear;
+    box-shadow: 3px 6px 3px var(--shadowbrown);
+}
+
+.flags-auto-options{
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+}
+
+.flag-game-input-auto-option{
+    width: 20rem;
+    height: 2rem;
+    font-size: 12pt;
+    padding: .25rem;
+    border: 1.5px solid black;
+    border-radius: 5px;
+    outline: none;
+    transition: background-color .15s linear;
+    background-color: white;
+}
+
+.flag-game-input-auto-option:hover,
+.flag-game-input-auto-option:active,
+.flag-game-input-auto-option:focus{
+    background-color: var(--lightwhite);
+}
+
+.flag-game-input:focus{
+    background-color: white;
 }

@@ -1,3 +1,5 @@
+import { FlagGameOptions } from "./types";
+
 export function GetReadableDate(date : Date){
     return date.toLocaleDateString('en-US', {
     year: 'numeric',
@@ -14,4 +16,13 @@ export function ParseString(text : string) : string{
     text = text.replace(/\[startbracket\]/g, '[');
     text = text.replace(/\[endbracket\]/g, ']');
     return text;
+}
+
+export function GetDefaultFlagGameOptions() : FlagGameOptions{
+    return {
+        answerCount: 8,
+        mode: 'flag',
+        nameEntryType: 'button',
+        regionFilter: []
+    }
 }

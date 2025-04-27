@@ -6,13 +6,36 @@
             <button class="vine-button" style="width: 10em; font-size: 14pt;" @click="openSettings">
                 Game Options
             </button>
-            <span>{{ questionLeadIn }} <b> {{ questionTarget }}</b></span>
-            <div class="flag-answer-display">
+            <span v-html="question"></span>
+            <div v-if="currentOptions.mode==='name'" 
+                class="flag-button-holder no-input" 
+                style="height: 20vh; width: auto; max-height: 300px;">
+                <img :src="questionFlagUrl"> 
+            </div>
+            <span class="flag-feedback-text" v-html="feedbackText"></span>
+            <div class="flag-answer-display" 
+                v-if="currentOptions.mode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
                 <FlagAnswer
-                    v-for="(answer, index) in answerList"
+                    v-for="(answer, index) in questionAnswerList"
                     :answerData="answer"
-                    :display="'flag'">
+                    :display="currentOptions.mode"
+                    @onClick="handleAnswerPicked">
                 </FlagAnswer>
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
+                v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                <input class="flag-game-input raleway" @input="handleNameEntryInputChange">
+                <button class="vine-button" style="font-size: 10pt;">Guess</button>
+            </div>
+            <div class="flags-auto-options" 
+                v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                <template v-for="(option, index) in autoInputOptions">
+                    <button class="flag-game-input-auto-option" v-if="index < 5"
+                        @click="handleAnswerPicked(option)"
+                        :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
+                        {{ option.countryName }}
+                    </button>
+                </template>
             </div>
         </div>
 	</div>
@@ -21,27 +44,55 @@
             <h2>Flag Game Settings</h2>
             <h3>Mode</h3>
             <div class="flag-mode-settings">
-                <button class="vine-button" style="font-size: 10pt;">
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.mode === 'flag' ? 'selected' : ''"
+                    @click="tempOptions.mode = 'flag'">
                     Flag
                 </button>
-                <button class="vine-button" style="font-size: 10pt;">
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.mode === 'name' ? 'selected' : ''"
+                    @click="tempOptions.mode = 'name'">
                     Name
                 </button>
             </div>
-            <h3>Answer Type</h3>
-            <div class="flag-mode-settings">
-                <button class="vine-button" style="font-size: 10pt;">
+            <h3 v-if="tempOptions.mode === 'name'">Answer Type</h3>
+            <div class="flag-mode-settings" v-if="tempOptions.mode === 'name'">
+                <button class="flag-toggle-button"
+                    :class="tempOptions.nameEntryType === 'button' ? 'selected' : ''"
+                    @click="tempOptions.nameEntryType = 'button'">
                     Button
                 </button>
-                <button class="vine-button" style="font-size: 10pt;">
+                <button class="flag-toggle-button"
+                    :class="tempOptions.nameEntryType === 'inputField' ? 'selected' : ''"
+                    @click="tempOptions.nameEntryType = 'inputField'">
                     Input Field
                 </button>
             </div>
-            <button 
-                class="vine-button" 
-                style="font-size: 12pt; margin: auto; margin-top: 20px;" 
-                @click="closeSettings">Close
-            </button>
+            <h3>Answer Count: {{ tempOptions.answerCount }}</h3>
+            <input type="range" min="2" max="20" value="6" class="flag-count-slider" ref="countSlider"
+                style="margin-bottom: 1rem;"
+                @input="handleSliderChange">
+            <h3>Regions</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="flag-toggle-button" v-for="region in regionList"
+                    :class="(tempOptions.regionFilter.includes(region)) ? 
+                     'selected' : ''"
+                     @click="toggleRegion(region)">
+                    {{ region }}
+                </button>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: end;">
+                <button 
+                    class="vine-button" 
+                    style="font-size: 12pt;" 
+                    @click="closeSettings">Cancel
+                </button>
+                <button 
+                    class="vine-button" 
+                    style="font-size: 12pt;" 
+                    @click="saveSettings">Save
+                </button>
+            </div>
         </div>
     </dialog>
 </template>
@@ -52,20 +103,50 @@
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import FlagAnswer from './FlagAnswer.vue';
-    import { FlagAnswerData } from '@/types';
+    import { FlagAnswerData, FlagGameOptions } from '@/types';
+    import { GetDefaultFlagGameOptions } from '@/utils';
 
     export default defineComponent({
         name: 'Flags',
         components:{
             MainContent, Nav, FlagAnswer
         },
-        setup() {
-            const optionsDialogRef = ref<HTMLDialogElement>();
+        methods:{
+            getAutoOptionBorderStyle(isFirst : boolean, isLast : boolean){
+                if(isFirst && isLast){
+                    return 'border-radius: 5px 5px 5px 5px;';
+                }
 
-            const questionLeadIn = ref("Which flag is this?");
-            const questionTarget = ref("Armenia");
+                if(isLast){
+                    return 'border-radius: 0 0 5px 5px; border-top: none';
+                }
+                if(isFirst){
+                    return 'border-radius: 5px 5px 0 0;';
+                }
+                return 'border-radius: 0; border-top: none';
+            }
+        },
+        setup() {
+            // options
+            const optionsDialogRef = ref<HTMLDialogElement>();
+            const currentOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
+            const tempOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
+            const countSlider = ref<HTMLInputElement>();
+            const regionList = ref<string[]>([]);
+
+            const question = ref("Which flag is this?");
+            const questionFlagUrl = ref("");
+            const feedbackText = ref("");
 
             const answerList = ref<FlagAnswerData[]>([]);
+            const answerPool = ref<FlagAnswerData[]>([]);
+            const questionAnswerList = ref<FlagAnswerData[]>([]);
+            const previousAnswer = ref<FlagAnswerData>();
+            const correctAnswer = ref<FlagAnswerData>();
+
+            const autoInputOptions = ref<FlagAnswerData[]>([]);
+
+
 
             let allFlagData : FlagAnswerData[];
 
@@ -93,25 +174,141 @@
                             };
                     });
 
+                    
                     allFlagData.forEach(element => {
                         answerList.value.push(element);
                     });
+                    
+                    regionList.value = [...new Set(answerList.value.map(x=>x.area))];
+                    generateAnswerPool();
+                    generateQuestion();
                 } catch (error) {
                     console.error('Error loading flag data:', error);
                 }
             }
 
+            function generateQuestion(){
+                // Choose a random flag
+                let randomIndex = Math.floor(Math.random() * answerPool.value.length);
+                while((answerPool.value[randomIndex].countryName === previousAnswer.value?.countryName)){
+                    randomIndex = Math.floor(Math.random() * answerPool.value.length);
+                }
+                correctAnswer.value = answerPool.value[randomIndex];
+
+                if(currentOptions.value.mode === 'flag'){
+                    question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
+                }
+                else{
+                    question.value = `Which flag is this?`;
+                    questionFlagUrl.value = correctAnswer.value.imageUrl;
+                }
+
+                // Generate n number of other options
+                questionAnswerList.value = 
+                    getRandomOptions(correctAnswer.value, currentOptions.value.answerCount);
+            }
+
+            function getRandomOptions(correctAnswer : FlagAnswerData, numOptions : number) {
+                numOptions = Math.min(numOptions, answerPool.value.length);
+                const availableAnswers = [...answerPool.value];
+                const correctIndex = availableAnswers.findIndex(answer => 
+                    answer.countryName === correctAnswer.countryName
+                );
+                availableAnswers.splice(correctIndex, 1);
+                const shuffledAnswers = availableAnswers.sort(() => Math.random() - 0.5);
+                const wrongAnswers = shuffledAnswers.slice(0, numOptions - 1);
+                const selectedOptions = [...wrongAnswers, correctAnswer];
+                return selectedOptions.sort(() => Math.random() - 0.5);
+            }
+
+            function handleAnswerPicked(answerPicked : FlagAnswerData){
+                console.log(answerPicked.countryName);
+                if(correctAnswer.value?.countryName == answerPicked.countryName){
+                    feedbackText.value = "Correct!";
+                    generateQuestion();
+                }
+                else{
+                    if(currentOptions.value.mode === 'flag'){
+                        feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}<b>`;
+                    }
+                    else{
+                        feedbackText.value = "Incorrect!";
+                    }
+                }
+            }
+
             function openSettings(){
+                tempOptions.value = JSON.parse(JSON.stringify(currentOptions.value));
                 optionsDialogRef.value?.showModal();
+            }
+
+            function saveSettings(){
+                const beforeSettings = JSON.stringify(currentOptions.value);
+                const afterSettings = JSON.stringify(tempOptions.value);
+                const needToRegenQuestion = beforeSettings != afterSettings;
+
+                currentOptions.value = JSON.parse(JSON.stringify(tempOptions.value));
+                closeSettings();
+
+                if(needToRegenQuestion){
+                    generateAnswerPool();
+                    generateQuestion();
+                }
+            }
+
+            function toggleRegion(region :string){
+                if(tempOptions.value.regionFilter.includes(region)){
+                    const index = tempOptions.value.regionFilter.indexOf(region);
+                    tempOptions.value.regionFilter.splice(index, 1);
+                }
+                else{
+                    tempOptions.value.regionFilter.push(region);
+                }
             }
 
             function closeSettings(){
                 optionsDialogRef.value?.close();
             }
 
+            function generateAnswerPool(){
+                answerPool.value = answerList.value;
+                if(currentOptions.value.regionFilter.length !== 0){
+                    answerPool.value = answerList.value.filter(x=>currentOptions.value.regionFilter.includes(x.area));
+                }
+            }
+
+            const handleSliderChange = (event: Event): void => {
+                const target = event.target as HTMLInputElement;
+                const value = parseInt(target.value, 10);
+                
+                tempOptions.value.answerCount = value;
+            };
+
+            const handleNameEntryInputChange = (event: Event): void => {
+                const target = event.target as HTMLInputElement;
+                const value = target.value;
+
+                if(value.length < 2){
+                    autoInputOptions.value = [];
+                    return;
+                }
+                
+                autoInputOptions.value = answerPool.value.filter((x=>{
+                    for (let index = 0; index < value.length; index++) {
+                        const letter = value[index];
+                        if(x.countryName.length <= index) return false;
+                        if(x.countryName[index].toLowerCase() != letter.toLowerCase()) return false;
+                    }
+                    return true;
+                }));
+            };
+
             return {
-                openSettings, optionsDialogRef, closeSettings, questionLeadIn, questionTarget,
-                answerList
+                openSettings, optionsDialogRef, closeSettings, question, countSlider,
+                answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
+                tempOptions, currentOptions, saveSettings, handleSliderChange,
+                questionFlagUrl, regionList, toggleRegion, autoInputOptions,
+                handleNameEntryInputChange
             }
         },
     }

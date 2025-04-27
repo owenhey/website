@@ -10,3 +10,10 @@ export interface FlagAnswerData{
     imageUrl : string;
     area: string;
 }
+
+export interface FlagGameOptions{
+    answerCount : number;
+    mode: 'flag' | 'name';
+    nameEntryType: 'button' | 'inputField';
+    regionFilter: string[];
+}
