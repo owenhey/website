@@ -173,6 +173,56 @@
     text-align: center;
 }
 
+.flag-feedback-text.shake {
+    animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    10% {
+        transform: translate3d(-5px, 2px, 0);
+    }
+
+    20% {
+        transform: translate3d(5px, -2px, 0);
+    }
+
+    30% {
+        transform: translate3d(-4px, 2px, 0);
+    }
+
+    40% {
+        transform: translate3d(4px, -1px, 0);
+    }
+
+    50% {
+        transform: translate3d(-3px, 1px, 0);
+    }
+
+    60% {
+        transform: translate3d(2px, -1px, 0);
+    }
+
+    70% {
+        transform: translate3d(-2px, 1px, 0);
+    }
+
+    80% {
+        transform: translate3d(1px, -0.5px, 0);
+    }
+
+    90% {
+        transform: translate3d(-0.5px, 0.5px, 0);
+    }
+
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+}
+
 .flag-count-slider{
     -webkit-appearance: none;
     appearance: none;
@@ -227,14 +277,15 @@
     border: 1.5px solid black;
     border-radius: 5px;
     outline: none;
-    transition: background-color .15s linear;
+    transition: background-color .15s linear, color .15s linear;
     background-color: white;
 }
 
 .flag-game-input-auto-option:hover,
 .flag-game-input-auto-option:active,
 .flag-game-input-auto-option:focus{
-    background-color: var(--lightwhite);
+    background-color: var(--darkgreen);
+    color: white;
 }
 
 .flag-game-input:focus{

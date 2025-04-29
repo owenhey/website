@@ -12,7 +12,7 @@
                 style="height: 20vh; width: auto; max-height: 300px;">
                 <img :src="questionFlagUrl"> 
             </div>
-            <span class="flag-feedback-text" v-html="feedbackText"></span>
+            <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
             <div class="flag-answer-display" 
                 v-if="currentOptions.mode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
                 <FlagAnswer
@@ -24,13 +24,13 @@
             </div>
             <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
                 v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
-                <input class="flag-game-input raleway" @input="handleNameEntryInputChange">
-                <button class="vine-button" style="font-size: 10pt;">Guess</button>
+                <input class="flag-game-input raleway" @input="handleNameEntryInputChange" ref="nameInput" tabindex="1">
+                <button class="vine-button" style="font-size: 10pt;" :tabindex="7">Guess</button>
             </div>
             <div class="flags-auto-options" 
                 v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
                 <template v-for="(option, index) in autoInputOptions">
-                    <button class="flag-game-input-auto-option" v-if="index < 5"
+                    <button class="flag-game-input-auto-option" v-if="index < 5" :tabindex="index + 2" @keydown="handleAutoOptionKey"
                         @click="handleAnswerPicked(option)"
                         :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
                         {{ option.countryName }}
@@ -145,6 +145,8 @@
             const correctAnswer = ref<FlagAnswerData>();
 
             const autoInputOptions = ref<FlagAnswerData[]>([]);
+            const nameInput = ref<HTMLInputElement>();
+            const feedbackClass = ref("");
 
 
 
@@ -223,11 +225,22 @@
 
             function handleAnswerPicked(answerPicked : FlagAnswerData){
                 console.log(answerPicked.countryName);
+
+                if(nameInput.value){
+                    nameInput.value.value = '';
+                    autoInputOptions.value = [];
+                    focusInputField();
+                }
+
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
                     feedbackText.value = "Correct!";
                     generateQuestion();
                 }
                 else{
+                    feedbackClass.value = "shake";
+                    setTimeout(() => {
+                        feedbackClass.value = "";
+                    }, 500);
                     if(currentOptions.value.mode === 'flag'){
                         feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}<b>`;
                     }
@@ -303,12 +316,86 @@
                 }));
             };
 
+            const handleAutoOptionKey = (event: KeyboardEvent): void => {
+                if(!nameInput.value) return;
+
+                if(event.key === 'Tab'){
+                    return;
+                }
+
+                if(event.key === 'Enter'){
+                    // Find the one currently selected
+                    const buttonText = (event.target as HTMLElement).textContent;
+                    for (let index = 0; index < autoInputOptions.value.length; index++) {
+                        const element = autoInputOptions.value[index];
+                        if(element.countryName === buttonText){
+                            handleAnswerPicked(element);
+                        }
+                    }
+                    focusInputField();
+                }
+
+                if(event.key === 'ArrowDown'){
+                    event.preventDefault();
+                    console.log("Hello");
+                    simulateTabNavigation(false);
+                }
+                if(event.key === 'ArrowUp'){
+                    event.preventDefault();
+                    simulateTabNavigation(true);
+                }
+
+                if(event.key === 'Backspace' || event.key == 'Delete'){
+                    focusInputField();
+                }
+
+                if (/^[a-zA-Z0-9]$/.test(event.key)) {
+                    event.preventDefault();
+                    focusInputField();
+                    nameInput.value.value += event.key;
+                }
+
+            };
+
+            function focusInputField(){
+                if(nameInput.value){
+                    nameInput.value.focus();
+                }
+            }
+
+            const simulateTabNavigation = (reverse: boolean = false): void => {
+                const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+                const elements = Array.from(document.querySelectorAll(focusableElements)) as HTMLElement[];
+                
+                // No hidden elements
+                const visibleElements = elements.filter(el => {
+                    return el.offsetWidth > 0 && el.offsetHeight > 0 && window.getComputedStyle(el).visibility !== 'hidden';
+                });
+                
+                if (visibleElements.length === 0) return;
+                
+                // Get the currently focused element
+                const currentElement = document.activeElement as HTMLElement;
+                const currentIndex = visibleElements.indexOf(currentElement);
+                
+                let nextIndex;
+                if (reverse) {
+                    // Go to previous element
+                    nextIndex = currentIndex <= 0 ? visibleElements.length - 1 : currentIndex - 1;
+                } else {
+                    // Go to next element
+                    nextIndex = currentIndex >= visibleElements.length - 1 ? 0 : currentIndex + 1;
+                }
+                
+                visibleElements[nextIndex].focus();
+            };
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
                 tempOptions, currentOptions, saveSettings, handleSliderChange,
                 questionFlagUrl, regionList, toggleRegion, autoInputOptions,
-                handleNameEntryInputChange
+                handleNameEntryInputChange, nameInput, feedbackClass, handleAutoOptionKey
             }
         },
     }
