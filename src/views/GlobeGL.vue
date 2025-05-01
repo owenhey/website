@@ -13,7 +13,20 @@
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import resume from '../assets/downloads/Resume Owen Hey.pdf';
-    import Globe from 'globe.gl';
+    import Globe, { GlobeInstance } from 'globe.gl';
+    import { 
+        Feature, 
+        FeatureCollection, 
+        Geometry, 
+        Point, 
+        LineString, 
+        Polygon, 
+        MultiPoint, 
+        MultiLineString, 
+        MultiPolygon, 
+        GeometryCollection, 
+        GeoJsonProperties
+    } from 'geojson';
 
     export default defineComponent({
         name: 'About',
@@ -23,17 +36,46 @@
         setup() {
             onMounted(()=>{
 
-                const globe = new Globe(document.getElementById('globeViz')!)
-                    .globeImageUrl('/public/worldmap.jpg')
-                    .pointAltitude('size')
-                    .width(800)
-                    .showAtmosphere(false)
-                    .backgroundColor('#00000000')
-                    .pointColor('color');
-                const controls = globe.controls();
+                // const globe = new Globe(document.getElementById('globeViz')!)
+                //     .globeImageUrl('/worldmap.jpg')
+                //     .pointAltitude('size')
+                //     .width(800)
+                //     .showAtmosphere(false)
+                //     .backgroundColor('#00000000')
+                //     .pointColor('color');
+                            // Now use these types in your code
+                // Now use these types in your code
+                fetch('/country_data.geojson').then(res => res.json()).then(countries =>
+                {
+                    const globe : GlobeInstance = new Globe(document.getElementById('globeViz')!)
+                        .globeImageUrl('/worldmap_blank.png')
+                        .lineHoverPrecision(0)
+                        .width(800)
+                        .backgroundColor("#0000")
+                        .polygonsData(countries.features.filter((d:Feature) => d.properties?.ISO_A2 !== 'AQ'))
+                        .polygonAltitude(0.01)
+                        .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
+                        .polygonStrokeColor(() => '#111')
+                        .polygonCapColor(()=>'#DCA')
+                        // .polygonLabel(
+                        //     (obj : any) => `
+                        //         <b>${obj.properties?.ADMIN}`
+                        // )
+                            .onPolygonHover(hoverD => globe
+                            .polygonAltitude(d => d === hoverD ? 0.02 : 0.01)
+                            .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA')
+                        )
+                        .onPolygonClick(hoverD => handleCountryClick(hoverD))
+                        .polygonsTransitionDuration(300);
 
-                controls.dampingFactor = .3;
-            })
+                        const controls = globe.controls();
+                        controls.dampingFactor = .3;
+                    });
+             })
+
+             function handleCountryClick(name : any){
+                console.log(name.properties?.ADMIN);
+             }
 
             return {}
         },
