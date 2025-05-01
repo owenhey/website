@@ -15,23 +15,23 @@
                     >Skip
                 </button>
             </div>
-            <div v-if="currentOptions.mode==='name'" 
+            <div v-if="currentOptions.answerMode==='name'" 
                 class="flag-button-holder no-input" 
                 style="height: 20vh; width: auto; max-height: 300px;">
                 <img :src="questionFlagUrl"> 
             </div>
             <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
             <div class="flag-answer-display" 
-                v-if="currentOptions.mode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
+                v-if="currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
                 <FlagAnswer
                     v-for="(answer, index) in questionAnswerList"
                     :answerData="answer"
-                    :display="currentOptions.mode"
+                    :display="currentOptions.answerMode"
                     @onClick="handleAnswerPicked">
                 </FlagAnswer>
             </div>
             <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
-                v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                 <input class="flag-game-input raleway" 
                     @input="handleNameEntryInputChange" 
                     ref="nameInput" 
@@ -49,7 +49,7 @@
                 </button>
             </div>
             <div class="flags-auto-options" 
-                v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                 <template v-for="(option, index) in autoInputOptions">
                     <button class="flag-game-input-auto-option" 
                         v-if="index < 5" :tabindex="index + 2"
@@ -62,42 +62,71 @@
                     </button>
                 </template>
             </div>
+            <div v-if="currentOptions.answerMode === 'globe'">
+                 
+            </div>
         </div>
 	</div>
     <dialog ref="optionsDialogRef">
         <div class="flags-options-dialog">
             <h2>Flag Game Settings</h2>
-            <h3>Mode</h3>
+            <h3>Question Mode</h3>
             <div class="flag-mode-settings">
                 <button class="flag-toggle-button" 
-                    :class="tempOptions.mode === 'flag' ? 'selected' : ''"
-                    @click="tempOptions.mode = 'flag'">
+                    :class="tempOptions.questionMode === 'flag' ? 'selected' : ''"
+                    @click="tempOptions.questionMode = 'flag'">
                     Flag
                 </button>
                 <button class="flag-toggle-button" 
-                    :class="tempOptions.mode === 'name' ? 'selected' : ''"
-                    @click="tempOptions.mode = 'name'">
+                    :class="tempOptions.questionMode === 'name' ? 'selected' : ''"
+                    @click="tempOptions.questionMode = 'name'">
                     Name
                 </button>
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.questionMode === 'globe' ? 'selected' : ''"
+                    @click="tempOptions.questionMode = 'globe'">
+                    Globe
+                </button>
             </div>
-            <h3 v-if="tempOptions.mode === 'name'">Answer Type</h3>
-            <div class="flag-mode-settings" v-if="tempOptions.mode === 'name'">
+            <h3>Answer Mode</h3>
+            <div class="flag-mode-settings">
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.answerMode === 'flag' ? 'selected' : ''"
+                    @click="tempOptions.answerMode = 'flag'">
+                    Flag
+                </button>
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.answerMode === 'name' ? 'selected' : ''"
+                    @click="tempOptions.answerMode = 'name'">
+                    Name
+                </button>
+                <button class="flag-toggle-button" 
+                    :class="tempOptions.answerMode === 'globe' ? 'selected' : ''"
+                    @click="tempOptions.answerMode = 'globe'">
+                    Globe
+                </button>
+            </div>
+            <h3 :style="tempOptions.answerMode==='name' ? '' : 'opacity: 20%'">Name Input Type</h3>
+            <div class="flag-mode-settings" :style="tempOptions.answerMode==='name' ? '' : 'opacity: 20%'">
                 <button class="flag-toggle-button"
+                    :disabled="!(tempOptions.answerMode==='name')"
                     :class="tempOptions.nameEntryType === 'button' ? 'selected' : ''"
                     @click="tempOptions.nameEntryType = 'button'">
                     Button
                 </button>
                 <button class="flag-toggle-button"
+                    :disabled="!(tempOptions.answerMode==='name')"
                     :class="tempOptions.nameEntryType === 'inputField' ? 'selected' : ''"
                     @click="tempOptions.nameEntryType = 'inputField'">
                     Input Field
                 </button>
             </div>
-            <h3 v-if="!(tempOptions.mode === 'name' && tempOptions.nameEntryType === 'inputField')">
+            <h3 :style="showAnswerCountSlider() ? '' : 'opacity: 20%'">
                 Answer Count: {{ tempOptions.answerCount }}
             </h3>
             <input type="range" min="2" max="20" value="6" class="flag-count-slider" ref="countSlider"
-                v-if="!(tempOptions.mode === 'name' && tempOptions.nameEntryType === 'inputField')"
+                :style="showAnswerCountSlider() ? '' : 'opacity: 20%'"
+                :disabled="!showAnswerCountSlider()"
                 style="margin-bottom: 1rem;"
                 @input="handleSliderChange">
             <h3>Regions</h3>
@@ -109,7 +138,10 @@
                     {{ region }}
                 </button>
             </div>
-            <div style="display: flex; gap: 10px; justify-content: end;">
+            <div style="display: flex; gap: 10px; justify-content: end; margin-top: 20px;">
+                <span style="color: red;" v-if="tempOptions.answerMode === tempOptions.questionMode">
+                    Answer and question mode cannot match.
+                </span>
                 <button 
                     class="vine-button" 
                     style="font-size: 12pt;" 
@@ -118,6 +150,7 @@
                 <button 
                     class="vine-button" 
                     style="font-size: 12pt;" 
+                    :disabled="tempOptions.answerMode === tempOptions.questionMode"
                     @click="saveSettings">Save
                 </button>
             </div>
@@ -152,6 +185,11 @@
                     return 'border-radius: 5px 5px 0 0;';
                 }
                 return 'border-radius: 0; border-top: none';
+            },
+            showAnswerCountSlider(){
+                const goodForFlag = this.tempOptions.answerMode === 'flag';
+                const goodForName = this.tempOptions.answerMode === 'name' && this.tempOptions.nameEntryType === 'button';
+                return goodForName || goodForFlag;
             }
         },
         setup() {
@@ -230,7 +268,7 @@
                 let randomIndex = Math.floor(Math.random() * pseudoRandomPool.value.length);
                 correctAnswer.value = pseudoRandomPool.value[randomIndex];
 
-                if(currentOptions.value.mode === 'flag'){
+                if(currentOptions.value.answerMode === 'flag'){
                     question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
                 }
                 else{
@@ -280,7 +318,7 @@
                     setTimeout(() => {
                         feedbackClass.value = "";
                     }, 500);
-                    if(currentOptions.value.mode === 'flag'){
+                    if(currentOptions.value.answerMode === 'flag'){
                         feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}</b>`;
                     }
                     else{

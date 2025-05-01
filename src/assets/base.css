@@ -152,10 +152,15 @@ span, p, label{
   transition: .08s background-color linear, .08s color linear;
 }
 
-.vine-button.tab-selected,
-.vine-button:active,
-.vine-button:focus,
-.vine-button:hover{
+.vine-button:disabled{
+  cursor: default;
+  opacity: 50%;
+}
+
+.vine-button:not(:disabled).tab-selected,
+.vine-button:not(:disabled):active,
+.vine-button:not(:disabled):focus,
+.vine-button:not(:disabled):hover{
   background-color: var(--darkgreen);
   color: var(--lightwhite);
   outline: none;

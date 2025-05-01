@@ -35,16 +35,6 @@
         },
         setup() {
             onMounted(()=>{
-
-                // const globe = new Globe(document.getElementById('globeViz')!)
-                //     .globeImageUrl('/worldmap.jpg')
-                //     .pointAltitude('size')
-                //     .width(800)
-                //     .showAtmosphere(false)
-                //     .backgroundColor('#00000000')
-                //     .pointColor('color');
-                            // Now use these types in your code
-                // Now use these types in your code
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
                     const globe : GlobeInstance = new Globe(document.getElementById('globeViz')!)
@@ -57,16 +47,12 @@
                         .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
                         .polygonStrokeColor(() => '#111')
                         .polygonCapColor(()=>'#DCA')
-                        // .polygonLabel(
-                        //     (obj : any) => `
-                        //         <b>${obj.properties?.ADMIN}`
-                        // )
                             .onPolygonHover(hoverD => globe
                             .polygonAltitude(d => d === hoverD ? 0.02 : 0.01)
                             .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA')
                         )
                         .onPolygonClick(hoverD => handleCountryClick(hoverD))
-                        .polygonsTransitionDuration(300);
+                        .polygonsTransitionDuration(50);
 
                         const controls = globe.controls();
                         controls.dampingFactor = .3;

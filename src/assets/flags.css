@@ -57,6 +57,7 @@
     background-color: var(--lighterbrown);
     padding: 15px;
     border: none;
+    position: relative;
 }
 
 .flags-options-dialog > h3{
@@ -155,6 +156,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: .08s background-color linear, .08s color linear;
+    user-select: none;
+}
+
+.flag-toggle-button:disabled{
+    cursor: default;
 }
 
 .flag-toggle-button.selected{
@@ -162,8 +168,12 @@
     color: white;
 }
 
-.flag-toggle-button:not(.selected):active,
-.flag-toggle-button:not(.selected):hover {
+.flag-toggle-button:disabled{
+    opacity: 50%;
+}
+
+.flag-toggle-button:not(.selected):not(:disabled):active,
+.flag-toggle-button:not(.selected):not(:disabled):hover {
     background-color: var(--green);
     color: var(--lightwhite);
     outline: none;
@@ -245,12 +255,20 @@
     cursor: pointer;
 }
 
+.flag-count-slider:disabled::-webkit-slider-thumb{
+    cursor: default;
+}
+
 .flag-count-slider::-moz-range-thumb {
     width: 25px;
     height: 25px;
     border-radius: 50%;
     background: var(--darkgreen);
     cursor: pointer;
+}
+
+.flag-count-slider:disabled:-moz-range-thumb {
+    cursor: default;
 }
 
 .flag-game-input{

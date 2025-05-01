@@ -13,7 +13,8 @@ export interface FlagAnswerData{
 
 export interface FlagGameOptions{
     answerCount : number;
-    mode: 'flag' | 'name';
+    questionMode: 'flag' | 'name' | 'globe';
+    answerMode: 'flag' | 'name' | 'globe';
     nameEntryType: 'button' | 'inputField';
     regionFilter: string[];
 }
