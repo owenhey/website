@@ -2,11 +2,19 @@
     <div class="flags-base">
         <div class="flags-content">
             <Nav class="flags-nav-header"></Nav>
-            <h1>Welcome to the flag game</h1>
-            <button class="vine-button" style="width: 10em; font-size: 14pt;" @click="openSettings">
+            <h1 style="text-align: center;">Welcome to the flag game</h1>
+            <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt;" @click="openSettings">
                 Game Options
             </button>
-            <span v-html="question"></span>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                <span v-html="question" style="text-align: center;"></span>
+                <button 
+                    class="vine-button" 
+                    style="font-size: 10pt; translate: 0px -5px;"
+                    @click="skipQuestion"
+                    >Skip
+                </button>
+            </div>
             <div v-if="currentOptions.mode==='name'" 
                 class="flag-button-holder no-input" 
                 style="height: 20vh; width: auto; max-height: 300px;">
@@ -24,14 +32,31 @@
             </div>
             <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
                 v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
-                <input class="flag-game-input raleway" @input="handleNameEntryInputChange" ref="nameInput" tabindex="1">
-                <button class="vine-button" style="font-size: 10pt;" :tabindex="7">Guess</button>
+                <input class="flag-game-input raleway" 
+                    @input="handleNameEntryInputChange" 
+                    ref="nameInput" 
+                    tabindex="1"
+                    @keydown="handleNameInputKey"
+                    @focus="autoOptionFocused = -1">
+                <button 
+                    class="vine-button" 
+                    style="font-size: 10pt;" 
+                    :tabindex="7" 
+                    @click="tryGuessOfInput()"
+                    @keydown="handleGuessInputKey"
+                    ref="guessButton">
+                    Guess
+                </button>
             </div>
             <div class="flags-auto-options" 
                 v-if="currentOptions.mode === 'name' && currentOptions.nameEntryType === 'inputField'">
                 <template v-for="(option, index) in autoInputOptions">
-                    <button class="flag-game-input-auto-option" v-if="index < 5" :tabindex="index + 2" @keydown="handleAutoOptionKey"
+                    <button class="flag-game-input-auto-option" 
+                        v-if="index < 5" :tabindex="index + 2"
+                        :id="`autoOption${index}`"
+                        @keydown="handleAutoOptionKey"
                         @click="handleAnswerPicked(option)"
+                        @focus="handleAutoOptionFocused(index)"
                         :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
                         {{ option.countryName }}
                     </button>
@@ -68,8 +93,11 @@
                     Input Field
                 </button>
             </div>
-            <h3>Answer Count: {{ tempOptions.answerCount }}</h3>
+            <h3 v-if="!(tempOptions.mode === 'name' && tempOptions.nameEntryType === 'inputField')">
+                Answer Count: {{ tempOptions.answerCount }}
+            </h3>
             <input type="range" min="2" max="20" value="6" class="flag-count-slider" ref="countSlider"
+                v-if="!(tempOptions.mode === 'name' && tempOptions.nameEntryType === 'inputField')"
                 style="margin-bottom: 1rem;"
                 @input="handleSliderChange">
             <h3>Regions</h3>
@@ -99,7 +127,7 @@
   
 <script lang="ts">
     import '@/assets/flags.css';
-    import { PropType, defineComponent, computed, ref, onMounted, } from 'vue';
+    import { PropType, defineComponent, computed, ref, onMounted, onUnmounted, } from 'vue';
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import FlagAnswer from './FlagAnswer.vue';
@@ -140,20 +168,26 @@
 
             const answerList = ref<FlagAnswerData[]>([]);
             const answerPool = ref<FlagAnswerData[]>([]);
+            // Just has one copy of everything so all the countries show up before showing again
+            const pseudoRandomPool = ref<FlagAnswerData[]>([]);
             const questionAnswerList = ref<FlagAnswerData[]>([]);
-            const previousAnswer = ref<FlagAnswerData>();
             const correctAnswer = ref<FlagAnswerData>();
 
             const autoInputOptions = ref<FlagAnswerData[]>([]);
             const nameInput = ref<HTMLInputElement>();
+            const guessButton = ref<HTMLButtonElement>();
             const feedbackClass = ref("");
-
-
+            const autoOptionFocused = ref(-1); 
 
             let allFlagData : FlagAnswerData[];
 
             onMounted(()=>{
                 loadInFlagData();
+                document.getElementById('click-me-text')?.classList.add('invisible');
+            })
+
+            onUnmounted(()=>{
+                document.getElementById('click-me-text')?.classList.remove('invisible');
             })
 
             async function loadInFlagData(){
@@ -175,7 +209,6 @@
                                 area: values[3]         // Region column
                             };
                     });
-
                     
                     allFlagData.forEach(element => {
                         answerList.value.push(element);
@@ -190,12 +223,12 @@
             }
 
             function generateQuestion(){
-                // Choose a random flag
-                let randomIndex = Math.floor(Math.random() * answerPool.value.length);
-                while((answerPool.value[randomIndex].countryName === previousAnswer.value?.countryName)){
-                    randomIndex = Math.floor(Math.random() * answerPool.value.length);
+                if(!pseudoRandomPool.value || pseudoRandomPool.value.length == 0){
+                    pseudoRandomPool.value = answerPool.value.filter(x=>true);
                 }
-                correctAnswer.value = answerPool.value[randomIndex];
+                // Choose a random flag
+                let randomIndex = Math.floor(Math.random() * pseudoRandomPool.value.length);
+                correctAnswer.value = pseudoRandomPool.value[randomIndex];
 
                 if(currentOptions.value.mode === 'flag'){
                     question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
@@ -208,6 +241,12 @@
                 // Generate n number of other options
                 questionAnswerList.value = 
                     getRandomOptions(correctAnswer.value, currentOptions.value.answerCount);
+
+                pseudoRandomPool.value.splice(randomIndex, 1);
+            }
+
+            function skipQuestion(){
+                generateQuestion();
             }
 
             function getRandomOptions(correctAnswer : FlagAnswerData, numOptions : number) {
@@ -224,7 +263,7 @@
             }
 
             function handleAnswerPicked(answerPicked : FlagAnswerData){
-                console.log(answerPicked.countryName);
+                autoOptionFocused.value = -1;
 
                 if(nameInput.value){
                     nameInput.value.value = '';
@@ -233,7 +272,7 @@
                 }
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
-                    feedbackText.value = "Correct!";
+                    feedbackText.value = `<b>${answerPicked.countryName}</b> is correct!`;
                     generateQuestion();
                 }
                 else{
@@ -242,10 +281,10 @@
                         feedbackClass.value = "";
                     }, 500);
                     if(currentOptions.value.mode === 'flag'){
-                        feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}<b>`;
+                        feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}</b>`;
                     }
                     else{
-                        feedbackText.value = "Incorrect!";
+                        feedbackText.value = `<b>${answerPicked.countryName}</b> is incorrect!`;
                     }
                 }
             }
@@ -288,6 +327,7 @@
                 if(currentOptions.value.regionFilter.length !== 0){
                     answerPool.value = answerList.value.filter(x=>currentOptions.value.regionFilter.includes(x.area));
                 }
+                pseudoRandomPool.value = answerPool.value.filter(x=>true);
             }
 
             const handleSliderChange = (event: Event): void => {
@@ -316,6 +356,39 @@
                 }));
             };
 
+            const handleNameInputKey = (event: KeyboardEvent): void => {
+                if(!nameInput.value) return;
+                if(event.key === 'ArrowDown'){
+                    event.preventDefault();
+                    const firstAutoOption = document.getElementById('autoOption0');
+                    if(firstAutoOption){
+                        firstAutoOption.focus();
+                    }
+                }
+                if(event.key === 'Enter'){
+                    if(autoInputOptions.value.length == 0) return;
+                    event.preventDefault();
+                    const countryName = autoInputOptions.value[0].countryName;
+                    allFlagData.forEach(element => {
+                        if(element.countryName == countryName){
+                            handleAnswerPicked(element);
+                            return;
+                        }
+                    });
+                }
+            }
+
+            const handleGuessInputKey = (event: KeyboardEvent): void => {
+                if(!nameInput.value) return;
+                if(event.key === 'ArrowUp'){
+                    event.preventDefault();
+                    const lastAutoOption = document.getElementById(`autoOption${autoInputOptions.value.length-1}`);
+                    if(lastAutoOption){
+                        lastAutoOption.focus();
+                    }
+                }
+            }
+
             const handleAutoOptionKey = (event: KeyboardEvent): void => {
                 if(!nameInput.value) return;
 
@@ -337,11 +410,23 @@
 
                 if(event.key === 'ArrowDown'){
                     event.preventDefault();
-                    console.log("Hello");
+
+                    // Override if bottom one
+                    if(autoOptionFocused.value === Math.max(0, autoInputOptions.value.length - 1)){
+                        guessButton.value?.focus();
+                        return;
+                    }
                     simulateTabNavigation(false);
                 }
                 if(event.key === 'ArrowUp'){
                     event.preventDefault();
+
+                    // Override if top one
+                    if(autoOptionFocused.value === 0){
+                        nameInput.value?.focus();
+                        return;
+                    }
+
                     simulateTabNavigation(true);
                 }
 
@@ -390,12 +475,30 @@
                 visibleElements[nextIndex].focus();
             };
 
+            function handleAutoOptionFocused(index : number){
+                autoOptionFocused.value = index;
+            }
+
+            function tryGuessOfInput(){
+                if(!nameInput.value) return;
+                
+                const enteredCountryName = nameInput.value.value.toLowerCase();
+                allFlagData.forEach(element => {
+                    if(element.countryName.toLowerCase() == enteredCountryName){
+                        handleAnswerPicked(element);
+                        return;
+                    }
+                });
+            }
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
                 tempOptions, currentOptions, saveSettings, handleSliderChange,
-                questionFlagUrl, regionList, toggleRegion, autoInputOptions,
-                handleNameEntryInputChange, nameInput, feedbackClass, handleAutoOptionKey
+                questionFlagUrl, regionList, toggleRegion, autoInputOptions, handleAutoOptionFocused,
+                handleNameEntryInputChange, nameInput, feedbackClass, handleAutoOptionKey,
+                autoOptionFocused, tryGuessOfInput, guessButton, handleNameInputKey, handleGuessInputKey,
+                skipQuestion
             }
         },
     }

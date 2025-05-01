@@ -129,6 +129,10 @@ span, p, label{
   height: 100%;
 }
 
+.invisible{
+  display: none;
+}
+
 .vine-button{
   width: 5em;
   height: 2.5em;
@@ -781,4 +785,8 @@ span, p, label{
 .resume-button:focus{
   background-color: var(--darkgreen);
   text-decoration: underline;
+}
+
+.globe-canvas{
+  
 }
