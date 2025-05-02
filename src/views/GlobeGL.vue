@@ -1,58 +1,77 @@
 <template>
-    <div class="center-main-content">
-		<MainContent :animate="false">
-			<Nav class="header"></Nav>
-			 <div id="globeViz" class="globe-canvas"></div>
-		</MainContent>
-	</div>
+    <div ref="globeDiv" class="globe-canvas">
+
+    </div>
 </template>
   
 <script lang="ts">
     import '@/assets/base.css';
-    import { PropType, defineComponent, computed, onMounted, } from 'vue';
-    import MainContent from './MainContent.vue';
-    import Nav from './Nav.vue';
-    import resume from '../assets/downloads/Resume Owen Hey.pdf';
+    import { PropType, defineComponent, computed, onMounted, ref, } from 'vue';
     import Globe, { GlobeInstance } from 'globe.gl';
     import { 
         Feature, 
-        FeatureCollection, 
-        Geometry, 
-        Point, 
-        LineString, 
-        Polygon, 
-        MultiPoint, 
-        MultiLineString, 
-        MultiPolygon, 
-        GeometryCollection, 
-        GeoJsonProperties
     } from 'geojson';
 
     export default defineComponent({
-        name: 'About',
-        components:{
-            MainContent, Nav
+        name: 'GlobeGL',
+        props:{
+            mode:{
+                type: String,
+                default: 'click'
+            },
+            countryName:{
+                type: String,
+                default: '_none_'
+            }
         },
-        setup() {
+        emits:[
+            'onCountryClick'
+        ],
+        setup(props, {emit}) {
+            let globe : GlobeInstance | null;
+            const globeDiv = ref<HTMLDivElement>();
+
+            function refreshHighlight(){
+                if(!globe) return;
+                globe!.polygonCapColor((d:any)=>{
+                    if(props.mode === 'click'){
+                        return '#DCA';
+                    }
+                    else if(props.mode==='highlight'){
+                        if(d.properties.ADMIN.toLowerCase() === props.countryName.toLowerCase()){
+                            return '#F00';
+                        }
+                    }
+                    return '#DCA';
+                });
+            }
+
             onMounted(()=>{
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
-                    const globe : GlobeInstance = new Globe(document.getElementById('globeViz')!)
+                    console.log("Generating globe");
+                    globe = new Globe(globeDiv.value!)
                         .globeImageUrl('/worldmap_blank.png')
                         .lineHoverPrecision(0)
-                        .width(800)
+                        .width(375)
+                        .height(375)
                         .backgroundColor("#0000")
+                        .showAtmosphere(false)
                         .polygonsData(countries.features.filter((d:Feature) => d.properties?.ISO_A2 !== 'AQ'))
                         .polygonAltitude(0.01)
                         .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
-                        .polygonStrokeColor(() => '#111')
-                        .polygonCapColor(()=>'#DCA')
-                            .onPolygonHover(hoverD => globe
-                            .polygonAltitude(d => d === hoverD ? 0.02 : 0.01)
-                            .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA')
-                        )
-                        .onPolygonClick(hoverD => handleCountryClick(hoverD))
-                        .polygonsTransitionDuration(50);
+                        .polygonStrokeColor(() => '#111');
+
+                        if(props.mode === 'click'){
+                            globe
+                            .onPolygonClick(hoverD => handleCountryClick(hoverD))
+                            .onPolygonHover(hoverD => globe!
+                                .polygonAltitude(d => d === hoverD ? 0.02 : 0.01)
+                                .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA'))
+                            .polygonsTransitionDuration(50);
+                        }
+
+                        refreshHighlight();
 
                         const controls = globe.controls();
                         controls.dampingFactor = .3;
@@ -60,10 +79,10 @@
              })
 
              function handleCountryClick(name : any){
-                console.log(name.properties?.ADMIN);
+                emit('onCountryClick', name.properties!.ADMIN);
              }
 
-            return {}
+            return {globeDiv, refreshHighlight}
         },
     }
 );

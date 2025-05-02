@@ -1,6 +1,6 @@
 <template>
     <div class="flags-base">
-        <div class="flags-content">
+        <div class="flags-content" ref="flagContentDiv">
             <Nav class="flags-nav-header"></Nav>
             <h1 style="text-align: center;">Welcome to the flag game</h1>
             <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt;" @click="openSettings">
@@ -15,10 +15,17 @@
                     >Skip
                 </button>
             </div>
-            <div v-if="currentOptions.answerMode==='name'" 
+            <div v-if="currentOptions.questionMode==='flag'" 
                 class="flag-button-holder no-input" 
                 style="height: 20vh; width: auto; max-height: 300px;">
                 <img :src="questionFlagUrl"> 
+            </div>
+            <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
+                <GlobeGL 
+                    ref="globeQuestionRef"
+                    :mode="'highlight'"
+                    :countryName="correctAnswer?.countryName">
+                </GlobeGL>
             </div>
             <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
             <div class="flag-answer-display" 
@@ -62,8 +69,11 @@
                     </button>
                 </template>
             </div>
-            <div v-if="currentOptions.answerMode === 'globe'">
-                 
+            <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
+                <GlobeGL 
+                    ref="globeAnswerRef"
+                    @onCountryClick="handleFlagCountryClicked">
+                </GlobeGL>
             </div>
         </div>
 	</div>
@@ -166,11 +176,14 @@
     import FlagAnswer from './FlagAnswer.vue';
     import { FlagAnswerData, FlagGameOptions } from '@/types';
     import { GetDefaultFlagGameOptions } from '@/utils';
+    import { Feature } from 'geojson';
+    import Globe, { GlobeInstance } from 'globe.gl';
+    import GlobeGL from './GlobeGL.vue';
 
     export default defineComponent({
         name: 'Flags',
         components:{
-            MainContent, Nav, FlagAnswer
+            MainContent, Nav, FlagAnswer, GlobeGL
         },
         methods:{
             getAutoOptionBorderStyle(isFirst : boolean, isLast : boolean){
@@ -215,9 +228,14 @@
             const nameInput = ref<HTMLInputElement>();
             const guessButton = ref<HTMLButtonElement>();
             const feedbackClass = ref("");
-            const autoOptionFocused = ref(-1); 
+            const autoOptionFocused = ref(-1);
 
             let allFlagData : FlagAnswerData[];
+
+            // Globe stuff
+            const flagContentDiv = ref<HTMLDivElement>();
+            const globeAnswerRef = ref<InstanceType<typeof GlobeGL>>();
+            const globeQuestionRef = ref<InstanceType<typeof GlobeGL>>();
 
             onMounted(()=>{
                 loadInFlagData();
@@ -268,12 +286,24 @@
                 let randomIndex = Math.floor(Math.random() * pseudoRandomPool.value.length);
                 correctAnswer.value = pseudoRandomPool.value[randomIndex];
 
-                if(currentOptions.value.answerMode === 'flag'){
+                if(currentOptions.value.questionMode === 'name'){
                     question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
                 }
-                else{
+                else if(currentOptions.value.questionMode ==='flag'){
                     question.value = `Which flag is this?`;
                     questionFlagUrl.value = correctAnswer.value.imageUrl;
+                }
+                else if(currentOptions.value.questionMode === 'globe'){
+                    if(currentOptions.value.answerMode === 'flag'){
+                        question.value = `Which flag represents this country?`;
+                    }
+                    else if(currentOptions.value.answerMode === 'name'){
+                        question.value = `Which country is this?`;
+                    }
+
+                    setTimeout(() => {
+                        globeQuestionRef.value?.refreshHighlight();
+                    }, 25);
                 }
 
                 // Generate n number of other options
@@ -284,6 +314,9 @@
             }
 
             function skipQuestion(){
+                if(currentOptions.value.answerMode === 'name' || currentOptions.value.answerMode === 'globe'){
+                    feedbackText.value = `That was <b>${correctAnswer.value?.countryName}</b>`
+                }
                 generateQuestion();
             }
 
@@ -529,6 +562,18 @@
                 });
             }
 
+            function handleFlagCountryClicked(countryName : string){
+                for (let index = 0; index < allFlagData.length; index++) {
+                    const element = allFlagData[index];
+                    if(element.countryName.toLowerCase() == countryName.toLowerCase()){
+                        handleAnswerPicked(element);
+                        return;
+                    }
+                }
+
+                console.log("Could not find matching data for country: " + countryName);
+            }
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
@@ -536,7 +581,8 @@
                 questionFlagUrl, regionList, toggleRegion, autoInputOptions, handleAutoOptionFocused,
                 handleNameEntryInputChange, nameInput, feedbackClass, handleAutoOptionKey,
                 autoOptionFocused, tryGuessOfInput, guessButton, handleNameInputKey, handleGuessInputKey,
-                skipQuestion
+                skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
+                globeQuestionRef
             }
         },
     }
