@@ -6,7 +6,7 @@
   
 <script lang="ts">
     import '@/assets/base.css';
-    import { PropType, defineComponent, computed, onMounted, ref, } from 'vue';
+    import { PropType, defineComponent, computed, onMounted, ref, onUnmounted, } from 'vue';
     import Globe, { GlobeInstance } from 'globe.gl';
     import { 
         Feature, 
@@ -76,11 +76,15 @@
                         const controls = globe.controls();
                         controls.dampingFactor = .3;
                     });
-             })
+            })
 
-             function handleCountryClick(name : any){
+            onUnmounted(()=>{
+                
+            })
+
+            function handleCountryClick(name : any){
                 emit('onCountryClick', name.properties!.ADMIN);
-             }
+            }
 
             return {globeDiv, refreshHighlight}
         },

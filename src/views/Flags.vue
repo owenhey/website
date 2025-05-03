@@ -314,7 +314,7 @@
             }
 
             function skipQuestion(){
-                if(currentOptions.value.answerMode === 'name' || currentOptions.value.answerMode === 'globe'){
+                if(currentOptions.value.questionMode != 'name'){
                     feedbackText.value = `That was <b>${correctAnswer.value?.countryName}</b>`
                 }
                 generateQuestion();

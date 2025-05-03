@@ -53,11 +53,13 @@
 .single-post ul li{
     list-style: disc;
     margin-left: 1rem;
+    margin-bottom: .3rem;
 }
 
 .single-post ol li{
     list-style: decimal;
     margin-left: 1rem;
+    margin-bottom: .3rem;
 }
 
 .single-post .code-block{

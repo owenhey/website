@@ -41,3 +41,37 @@ A second camera renders just these objects to a low-resolution texture before th
 The main camera reads the output of this camera, and performs a [link]roberts cross, https://en.wikipedia.org/wiki/Roberts_cross[link] on it with [b]extremely low[b] tolerance.
 Since all separate objects are practically guranteed to hash differently, the roberts cross picks up all individual objects / any sharp edges.
 The final result adds the output of that to what the normal camera renders.
+
+[paragraph]
+We also experimented with a pixelation shader, but scrapped it at the last moment as we felt like the 
+low-res outlines gave enough of the pixelation effect.
+
+[subtitle] Procedural Animations
+[paragraph] There are no "traditional" animations in the game. Everything, including the swinging
+of the flail, the jiggle of the blob, and the bounce of the main character is done through code. 
+
+[paragraph] I'm especially proud of the player's jumping / bouncing code. 
+The player's collider and logic just slides around smoothly, but the model bounces
+up and down along a parabola, making sure that when the player stops, the model finishes with
+"landing" on the ground. Timing this with the footstep sound led to really satisfying movement
+without any actual animation.
+
+[paragraph] Additionally, the other bosses all take efforts to add juice with wobbles and tweens
+to make them feel more alive. The best example of this is probably the spider, which has eight legs
+using inverse kinematics to respond dynamically to the spider's movement.
+
+[subtitle] Music
+
+[paragraph] My good friend Andrew Khanschasoff worked on the music for this game, and absolutely 
+knocked it out of the park. Every soundtrack has a unique feel that totally fits with the vibe, 
+[b]and it was his FIRST time making music[b]. It really takes the game from something fun to
+something special.
+
+[title] Closing thoughts
+[dotlist]
+I was impressed with how far we could get without any attempt at making art. We used simple models, shaders, and procedural animation and ended up with something really cohesive.  
+I think I prefer shorter game jams. This was really fun, but by a couple weeks in, working on games all day at work only to do it for 5 more hours when I got home really started to tax me.
+Doing game jams with a friend makes it so much more fun.
+I was disappointed with the reception of the game — we didn't do enough work to promote / advertise the game once we finished it, and it didn't get much traction within the jam itself. Next time, I'd like to prioritize this a little to make sure more people see / play the game.
+
+[paragraph] Overall, this was an awesome experience and I hope to do more game jams in the future. Andy
