@@ -39,6 +39,39 @@
                     }
                     else if(props.mode==='highlight'){
                         if(d.properties.ADMIN.toLowerCase() === props.countryName.toLowerCase()){
+                            const bboxMiddle = [d.bbox[0] + d.bbox[2], d.bbox[1] + d.bbox[3]];
+                            bboxMiddle[0] /= 2;
+                            bboxMiddle[1] /= 2;
+                            let altitude = 1;
+
+                            const maxDiff = Math.max(Math.abs(d.bbox[0] - d.bbox[2]), Math.abs(d.bbox[1] - d.bbox[3]));
+                            console.log(maxDiff);
+                            if(maxDiff < 2){
+                                altitude = .2;
+                            }
+                            else if(maxDiff < 5){
+                                altitude = .4;
+                            }
+                            else if (maxDiff < 15){
+                                altitude = .6
+                            }
+                            else {
+                                altitude = 1;
+                            }
+
+
+                            if(d.properties.ADMIN.toLowerCase() == 'russia'){ // have to manually fix russia
+                                bboxMiddle[0] = 90 // longitude
+                                bboxMiddle[1] = 60 // latitude
+                                altitude = 1.5;
+                            }
+
+                            
+                            globe?.pointOfView({
+                                lat: bboxMiddle[1],
+                                lng: bboxMiddle[0],
+                                altitude: altitude
+                            }, 500);
                             return '#F00';
                         }
                     }
