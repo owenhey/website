@@ -3,9 +3,16 @@
         <div class="flags-content" ref="flagContentDiv">
             <Nav class="flags-nav-header"></Nav>
             <h1 style="text-align: center;">Welcome to the flag game</h1>
-            <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt;" @click="openSettings">
-                Game Options
-            </button>
+            <div style="display: flex; width: 100%;">
+                <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
+                    @click="clickTimer">
+                    Timer / Highscores
+                </button>
+                <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt; margin-bottom: .5rem;" 
+                    @click="openSettings">
+                    Game Options
+                </button>
+            </div>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                 <span v-html="question" style="text-align: center;"></span>
                 <button 
@@ -166,6 +173,39 @@
             </div>
         </div>
     </dialog>
+    <dialog ref="timerDialogRef">
+        <div class="flags-options-dialog" style="width: 350px">
+            <h3 style="margin-top: 1rem;">Showing highscores for:</h3>
+            <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
+            @click="cycleHighscoreDisplay">
+                {{ highscoreModes[highscoreModeDisplayIndex] }}
+            </button>
+            <div class="highscores-table" style="margin-top: 1rem;">
+                <div class="highscore-row" style="margin-bottom: .5rem;">
+                    <h4 class="highscore-region">Region</h4>
+                    <h4 class="highscore-time">Time</h4>
+                </div>
+                <div class="highscore-row" >
+                    <span class="highscore-region">All</span>
+                    <span class="highscore-time">35.05</span>
+                </div>
+                <div class="highscore-row" v-for="region in regionList">
+                    <span class="highscore-region">{{region}}</span>
+                    <span class="highscore-time">--</span>
+                </div>
+            </div>
+            <h3 style="margin-top: 1rem;">Start Timer</h3>
+            <span>Selected region: <b>All</b></span>
+            <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
+                <button class="vine-button" style="font-size: 12pt;" @click="closeTimer">
+                    Close
+                </button>
+                <button class="vine-button" style="font-size: 12pt;">
+                    Start
+                </button>
+            </div>
+        </div>
+    </dialog>
 </template>
   
 <script lang="ts">
@@ -208,6 +248,7 @@
         setup() {
             // options
             const optionsDialogRef = ref<HTMLDialogElement>();
+            const timerDialogRef = ref<HTMLDialogElement>();
             const currentOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
             const tempOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
             const countSlider = ref<HTMLInputElement>();
@@ -229,6 +270,16 @@
             const guessButton = ref<HTMLButtonElement>();
             const feedbackClass = ref("");
             const autoOptionFocused = ref(-1);
+
+            const highscoreModes = [
+                `Flag / Name`,
+                `Flag / Globe`,
+                `Name / Flag`,
+                `Name / Globe`,
+                `Globe / Flag`,
+                `Globe / Name`,
+            ]
+            const highscoreModeDisplayIndex = ref(0);
 
             let allFlagData : FlagAnswerData[];
 
@@ -574,6 +625,21 @@
                 console.log("Could not find matching data for country: " + countryName);
             }
 
+            function clickTimer(){
+                timerDialogRef.value?.showModal();
+            }
+
+            function closeTimer(){
+                timerDialogRef.value?.close();
+            }
+
+            function cycleHighscoreDisplay(){
+                highscoreModeDisplayIndex.value += 1;
+                if(highscoreModeDisplayIndex.value > 5){
+                    highscoreModeDisplayIndex.value = 0;
+                }
+            }
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
@@ -582,7 +648,8 @@
                 handleNameEntryInputChange, nameInput, feedbackClass, handleAutoOptionKey,
                 autoOptionFocused, tryGuessOfInput, guessButton, handleNameInputKey, handleGuessInputKey,
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
-                globeQuestionRef
+                globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
+                highscoreModeDisplayIndex, closeTimer
             }
         },
     }

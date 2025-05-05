@@ -147,6 +147,7 @@ span, p, label{
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  user-select: none;
   font-weight: 600;
   cursor: pointer;
   transition: .08s background-color linear, .08s color linear;
