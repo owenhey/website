@@ -112,7 +112,11 @@
             })
 
             onUnmounted(()=>{
-                
+                if (globe) {
+                    globe.pauseAnimation();
+                    globe._destructor();
+                    globe = null;
+                }
             })
 
             function handleCountryClick(name : any){

@@ -6,7 +6,7 @@
             <div style="display: flex; width: 100%;">
                 <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="clickTimer">
-                    {{ timing ? `${formatTime(totalTimeElapsed)} ${getTimeCountriesLeftDisplay()}` : 'Timer / Highscores' }}
+                    {{getTimerButtonText()}}
                 </button>
                 <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="openSettings">
@@ -303,6 +303,15 @@
             capitalize(s : string) : string {
                 const bigStart = s[0].toUpperCase();
                 return s.substring(0, 0) + bigStart + s.substring(1)
+            },
+            getTimerButtonText() : string{
+                if(this.timing){
+                    return `${this.formatTime(this.totalTimeElapsed)} ${this.getTimeCountriesLeftDisplay()}`;
+                }
+                else if(this.displayScore){
+                    return `Done! - ${this.formatTime(this.totalTimeElapsed)}`;
+                }
+                return 'Timer / Highscores';
             }
         },
         setup() {
@@ -335,6 +344,7 @@
             let rafId: number | null = null;
             const totalTimeElapsed = ref(0);
             const timing = ref(false);
+            const displayScore = ref(false);
 
             const highscoreModes = [
                 `Flag / Name`,
@@ -467,6 +477,12 @@
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
                     feedbackText.value = `<b>${answerPicked.countryName}</b> is correct!`;
+
+                    // Check for a timed run to have finished
+                    if(pseudoRandomPool.value.length == 0){
+                        timing.value = false;
+                        displayScore.value = true;
+                    }
                     generateQuestion();
                 }
                 else{
@@ -701,6 +717,31 @@
                 if(timing.value){
                     timing.value = false;
                 }
+
+                let hsDisplayIndex = 0;
+                //#region flag display index 
+                if(currentOptions.value.questionMode == 'flag' && currentOptions.value.answerMode == 'name'){
+                    hsDisplayIndex = 0;
+                }
+                if(currentOptions.value.questionMode == 'flag' && currentOptions.value.answerMode == 'globe'){
+                    hsDisplayIndex = 1;
+                }
+                if(currentOptions.value.questionMode == 'name' && currentOptions.value.answerMode == 'flag'){
+                    hsDisplayIndex = 2;
+                }
+                if(currentOptions.value.questionMode == 'name' && currentOptions.value.answerMode == 'globe'){
+                    hsDisplayIndex = 3;
+                }
+                if(currentOptions.value.questionMode == 'globe' && currentOptions.value.answerMode == 'flag'){
+                    hsDisplayIndex = 4;
+                }
+                if(currentOptions.value.questionMode == 'globe' && currentOptions.value.answerMode == 'name'){
+                    hsDisplayIndex = 5;
+                }
+                highscoreModeDisplayIndex.value = hsDisplayIndex;
+                //#endregion
+
+                displayScore.value = false;
                 timerDialogRef.value?.showModal();
             }
 
@@ -719,8 +760,8 @@
                 startTime = new Date();
                 timing.value = true;
                 closeTimer();
-
                 generateAnswerPool();
+                generateQuestion();
             }
 
             const timerUpdate = () => {
@@ -740,7 +781,7 @@
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
                 globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
                 highscoreModeDisplayIndex, closeTimer, timing, startTimer, totalTimeElapsed, pseudoRandomPool,
-                answerPool
+                answerPool, displayScore
             }
         },
     }
