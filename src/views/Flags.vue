@@ -6,7 +6,7 @@
             <div style="display: flex; width: 100%;">
                 <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="clickTimer">
-                    Timer / Highscores
+                    {{ timing ? `${formatTime(totalTimeElapsed)} ${getTimeCountriesLeftDisplay()}` : 'Timer / Highscores' }}
                 </button>
                 <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="openSettings">
@@ -175,7 +175,7 @@
     </dialog>
     <dialog ref="timerDialogRef">
         <div class="flags-options-dialog" style="width: 350px">
-            <h3 style="margin-top: 1rem;">Showing highscores for:</h3>
+            <h3 style="margin-top: 0;">Showing highscores for:</h3>
             <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
             @click="cycleHighscoreDisplay">
                 {{ highscoreModes[highscoreModeDisplayIndex] }}
@@ -194,13 +194,39 @@
                     <span class="highscore-time">--</span>
                 </div>
             </div>
-            <h3 style="margin-top: 1rem;">Start Timer</h3>
-            <span>Selected region: <b>All</b></span>
+            <br>
+            <div style="background-color: #000; height: 1px; width: 100%;"></div>
+            <br>
+            <h3 style="margin-top: 0;">Timer</h3>
+            <span v-if="(currentOptions.answerMode == 'flag' || (currentOptions.answerMode == 'name' && currentOptions.nameEntryType == 'button')) && isTimedRunValid()"
+                style="display: block;">
+                <i>Note: All timed runs use <b>eight</b> answer options.</i>
+            </span>
+            <span v-if="isTimedRunValid()" style="display: block; margin-top: .5rem;">
+                Selected region:
+            </span>
+            <span v-if="isTimedRunValid()" style="display: block; margin-top: .25rem;">
+                <b>{{getRegionFilterString()}}</b>
+            </span>
+            <span v-else style="display: block; margin-top: .5rem; color: red;">
+                Region filter not valid for a timed run.
+            </span>
+            <span v-if="isTimedRunValid()" 
+                style="display: block; margin-top: .5rem;">
+                Starting run for mode:
+            </span>
+            <span v-if="isTimedRunValid()" 
+                style="display: block; margin-top: .25rem;">
+                <b>{{ capitalize(currentOptions.questionMode) }} / {{capitalize(currentOptions.answerMode) }}</b>
+            </span>
             <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
                 <button class="vine-button" style="font-size: 12pt;" @click="closeTimer">
                     Close
                 </button>
-                <button class="vine-button" style="font-size: 12pt;">
+                <button class="vine-button" style="font-size: 12pt;"
+                :disabled="!isTimedRunValid()"
+                :class="isTimedRunValid() ? '' : 'disabled'"
+                @click="startTimer">
                     Start
                 </button>
             </div>
@@ -210,7 +236,7 @@
   
 <script lang="ts">
     import '@/assets/flags.css';
-    import { PropType, defineComponent, computed, ref, onMounted, onUnmounted, } from 'vue';
+    import { PropType, defineComponent, computed, ref, onMounted, onUnmounted, onUpdated, } from 'vue';
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import FlagAnswer from './FlagAnswer.vue';
@@ -243,6 +269,40 @@
                 const goodForFlag = this.tempOptions.answerMode === 'flag';
                 const goodForName = this.tempOptions.answerMode === 'name' && this.tempOptions.nameEntryType === 'button';
                 return goodForName || goodForFlag;
+            },
+            formatTime(milliseconds: number): string {
+                const totalSeconds = Math.floor(milliseconds / 1000)
+                const ms = Math.floor((milliseconds % 1000) / 10)
+                
+                const minutes = Math.floor(totalSeconds / 60)
+                const seconds = totalSeconds % 60
+                
+                const minutesStr = minutes.toString().padStart(2, '0')
+                const secondsStr = seconds.toString().padStart(2, '0')
+                const msStr = ms.toString().padStart(2, '0')
+                
+                return `${minutesStr}:${secondsStr}:${msStr}`
+            },
+            getTimeCountriesLeftDisplay() : string {
+                const countriesAnswered = this.answerPool.length - this.pseudoRandomPool.length;
+                const totalCountries = this.answerPool.length;
+
+                return `(${countriesAnswered}/${totalCountries})`
+            },
+            isTimedRunValid() : boolean {
+                const regionListLength = this.currentOptions.regionFilter.length;
+                return (regionListLength == 0 || regionListLength == 1 || regionListLength == 9);
+            },
+            getRegionFilterString() : string {
+                const regionListLength = this.currentOptions.regionFilter.length;
+                if(regionListLength == 0 || regionListLength == 9){
+                    return 'All';
+                }
+                return this.currentOptions.regionFilter[0];
+            },
+            capitalize(s : string) : string {
+                const bigStart = s[0].toUpperCase();
+                return s.substring(0, 0) + bigStart + s.substring(1)
             }
         },
         setup() {
@@ -271,6 +331,11 @@
             const feedbackClass = ref("");
             const autoOptionFocused = ref(-1);
 
+            let startTime : Date;
+            let rafId: number | null = null;
+            const totalTimeElapsed = ref(0);
+            const timing = ref(false);
+
             const highscoreModes = [
                 `Flag / Name`,
                 `Flag / Globe`,
@@ -291,10 +356,14 @@
             onMounted(()=>{
                 loadInFlagData();
                 document.getElementById('click-me-text')?.classList.add('invisible');
+                rafId = requestAnimationFrame(timerUpdate);
             })
 
             onUnmounted(()=>{
                 document.getElementById('click-me-text')?.classList.remove('invisible');
+                if (rafId !== null) {
+                    cancelAnimationFrame(rafId)
+                }
             })
 
             async function loadInFlagData(){
@@ -367,6 +436,9 @@
             function skipQuestion(){
                 if(currentOptions.value.questionMode != 'name'){
                     feedbackText.value = `That was <b>${correctAnswer.value?.countryName}</b>`
+                }
+                if(timing.value){
+                    timing.value = false;
                 }
                 generateQuestion();
             }
@@ -626,6 +698,9 @@
             }
 
             function clickTimer(){
+                if(timing.value){
+                    timing.value = false;
+                }
                 timerDialogRef.value?.showModal();
             }
 
@@ -640,6 +715,21 @@
                 }
             }
 
+            function startTimer(){
+                startTime = new Date();
+                timing.value = true;
+                closeTimer();
+
+                generateAnswerPool();
+            }
+
+            const timerUpdate = () => {
+                if(timing.value){
+                    totalTimeElapsed.value = (new Date()).getTime() - startTime.getTime();
+                }
+                rafId = requestAnimationFrame(timerUpdate)
+            }
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
@@ -649,7 +739,8 @@
                 autoOptionFocused, tryGuessOfInput, guessButton, handleNameInputKey, handleGuessInputKey,
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
                 globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
-                highscoreModeDisplayIndex, closeTimer
+                highscoreModeDisplayIndex, closeTimer, timing, startTimer, totalTimeElapsed, pseudoRandomPool,
+                answerPool
             }
         },
     }
