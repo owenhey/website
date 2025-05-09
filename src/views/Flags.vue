@@ -178,7 +178,7 @@
             <h3 style="margin-top: 0;">Showing highscores for:</h3>
             <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
             @click="cycleHighscoreDisplay">
-                {{ highscoreModes[highscoreModeDisplayIndex] }}
+                {{ capitalize(highscoreModes[highscoreModeDisplayIndex][0]) }} / {{ capitalize(highscoreModes[highscoreModeDisplayIndex][1]) }}
             </button>
             <div class="highscores-table" style="margin-top: 1rem;">
                 <div class="highscore-row" style="margin-bottom: .5rem;">
@@ -187,11 +187,11 @@
                 </div>
                 <div class="highscore-row" >
                     <span class="highscore-region">All</span>
-                    <span class="highscore-time">35.05</span>
+                    <span class="highscore-time">{{getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], highscoreModes[highscoreModeDisplayIndex][1], 'all')}}</span>
                 </div>
                 <div class="highscore-row" v-for="region in regionList">
                     <span class="highscore-region">{{region}}</span>
-                    <span class="highscore-time">--</span>
+                    <span class="highscore-time">{{getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], highscoreModes[highscoreModeDisplayIndex][1], region)}}</span>
                 </div>
             </div>
             <br>
@@ -240,11 +240,12 @@
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import FlagAnswer from './FlagAnswer.vue';
-    import { FlagAnswerData, FlagGameOptions } from '@/types';
+    import { FlagAnswerData, FlagGameOptions, FlagHighscores } from '@/types';
     import { GetDefaultFlagGameOptions } from '@/utils';
     import { Feature } from 'geojson';
     import Globe, { GlobeInstance } from 'globe.gl';
     import GlobeGL from './GlobeGL.vue';
+    import localforage from 'localforage';
 
     export default defineComponent({
         name: 'Flags',
@@ -312,6 +313,19 @@
                     return `Done! - ${this.formatTime(this.totalTimeElapsed)}`;
                 }
                 return 'Timer / Highscores';
+            },
+            getHighscoreData(questionMode : string, answerMode : string, region : string){
+                if(!this.loadedHighscoreData) return '--';
+
+                for (let index = 0; index < this.loadedHighscoreData.highscores.length; index++) {
+                    const element = this.loadedHighscoreData.highscores[index];
+                    if(element.questionMode != questionMode) continue;
+                    if(element.answerMode != answerMode) continue;
+                    if(element.region != region) continue;
+
+                    return this.formatTime(element.time);
+                }
+                return '--';
             }
         },
         setup() {
@@ -346,13 +360,15 @@
             const timing = ref(false);
             const displayScore = ref(false);
 
+            const loadedHighscoreData = ref<FlagHighscores | null>();
+
             const highscoreModes = [
-                `Flag / Name`,
-                `Flag / Globe`,
-                `Name / Flag`,
-                `Name / Globe`,
-                `Globe / Flag`,
-                `Globe / Name`,
+                ['flag', 'name'],
+                ['flag', 'globe'],
+                ['name', 'flag'],
+                ['name', 'globe'],
+                ['globe', 'flag'],
+                ['globe', 'name'],
             ]
             const highscoreModeDisplayIndex = ref(0);
 
@@ -367,7 +383,22 @@
                 loadInFlagData();
                 document.getElementById('click-me-text')?.classList.add('invisible');
                 rafId = requestAnimationFrame(timerUpdate);
+
+                getHighscores();
             })
+
+            async function getHighscores(){
+                const highscores = await localforage.getItem<string>('highscores');
+                if(highscores){
+                    loadedHighscoreData.value = JSON.parse(highscores);
+                }
+                else{
+                    loadedHighscoreData.value = {
+                        highscores: []
+                    };
+                }
+                console.log(JSON.stringify(loadedHighscoreData.value));
+            }
 
             onUnmounted(()=>{
                 document.getElementById('click-me-text')?.classList.remove('invisible');
@@ -482,6 +513,11 @@
                     if(pseudoRandomPool.value.length == 0){
                         timing.value = false;
                         displayScore.value = true;
+
+                        console.log("Stopped timer!");
+
+                        // Look for this mode in the highscores
+                        tryUpdateHighscores(totalTimeElapsed.value);
                     }
                     generateQuestion();
                 }
@@ -497,6 +533,41 @@
                         feedbackText.value = `<b>${answerPicked.countryName}</b> is incorrect!`;
                     }
                 }
+            }
+
+            function tryUpdateHighscores(time : number){
+                if(!loadedHighscoreData.value) return;
+
+                let region = 'All';
+                if(currentOptions.value.regionFilter.length == 1){
+                    region = currentOptions.value.regionFilter[0];
+                }
+
+                console.log("Trying to update highscores!" + region);
+
+                // Check to see if this time exists
+                for (let index = 0; index < loadedHighscoreData.value.highscores.length; index++) {
+                    const element = loadedHighscoreData.value.highscores[index];
+                    if(element.questionMode != currentOptions.value.questionMode) continue;
+                    if(element.answerMode != currentOptions.value.answerMode) continue;
+                    if(element.region != region) continue;
+
+                    if(time < element.time){
+                        loadedHighscoreData.value.highscores[index].time = time;
+                        localforage.setItem('highscores', JSON.stringify(loadedHighscoreData.value));
+                        return;
+                    }
+                }
+                
+                // Otherwise, add it
+                loadedHighscoreData.value.highscores.push({
+                    region: region,
+                    questionMode: currentOptions.value.questionMode,
+                    answerMode: currentOptions.value.answerMode,
+                    time: time,
+                    name: ''
+                });
+                localforage.setItem('highscores', JSON.stringify(loadedHighscoreData.value));
             }
 
             function openSettings(){
@@ -781,7 +852,7 @@
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
                 globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
                 highscoreModeDisplayIndex, closeTimer, timing, startTimer, totalTimeElapsed, pseudoRandomPool,
-                answerPool, displayScore
+                answerPool, displayScore, loadedHighscoreData
             }
         },
     }

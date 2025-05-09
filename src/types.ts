@@ -18,3 +18,15 @@ export interface FlagGameOptions{
     nameEntryType: 'button' | 'inputField';
     regionFilter: string[];
 }
+
+export interface FlagHighscores{
+    highscores : FlagHighscore[];
+}
+
+export interface FlagHighscore{
+    questionMode : string;
+    answerMode : string;
+    region : string;
+    time : number;
+    name: string;
+}
