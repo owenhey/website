@@ -79,7 +79,7 @@
                 });
             }
 
-            onMounted(()=>{
+            function openGlobe(){
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
                     console.log("Generating globe");
@@ -109,14 +109,22 @@
                         const controls = globe.controls();
                         controls.dampingFactor = .3;
                     });
-            })
+            }
 
-            onUnmounted(()=>{
+            function closeGlobe(){
                 if (globe) {
                     globe.pauseAnimation();
                     globe._destructor();
                     globe = null;
                 }
+            }
+
+            onMounted(()=>{
+                openGlobe();
+            })
+
+            onUnmounted(()=>{
+                closeGlobe();
             })
 
             function handleCountryClick(name : any){

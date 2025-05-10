@@ -16,6 +16,7 @@ export interface FlagGameOptions{
     questionMode: 'flag' | 'name' | 'globe';
     answerMode: 'flag' | 'name' | 'globe';
     nameEntryType: 'button' | 'inputField';
+    multipleAnswerMode: 'switch' | 'checkoff';
     regionFilter: string[];
 }
 

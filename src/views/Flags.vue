@@ -105,7 +105,7 @@
                     Globe
                 </button>
             </div>
-            <h3>Answer Mode</h3>
+            <h3 v-if="tempOptions.answerMode == 'name'">Answer Mode</h3>
             <div class="flag-mode-settings">
                 <button class="flag-toggle-button" 
                     :class="tempOptions.answerMode === 'flag' ? 'selected' : ''"
@@ -136,6 +136,25 @@
                     :class="tempOptions.nameEntryType === 'inputField' ? 'selected' : ''"
                     @click="tempOptions.nameEntryType = 'inputField'">
                     Input Field
+                </button>
+            </div>
+            <h3 
+                :style="tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button')? '' : 'opacity: 20%'">
+                Answer Pool Type
+            </h3>
+            <div class="flag-mode-settings" 
+                :style="tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button') ? '' : 'opacity: 20%'">
+                <button class="flag-toggle-button"
+                    :disabled="!(tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button'))"
+                    :class="tempOptions.multipleAnswerMode === 'switch' ? 'selected' : ''"
+                    @click="tempOptions.multipleAnswerMode = 'switch'">
+                    New Each Question
+                </button>
+                <button class="flag-toggle-button"
+                    :disabled="!(tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button'))"
+                    :class="tempOptions.multipleAnswerMode === 'checkoff' ? 'selected' : ''"
+                    @click="tempOptions.multipleAnswerMode = 'checkoff'">
+                    Persistent
                 </button>
             </div>
             <h3 :style="showAnswerCountSlider() ? '' : 'opacity: 20%'">
@@ -200,7 +219,7 @@
             <h3 style="margin-top: 0;">Timer</h3>
             <span v-if="(currentOptions.answerMode == 'flag' || (currentOptions.answerMode == 'name' && currentOptions.nameEntryType == 'button')) && isTimedRunValid()"
                 style="display: block;">
-                <i>Note: All timed runs use <b>eight</b> answer options.</i>
+                <i>Note: All timed runs use <b>persistent answer pool</b> mode.</i>
             </span>
             <span v-if="isTimedRunValid()" style="display: block; margin-top: .5rem;">
                 Selected region:
@@ -269,7 +288,8 @@
             showAnswerCountSlider(){
                 const goodForFlag = this.tempOptions.answerMode === 'flag';
                 const goodForName = this.tempOptions.answerMode === 'name' && this.tempOptions.nameEntryType === 'button';
-                return goodForName || goodForFlag;
+                const goodForAnswerPool = this.tempOptions.multipleAnswerMode == 'switch';
+                return (goodForName || goodForFlag) && goodForAnswerPool;
             },
             formatTime(milliseconds: number): string {
                 const totalSeconds = Math.floor(milliseconds / 1000)
@@ -336,6 +356,7 @@
             const tempOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
             const countSlider = ref<HTMLInputElement>();
             const regionList = ref<string[]>([]);
+            let forceGenerateAnswerPool = false;
 
             const question = ref("Which flag is this?");
             const questionFlagUrl = ref("");
@@ -343,6 +364,8 @@
 
             const answerList = ref<FlagAnswerData[]>([]);
             const answerPool = ref<FlagAnswerData[]>([]);
+            const answeredList = ref<FlagAnswerData[]>([]);
+
             // Just has one copy of everything so all the countries show up before showing again
             const pseudoRandomPool = ref<FlagAnswerData[]>([]);
             const questionAnswerList = ref<FlagAnswerData[]>([]);
@@ -467,9 +490,16 @@
                     }, 25);
                 }
 
-                // Generate n number of other options
-                questionAnswerList.value = 
-                    getRandomOptions(correctAnswer.value, currentOptions.value.answerCount);
+                // Generate n number of other options. Only do this if we are in switch mode
+                if(currentOptions.value.multipleAnswerMode == 'switch' || forceGenerateAnswerPool){
+                    forceGenerateAnswerPool = false;
+                    let numAnswers = currentOptions.value.answerCount;
+                    if(currentOptions.value.multipleAnswerMode == 'checkoff'){
+                        numAnswers = answerPool.value.length;
+                    }
+                    questionAnswerList.value = 
+                        getRandomOptions(correctAnswer.value, numAnswers);
+                }
 
                 pseudoRandomPool.value.splice(randomIndex, 1);
             }
@@ -481,6 +511,7 @@
                 if(timing.value){
                     timing.value = false;
                 }
+                answeredList.value.push(correctAnswer.value!);
                 generateQuestion();
             }
 
@@ -508,16 +539,18 @@
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
                     feedbackText.value = `<b>${answerPicked.countryName}</b> is correct!`;
+                    answeredList.value.push(correctAnswer.value!);
 
                     // Check for a timed run to have finished
                     if(pseudoRandomPool.value.length == 0){
-                        timing.value = false;
-                        displayScore.value = true;
+                        if(timing.value == true){
+                            timing.value = false;
+                            displayScore.value = true;
 
-                        console.log("Stopped timer!");
-
-                        // Look for this mode in the highscores
-                        tryUpdateHighscores(totalTimeElapsed.value);
+                            // Look for this mode in the highscores
+                            tryUpdateHighscores(totalTimeElapsed.value);
+                        }
+                        forceGenerateAnswerPool = true;
                     }
                     generateQuestion();
                 }
@@ -584,6 +617,9 @@
                 closeSettings();
 
                 if(needToRegenQuestion){
+                    if(currentOptions.value.multipleAnswerMode == 'checkoff'){
+                        forceGenerateAnswerPool = true;
+                    }
                     generateAnswerPool();
                     generateQuestion();
                 }
@@ -605,6 +641,7 @@
 
             function generateAnswerPool(){
                 answerPool.value = answerList.value;
+                answeredList.value = [];
                 if(currentOptions.value.regionFilter.length !== 0){
                     answerPool.value = answerList.value.filter(x=>currentOptions.value.regionFilter.includes(x.area));
                 }
@@ -830,6 +867,10 @@
             function startTimer(){
                 startTime = new Date();
                 timing.value = true;
+
+                currentOptions.value.multipleAnswerMode = 'checkoff';
+                forceGenerateAnswerPool = true;
+
                 closeTimer();
                 generateAnswerPool();
                 generateQuestion();
@@ -852,7 +893,7 @@
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
                 globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
                 highscoreModeDisplayIndex, closeTimer, timing, startTimer, totalTimeElapsed, pseudoRandomPool,
-                answerPool, displayScore, loadedHighscoreData
+                answerPool, displayScore, loadedHighscoreData, answeredList
             }
         },
     }

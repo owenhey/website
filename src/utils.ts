@@ -22,8 +22,9 @@ export function GetDefaultFlagGameOptions() : FlagGameOptions{
     return {
         answerCount: 8,
         questionMode: 'flag',
-        answerMode: 'globe',
+        answerMode: 'name',
         nameEntryType: 'button',
+        multipleAnswerMode: 'switch',
         regionFilter: []
     }
 }
