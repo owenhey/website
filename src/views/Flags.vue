@@ -500,6 +500,11 @@
                     }
                     questionAnswerList.value = 
                         getRandomOptions(correctAnswer.value, numAnswers);
+
+                    if(currentOptions.value.answerMode==='name'){
+                        // Sort the question answer list if we are in name answer mode
+                        questionAnswerList.value.sort((a, b) => a.countryName > b.countryName ? 1 : -1);
+                    }
                 }
 
                 pseudoRandomPool.value.splice(randomIndex, 1);
