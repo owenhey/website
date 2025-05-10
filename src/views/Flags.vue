@@ -409,7 +409,7 @@
 
             async function loadInFlagData(){
                 try {
-                    const response = await fetch('/src/assets/flags.csv');
+                    const response = await fetch('/flags.csv');
                     const csvText = await response.text();
                     const lines = csvText.split('\n');
                     const headers = lines[0].split(',');
