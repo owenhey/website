@@ -101,7 +101,7 @@
     transition: .08s background-color linear, .08s color linear;
 }
 
-.flag-name-button:hover{
+.flag-name-button:not(:disabled):hover{
     background-color: var(--darkgreen);
     color: var(--lightwhite);
 }
@@ -125,8 +125,8 @@
     padding: 5px;
 }
 
-.flag-button-holder:not(.no-input):active,
-.flag-button-holder:not(.no-input):hover{
+.flag-button-holder:not(.no-input):not(:disabled):active,
+.flag-button-holder:not(.no-input):not(:disabled):hover{
     background-color: var(--green);
 }
 

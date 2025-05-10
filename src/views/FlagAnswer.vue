@@ -1,8 +1,12 @@
 <template>
-   <button @click="onClick" class="flag-name-button" v-if="display==='name'">
+   <button @click="onClick" class="flag-name-button" v-if="display==='name'"
+        :style="greyOut ? 'opacity: 40%' : ''"
+        :disabled="greyOut">
         {{answerData.countryName}}
    </button>
-   <button @click="onClick" v-if="display==='flag'" class="flag-button-holder">
+   <button @click="onClick" v-if="display==='flag'" class="flag-button-holder" 
+        :style="greyOut ? 'opacity: 20%' : ''"
+        :disabled="greyOut">
         <img :src="answerData.imageUrl"> 
    </button>
 </template>
@@ -25,6 +29,10 @@
                 required: true,
                 type: Object as PropType<FlagAnswerData>
             },
+            greyOut: {
+                required: false,
+                type: Boolean
+            }
         },
         setup(props, {emit}) {
             function onClick(){

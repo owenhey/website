@@ -41,6 +41,7 @@
                     v-for="(answer, index) in questionAnswerList"
                     :answerData="answer"
                     :display="currentOptions.answerMode"
+                    :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) ? true : false"
                     @onClick="handleAnswerPicked">
                 </FlagAnswer>
             </div>
@@ -364,7 +365,7 @@
 
             const answerList = ref<FlagAnswerData[]>([]);
             const answerPool = ref<FlagAnswerData[]>([]);
-            const answeredList = ref<FlagAnswerData[]>([]);
+            const answeredList = ref<string[]>([]);
 
             // Just has one copy of everything so all the countries show up before showing again
             const pseudoRandomPool = ref<FlagAnswerData[]>([]);
@@ -511,7 +512,7 @@
                 if(timing.value){
                     timing.value = false;
                 }
-                answeredList.value.push(correctAnswer.value!);
+                answeredList.value.push(correctAnswer.value!.countryName);
                 generateQuestion();
             }
 
@@ -539,7 +540,7 @@
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
                     feedbackText.value = `<b>${answerPicked.countryName}</b> is correct!`;
-                    answeredList.value.push(correctAnswer.value!);
+                    answeredList.value.push(correctAnswer.value!.countryName);
 
                     // Check for a timed run to have finished
                     if(pseudoRandomPool.value.length == 0){
