@@ -79,6 +79,10 @@
                 });
             }
 
+            const raisedCountries = ['Andorra', 'Vatican City', 'Monaco', 'Liechtenstein', 'Singapore', 
+                                     'Hong Kong',
+            ];
+
             function openGlobe(){
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
@@ -91,7 +95,7 @@
                         .backgroundColor("#0000")
                         .showAtmosphere(false)
                         .polygonsData(countries.features.filter((d:Feature) => d.properties?.ISO_A2 !== 'AQ'))
-                        .polygonAltitude(0.01)
+                        .polygonAltitude((d : any)  => raisedCountries.includes(d.properties.ADMIN) ? 0.011 : 0.01)
                         .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
                         .polygonStrokeColor(() => '#111');
 
@@ -99,7 +103,6 @@
                             globe
                             .onPolygonClick(hoverD => handleCountryClick(hoverD))
                             .onPolygonHover(hoverD => globe!
-                                .polygonAltitude(d => d === hoverD ? 0.02 : 0.01)
                                 .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA'))
                             .polygonsTransitionDuration(50);
                         }
