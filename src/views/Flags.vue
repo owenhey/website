@@ -421,7 +421,6 @@
                         highscores: []
                     };
                 }
-                console.log(JSON.stringify(loadedHighscoreData.value));
             }
 
             onUnmounted(()=>{

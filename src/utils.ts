@@ -22,7 +22,7 @@ export function GetDefaultFlagGameOptions() : FlagGameOptions{
     return {
         answerCount: 8,
         questionMode: 'flag',
-        answerMode: 'name',
+        answerMode: 'globe',
         nameEntryType: 'button',
         multipleAnswerMode: 'switch',
         regionFilter: []
