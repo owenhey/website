@@ -555,6 +555,7 @@
                             // Look for this mode in the highscores
                             tryUpdateHighscores(totalTimeElapsed.value);
                         }
+                        answeredList.value = [];
                         forceGenerateAnswerPool = true;
                     }
                     generateQuestion();
@@ -575,13 +576,12 @@
 
             function tryUpdateHighscores(time : number){
                 if(!loadedHighscoreData.value) return;
+                if(time == 0) return;
 
                 let region = 'All';
                 if(currentOptions.value.regionFilter.length == 1){
                     region = currentOptions.value.regionFilter[0];
                 }
-
-                console.log("Trying to update highscores!" + region);
 
                 // Check to see if this time exists
                 for (let index = 0; index < loadedHighscoreData.value.highscores.length; index++) {

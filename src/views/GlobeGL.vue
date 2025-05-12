@@ -45,18 +45,17 @@
                             let altitude = 1;
 
                             const maxDiff = Math.max(Math.abs(d.bbox[0] - d.bbox[2]), Math.abs(d.bbox[1] - d.bbox[3]));
-                            console.log(maxDiff);
                             if(maxDiff < 2){
-                                altitude = .2;
+                                altitude = .3;
                             }
                             else if(maxDiff < 5){
-                                altitude = .4;
+                                altitude = .5;
                             }
                             else if (maxDiff < 15){
-                                altitude = .6
+                                altitude = .7
                             }
                             else {
-                                altitude = 1;
+                                altitude = 1.25;
                             }
 
 
