@@ -3,7 +3,7 @@
         <div class="flags-content" ref="flagContentDiv">
             <Nav class="flags-nav-header"></Nav>
             <h1 style="text-align: center;">Welcome to the flag game</h1>
-            <div style="display: flex; width: 100%;">
+            <div style="display: flex; width: fit-content; justify-content: center; gap: 20px;">
                 <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="clickTimer">
                     {{getTimerButtonText()}}
@@ -13,75 +13,79 @@
                     Game Options
                 </button>
             </div>
-            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <span v-html="question" style="text-align: center;"></span>
-                <button 
-                    class="vine-button" 
-                    style="font-size: 10pt; translate: 0px -5px;"
-                    @click="skipQuestion"
-                    >Skip
-                </button>
-            </div>
-            <div v-if="currentOptions.questionMode==='flag'" 
-                class="flag-button-holder no-input" 
-                style="height: 20vh; width: auto; max-height: 300px;">
-                <img :src="questionFlagUrl"> 
-            </div>
-            <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
-                <GlobeGL 
-                    ref="globeQuestionRef"
-                    :mode="'highlight'"
-                    :countryName="correctAnswer?.countryName">
-                </GlobeGL>
-            </div>
-            <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
-            <div class="flag-answer-display" 
-                v-if="currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
-                <FlagAnswer
-                    v-for="(answer, index) in questionAnswerList"
-                    :answerData="answer"
-                    :display="currentOptions.answerMode"
-                    :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) ? true : false"
-                    @onClick="handleAnswerPicked">
-                </FlagAnswer>
-            </div>
-            <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
-                v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
-                <input class="flag-game-input raleway" 
-                    @input="handleNameEntryInputChange" 
-                    ref="nameInput" 
-                    tabindex="1"
-                    @keydown="handleNameInputKey"
-                    @focus="autoOptionFocused = -1">
-                <button 
-                    class="vine-button" 
-                    style="font-size: 10pt;" 
-                    :tabindex="7" 
-                    @click="tryGuessOfInput()"
-                    @keydown="handleGuessInputKey"
-                    ref="guessButton">
-                    Guess
-                </button>
-            </div>
-            <div class="flags-auto-options" 
-                v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
-                <template v-for="(option, index) in autoInputOptions">
-                    <button class="flag-game-input-auto-option" 
-                        v-if="index < 5" :tabindex="index + 2"
-                        :id="`autoOption${index}`"
-                        @keydown="handleAutoOptionKey"
-                        @click="handleAnswerPicked(option)"
-                        @focus="handleAutoOptionFocused(index)"
-                        :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
-                        {{ option.countryName }}
+            <div class="flag-question-answer">
+                <div class="flag-question">
+                    <span v-html="question" style="text-align: center; height: 3rem;"></span>
+                    <button 
+                        class="vine-button" 
+                        style="font-size: 10pt; translate: 0px -5px;"
+                        @click="skipQuestion"
+                        >Skip
                     </button>
-                </template>
-            </div>
-            <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
-                <GlobeGL 
-                    ref="globeAnswerRef"
-                    @onCountryClick="handleFlagCountryClicked">
-                </GlobeGL>
+                    <div v-if="currentOptions.questionMode==='flag'" 
+                        class="flag-button-holder no-input" 
+                        style="height: 20vh; width: auto; max-height: 300px;">
+                        <img :src="questionFlagUrl"> 
+                    </div>
+                    <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
+                        <GlobeGL 
+                            ref="globeQuestionRef"
+                            :mode="'highlight'"
+                            :countryName="correctAnswer?.countryName">
+                        </GlobeGL>
+                    </div>
+                    <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
+                </div>
+                <div class="flag-answer">
+                    <div class="flag-answer-display" 
+                        v-if="currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
+                        <FlagAnswer
+                            v-for="(answer, index) in questionAnswerList"
+                            :answerData="answer"
+                            :display="currentOptions.answerMode"
+                            :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) ? true : false"
+                            @onClick="handleAnswerPicked">
+                        </FlagAnswer>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
+                        v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                        <input class="flag-game-input raleway" 
+                            @input="handleNameEntryInputChange" 
+                            ref="nameInput" 
+                            tabindex="1"
+                            @keydown="handleNameInputKey"
+                            @focus="autoOptionFocused = -1">
+                        <button 
+                            class="vine-button" 
+                            style="font-size: 10pt;" 
+                            :tabindex="7" 
+                            @click="tryGuessOfInput()"
+                            @keydown="handleGuessInputKey"
+                            ref="guessButton">
+                            Guess
+                        </button>
+                    </div>
+                    <div class="flags-auto-options" 
+                        v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
+                        <template v-for="(option, index) in autoInputOptions">
+                            <button class="flag-game-input-auto-option" 
+                                v-if="index < 5" :tabindex="index + 2"
+                                :id="`autoOption${index}`"
+                                @keydown="handleAutoOptionKey"
+                                @click="handleAnswerPicked(option)"
+                                @focus="handleAutoOptionFocused(index)"
+                                :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
+                                {{ option.countryName }}
+                            </button>
+                        </template>
+                    </div>
+                    <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
+                        <GlobeGL 
+                            ref="globeAnswerRef"
+                            @onCountryClick="handleFlagCountryClicked">
+                        </GlobeGL>
+                    </div>
+                </div>
             </div>
         </div>
 	</div>
@@ -471,7 +475,12 @@
                 correctAnswer.value = pseudoRandomPool.value[randomIndex];
 
                 if(currentOptions.value.questionMode === 'name'){
-                    question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
+                    if(currentOptions.value.answerMode === 'flag'){
+                        question.value = `Which flag is <b>${correctAnswer.value.countryName}<b>?`;
+                    }
+                    else if(currentOptions.value.answerMode === 'globe'){
+                        question.value = `Where is <b>${correctAnswer.value.countryName}<b>?`;
+                    }
                 }
                 else if(currentOptions.value.questionMode ==='flag'){
                     question.value = `Which flag is this?`;
