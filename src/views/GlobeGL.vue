@@ -79,7 +79,7 @@
             }
 
             const raisedCountries = ['Andorra', 'Vatican City', 'Monaco', 'Liechtenstein', 'Singapore', 
-                                     'Hong Kong',
+                                     'Hong Kong', 'Macau', 'San Marino'
             ];
 
             function openGlobe(){
