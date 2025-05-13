@@ -19,6 +19,10 @@
                 type: String,
                 default: 'click'
             },
+            size: {
+                type: Number,
+                required: true
+            },
             countryName:{
                 type: String,
                 default: '_none_'
@@ -46,13 +50,13 @@
 
                             const maxDiff = Math.max(Math.abs(d.bbox[0] - d.bbox[2]), Math.abs(d.bbox[1] - d.bbox[3]));
                             if(maxDiff < 2){
-                                altitude = .3;
-                            }
-                            else if(maxDiff < 5){
                                 altitude = .5;
                             }
+                            else if(maxDiff < 5){
+                                altitude = .9;
+                            }
                             else if (maxDiff < 15){
-                                altitude = .7
+                                altitude = 1
                             }
                             else {
                                 altitude = 1.25;
@@ -89,8 +93,8 @@
                     globe = new Globe(globeDiv.value!)
                         .globeImageUrl('/worldmap_blank.png')
                         .lineHoverPrecision(0)
-                        .width(650)
-                        .height(650)
+                        .width(props.size + 150)
+                        .height(props.size + 150)
                         .backgroundColor("#0000")
                         .showAtmosphere(false)
                         .polygonsData(countries.features.filter((d:Feature) => d.properties?.ISO_A2 !== 'AQ'))
@@ -102,7 +106,7 @@
                             globe
                             .onPolygonClick(hoverD => handleCountryClick(hoverD))
                             .onPolygonHover(hoverD => globe!
-                                .polygonCapColor(d => d === hoverD ? '#FEC' : '#DCA'))
+                                .polygonCapColor(d => d === hoverD ? '#FFD' : '#DCA'))
                             .polygonsTransitionDuration(50);
                         }
 

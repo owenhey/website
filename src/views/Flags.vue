@@ -2,7 +2,7 @@
     <div class="flags-base">
         <div class="flags-content" ref="flagContentDiv">
             <Nav class="flags-nav-header"></Nav>
-            <h1 style="text-align: center;">Welcome to the flag game</h1>
+            <h1 style="text-align: center; margin-top: 1rem;">Welcome to the flag game</h1>
             <div style="display: flex; width: fit-content; justify-content: center; gap: 20px;">
                 <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
                     @click="clickTimer">
@@ -15,7 +15,8 @@
             </div>
             <div class="flag-question-answer">
                 <div class="flag-question">
-                    <span v-html="question" style="text-align: center; height: 3rem;"></span>
+                    <span v-html="question" style="text-align: center; height: 3rem; width: 20rem;"
+                    :style="currentOptions.questionMode == 'globe' ? 'width: 30rem;' : 'width: 20rem;'"></span>
                     <button 
                         class="vine-button" 
                         style="font-size: 10pt; translate: 0px -5px;"
@@ -24,12 +25,14 @@
                     </button>
                     <div v-if="currentOptions.questionMode==='flag'" 
                         class="flag-button-holder no-input" 
-                        style="height: 20vh; width: auto; max-height: 300px;">
+                        style="height: 35vh; width: auto;">
                         <img :src="questionFlagUrl"> 
                     </div>
-                    <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
+                    <div class="globe-container" v-if="currentOptions.questionMode === 'globe'"
+                    style="height: 400px; width: 400px; min-height: 400px; min-width: 400px;">
                         <GlobeGL 
                             ref="globeQuestionRef"
+                            :size="400"
                             :mode="'highlight'"
                             :countryName="correctAnswer?.countryName">
                         </GlobeGL>
@@ -38,7 +41,8 @@
                 </div>
                 <div class="flag-answer">
                     <div class="flag-answer-display" 
-                        v-if="currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField'">
+                        v-if="(currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField') && currentOptions.answerMode !== 'globe'"
+                        :style="flagAnswerDisplayStyle()">
                         <FlagAnswer
                             v-for="(answer, index) in questionAnswerList"
                             :answerData="answer"
@@ -81,6 +85,7 @@
                     </div>
                     <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
                         <GlobeGL 
+                            :size="550"
                             ref="globeAnswerRef"
                             @onCountryClick="handleFlagCountryClicked">
                         </GlobeGL>
@@ -351,6 +356,24 @@
                     return this.formatTime(element.time);
                 }
                 return '--';
+            },
+            flagAnswerDisplayStyle(){
+                if(this.currentOptions.answerMode == 'flag'){
+                    if(this.currentOptions.questionMode == 'name'){
+                        return 'margin-top: 1rem';
+                    }
+                    else{ // globe
+                        return 'margin-top: 10rem';
+                    }
+                }
+                else{
+                    if(this.currentOptions.questionMode == 'globe'){
+                        return 'margin-top: 15rem';
+                    }
+                    else{ // flag
+                        return 'margin-top: 12rem';
+                    }
+                }
             }
         },
         setup() {
@@ -552,7 +575,13 @@
                 }
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
-                    feedbackText.value = `<b>${answerPicked.countryName}</b> is correct!`;
+                    if(currentOptions.value.answerMode == 'globe' || currentOptions.value.answerMode == 'flag'){
+                        feedbackText.value = `✅ <b>Correct!<b>`;
+                    }
+                    else if (currentOptions.value.answerMode == 'name'){
+                        feedbackText.value = `✅ <b>${answerPicked.countryName}</b> is correct!`
+                    }
+                    feedbackClass.value = "feedback-correct";
                     answeredList.value.push(correctAnswer.value!.countryName);
 
                     // Check for a timed run to have finished
