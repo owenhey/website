@@ -51,7 +51,7 @@
                             @onClick="handleAnswerPicked">
                         </FlagAnswer>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem;" 
+                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem; width: 28rem;" 
                         v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                         <input class="flag-game-input raleway" 
                             @input="handleNameEntryInputChange" 
@@ -371,7 +371,7 @@
                         return 'margin-top: 15rem';
                     }
                     else{ // flag
-                        return 'margin-top: 12rem';
+                        return 'margin-top: 1rem';
                     }
                 }
             }

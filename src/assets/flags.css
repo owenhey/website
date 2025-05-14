@@ -20,17 +20,24 @@
     overflow-y: scroll;
     width: fit-content;
     height: fit-content;
-    max-height: 800px;
+    max-height: 100vh;
     padding-top: 20px;
     padding-bottom: 50px;
     padding-left: 5px;
-    padding-right: 15px;
+    padding-right: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-direction: column;
     position: relative;
     pointer-events: none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.flags-content::-webkit-scrollbar,
+.flags-content::-webkit-scrollbar-button {
+    display: none;
 }
 
 .flags-content > *{
@@ -323,6 +330,7 @@
     display: flex;
     flex-direction: column;
     height: 200px;
+    translate: 2.3rem 1rem;
 }
 
 .flag-game-input-auto-option{
