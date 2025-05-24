@@ -88,7 +88,7 @@
                             :size="550"
                             ref="globeAnswerRef"
                             :country-name="answerTempHighlight"
-                            :mode="'highlight'"
+                            :mode="globeAnswerMode"
                             @onCountryClick="handleFlagCountryClicked">
                         </GlobeGL>
                     </div>
@@ -332,7 +332,7 @@
             </div>
         </div>
     </dialog>
-    <button @click="testpython">Hello</button>
+    <!-- <button @click="testpython">Hello</button> -->
 </template>
   
 <script lang="ts">
@@ -1063,7 +1063,8 @@
 
             function getGlobalHighscores(){
                 globalHighscoreData.value = {highscores: []};
-                const baseUrl = 'http://127.0.0.1:5000';
+                // const baseUrl = 'http://127.0.0.1:5000';
+                const baseUrl = 'http://oysterhey.com:5000';
                 fetch(baseUrl + '/send?', {
                     method: 'GET',
                     headers: {
@@ -1133,9 +1134,10 @@
                     region = currentOptions.value.regionFilter[0];
                 }
 
-                let name = highscoreName.value.replace(/[^a-zA-Z0-9_-]/g, '');
+                let name = highscoreName.value.replace(/[^a-zA-Z0-9_\s-]/g, '').trim();
 
-                const baseUrl = 'http://127.0.0.1:5000';
+                // const baseUrl = 'http://127.0.0.1:5000';
+                const baseUrl = 'http://oysterhey.com:5000';
                 const params = new URLSearchParams({
                     name: name,
                     mode: `${currentOptions.value.questionMode}/${currentOptions.value.answerMode}`,

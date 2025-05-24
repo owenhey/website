@@ -2,7 +2,6 @@
     <div ref="globeDiv" class="globe-canvas">
 
     </div>
-    <span style="position: absolute; bottom: 10px;">{{ countryName }}</span>
 </template>
   
 <script lang="ts">
