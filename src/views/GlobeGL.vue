@@ -35,19 +35,11 @@
             let globe : GlobeInstance | null;
             const globeDiv = ref<HTMLDivElement>();
 
-            function showUniformColor(){
-                console.log("Showing uniform color");
-                if(!globe) return;
-                globe.polygonCapColor((d:any)=>{
-                    return '#DCA';
-                });
-            }
-
-            function showCountry(countryName : string){
+            function showCountry(){
                 console.log("Refreshing highlight: " + props.countryName + " mode is: " + props.mode);
                 if(!globe) return;
                 globe!.polygonCapColor((d:any)=>{
-                    if(d.properties.ADMIN.toLowerCase() === countryName.toLowerCase()){
+                    if(d.properties.ADMIN.toLowerCase() === props.countryName.toLowerCase()){
                         const bboxMiddle = [d.bbox[0] + d.bbox[2], d.bbox[1] + d.bbox[3]];
                         bboxMiddle[0] /= 2;
                         bboxMiddle[1] /= 2;
@@ -113,10 +105,11 @@
                         globe
                         .onPolygonClick(hoverD => handleCountryClick(hoverD))
                         .onPolygonHover(hoverD => globe!
-                            .polygonCapColor(d => d === hoverD && props.mode == 'click' ? '#FFD' : '#DCA'))
+                            .polygonCapColor((d:any) => {
+                                return d === hoverD && props.mode == 'click' ? '#FFD' : 
+                                    d.properties.ADMIN.toLowerCase() == props.countryName.toLowerCase() ? '#F00' : '#DCA'
+                }           ))
                         .polygonsTransitionDuration(50);
-
-                        showUniformColor();
 
                         const controls = globe.controls();
                         controls.dampingFactor = .3;
@@ -145,7 +138,7 @@
                 emit('onCountryClick', name.properties!.ADMIN);
             }
 
-            return {globeDiv, showUniformColor, showCountry}
+            return {globeDiv, showCountry}
         },
     }
 );

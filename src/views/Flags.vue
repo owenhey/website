@@ -332,7 +332,7 @@
             </div>
         </div>
     </dialog>
-    <!-- <button @click="testpython">Hello</button> -->
+    <button @click="testpython">Hello</button>
 </template>
   
 <script lang="ts">
@@ -589,7 +589,7 @@
                 answerTempHighlight.value = '';
                 globeAnswerMode.value = 'click';
                 setTimeout(() => {
-                    globeAnswerRef.value?.showUniformColor();
+                    globeAnswerRef.value?.showCountry();
                 }, 25);
 
                 // Choose a random flag
@@ -615,9 +615,9 @@
                     else if(currentOptions.value.answerMode === 'name'){
                         question.value = `Which country is this?`;
                     }
-
+                    
                     setTimeout(() => {
-                        globeQuestionRef.value?.showCountry(correctAnswer.value!.countryName);
+                        globeQuestionRef.value?.showCountry();
                     }, 25);
                 }
 
@@ -931,7 +931,9 @@
                 globeAnswerMode.value = 'highlight';
                 waitingForSomething = true;
                 
-                globeAnswerRef.value!.showCountry(correctAnswer.value!.countryName);
+                setTimeout(() => {
+                    globeAnswerRef.value!.showCountry();
+                }, 25);
 
                 setTimeout(() => {
                     generateQuestion();
@@ -980,6 +982,15 @@
                         return;
                     }
                 });
+            }
+
+            function zoomInOnCountry(countryName : string){
+                if(!globeAnswerRef.value) return;
+                answerTempHighlight.value = countryName.toLowerCase();
+
+                setTimeout(() => {
+                    globeAnswerRef.value?.showCountry();
+                }, 25);
             }
 
             function handleFlagCountryClicked(countryName : string){
@@ -1057,7 +1068,7 @@
             }
 
             function testpython(){
-                timerFinishRef.value?.showModal();
+                zoomInOnCountry(allFlagData[Math.floor(Math.random() *allFlagData.length)].countryName.toLowerCase());
             }
 
 
