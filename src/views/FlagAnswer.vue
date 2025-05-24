@@ -6,7 +6,7 @@
    </button>
    <button @click="onClick" v-if="display==='flag'" class="flag-button-holder" 
         :style="greyOut ? 'opacity: 20%' : ''"
-        :disabled="greyOut">
+        :disabled="greyOut || !interactable">
         <img :src="answerData.imageUrl" draggable="false"> 
    </button>
 </template>
@@ -32,6 +32,10 @@
             greyOut: {
                 required: false,
                 type: Boolean
+            },
+            interactable: {
+                required: false,
+                default: true
             }
         },
         setup(props, {emit}) {

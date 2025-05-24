@@ -38,6 +38,12 @@
                         </GlobeGL>
                     </div>
                     <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
+                    <FlagAnswer v-if="tempFlagAnswer != null && currentOptions.answerMode == 'flag'"
+                        :answer-data="tempFlagAnswer"
+                        :display="'flag'"
+                        :interactable="false">
+
+                    </FlagAnswer>
                 </div>
                 <div class="flag-answer">
                     <div class="flag-answer-display" 
@@ -209,14 +215,14 @@
             <h3 style="margin-top: 0;">Showing highscores for:</h3>
             <div style="display: flex; width: 100%; gap: 10px; justify-content: center;">
                 <button class="flag-toggle-button"
-                    :class="highscoreDisplayMode === 'personal' ? 'selected' : ''"
-                    @click="highscoreDisplayMode = 'personal'">
-                    Personal
-                </button>
-                <button class="flag-toggle-button"
                     :class="highscoreDisplayMode === 'global' ? 'selected' : ''"
                     @click="highscoreDisplayMode = 'global'">
                     Global
+                </button>
+                <button class="flag-toggle-button"
+                    :class="highscoreDisplayMode === 'personal' ? 'selected' : ''"
+                    @click="highscoreDisplayMode = 'personal'">
+                    Personal
                 </button>
             </div>
             <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
@@ -484,6 +490,7 @@
             const guessButton = ref<HTMLButtonElement>();
             const feedbackClass = ref("");
             const autoOptionFocused = ref(-1);
+            const tempFlagAnswer = ref<FlagAnswerData | null>(null);
 
 
             let startTime : Date;
@@ -495,7 +502,7 @@
 
             const loadedHighscoreData = ref<FlagHighscores | null>();
             const globalHighscoreData = ref<FlagHighscores | null>();
-            const highscoreDisplayMode = ref<'personal' | 'global'>('personal');
+            const highscoreDisplayMode = ref<'personal' | 'global'>('global');
             const gotNewPersonalHighcore = ref(false);
             const gotNewGlobalHighcore = ref(false);
             const highscoreNameInput = ref<HTMLInputElement>();
@@ -652,6 +659,11 @@
                 }
                 answeredList.value.push(correctAnswer.value!.countryName);
 
+                if(currentOptions.value.answerMode == 'flag'){
+                    feedbackText.value = `This is ${correctAnswer.value?.countryName}`;
+                    tempFlagAnswer.value = correctAnswer.value!;
+                }
+
                 if(currentOptions.value.answerMode == 'globe'){
                     showCorrectCountryOnGlobe();
                 }
@@ -677,6 +689,7 @@
                 if(waitingForSomething) return;
                 
                 autoOptionFocused.value = -1;
+                tempFlagAnswer.value = null;
 
                 if(nameInput.value){
                     nameInput.value.value = '';
@@ -688,6 +701,13 @@
                     feedbackText.value = `✅ <b>${answerPicked.countryName}</b> is correct!`
                     feedbackClass.value = "feedback-correct";
                     answeredList.value.push(correctAnswer.value!.countryName);
+
+                    setTimeout(() => {
+                        flagContentDiv.value!.scrollTo({
+                        top: 0,
+                        behavior: 'smooth' 
+                    });
+                    }, 25);
 
                     // Check for a timed run to have finished
                     if(pseudoRandomPool.value.length == 0){
@@ -794,6 +814,7 @@
                     }
                     generateAnswerPool();
                     generateQuestion();
+                    tempFlagAnswer.value = null;
                 }
             }
 
@@ -1199,7 +1220,7 @@
                 answerPool, displayScore, loadedHighscoreData, answeredList, answerTempHighlight, globeAnswerMode,
                 testpython, timerFinishRef, submitHighscore, highscoreDisplayMode, globalHighscoreData,
                 highscoreNameInput, gotNewPersonalHighcore, gotNewGlobalHighcore, highscoreName,
-                handleHighscoreNameChange
+                handleHighscoreNameChange, tempFlagAnswer
             }
         },
     }
