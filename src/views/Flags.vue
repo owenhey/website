@@ -87,6 +87,8 @@
                         <GlobeGL 
                             :size="550"
                             ref="globeAnswerRef"
+                            :country-name="answerTempHighlight"
+                            :mode="'highlight'"
                             @onCountryClick="handleFlagCountryClicked">
                         </GlobeGL>
                     </div>
@@ -203,8 +205,20 @@
         </div>
     </dialog>
     <dialog ref="timerDialogRef">
-        <div class="flags-options-dialog" style="width: 350px">
+        <div class="flags-options-dialog" style="width: 375px">
             <h3 style="margin-top: 0;">Showing highscores for:</h3>
+            <div style="display: flex; width: 100%; gap: 10px; justify-content: center;">
+                <button class="flag-toggle-button"
+                    :class="highscoreDisplayMode === 'personal' ? 'selected' : ''"
+                    @click="highscoreDisplayMode = 'personal'">
+                    Personal
+                </button>
+                <button class="flag-toggle-button"
+                    :class="highscoreDisplayMode === 'global' ? 'selected' : ''"
+                    @click="highscoreDisplayMode = 'global'">
+                    Global
+                </button>
+            </div>
             <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
             @click="cycleHighscoreDisplay">
                 {{ capitalize(highscoreModes[highscoreModeDisplayIndex][0]) }} / {{ capitalize(highscoreModes[highscoreModeDisplayIndex][1]) }}
@@ -212,15 +226,39 @@
             <div class="highscores-table" style="margin-top: 1rem;">
                 <div class="highscore-row" style="margin-bottom: .5rem;">
                     <h4 class="highscore-region">Region</h4>
-                    <h4 class="highscore-time">Time</h4>
+                    <h4 v-if="highscoreDisplayMode === 'global'" style="margin-left: auto;" class="highscore-region">Name</h4>
+                    <h4 style="width: 4rem;" :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">Time</h4>
                 </div>
-                <div class="highscore-row" >
+                <div class="highscore-row" style="padding-bottom: .3rem; padding-top: .3rem; background-color: var(--lightwhite1);">
                     <span class="highscore-region">All</span>
-                    <span class="highscore-time">{{getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], highscoreModes[highscoreModeDisplayIndex][1], 'all')}}</span>
+                    <span v-if="highscoreDisplayMode === 'global'" style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
+                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                        highscoreModes[highscoreModeDisplayIndex][1], 'All')?.name, 
+                        '--')}}
+                    </span>
+                    <span 
+                        style="width: 4rem;"
+                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">
+                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                        highscoreModes[highscoreModeDisplayIndex][1], 'All')?.time) }}
+                    </span>
                 </div>
-                <div class="highscore-row" v-for="region in regionList">
-                    <span class="highscore-region">{{region}}</span>
-                    <span class="highscore-time">{{getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], highscoreModes[highscoreModeDisplayIndex][1], region)}}</span>
+                <div class="highscore-row" 
+                        v-for="(region, index) in regionList"
+                         style="padding-bottom: .3rem; padding-top: .3rem;"
+                         :style="'background-color: ' + (index % 2 == 0 ? 'var(--lightwhite2)' : 'var(--lightwhite1)')">
+                    <span class="highscore-region">{{ region }}</span>
+                    <span v-if="highscoreDisplayMode === 'global'" style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
+                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                        highscoreModes[highscoreModeDisplayIndex][1], region)?.name, 
+                        '--')}}
+                    </span>
+                    <span 
+                        style="width: 4rem;"
+                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">
+                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                        highscoreModes[highscoreModeDisplayIndex][1], region)?.time) }}
+                    </span>
                 </div>
             </div>
             <br>
@@ -261,18 +299,50 @@
             </div>
         </div>
     </dialog>
+    <dialog ref="timerFinishRef">
+        <div class="flags-options-dialog" style="width: 350px">
+            <h2>Timed run complete!</h2>
+            <h3>Settings</h3>
+            <p style="margin-bottom: .5rem;"> Mode:  {{ capitalize(currentOptions.questionMode) }} / {{ capitalize(currentOptions.answerMode) }}</p>
+            <p> Region: {{ getRegionFilterString() }}</p>
+            <br>
+            <h3>Your time:</h3>
+            <span>{{ formatTime(totalTimeElapsed) }}</span>
+            <br>
+            <br>
+            <h3 v-if="gotNewPersonalHighcore">Personal Highscore!</h3>
+            <h3 v-if="gotNewGlobalHighcore">Global Highscore!</h3>
+            <span  v-if="gotNewGlobalHighcore" >Enter name: </span> 
+                <input v-if="gotNewGlobalHighcore" 
+                        ref="highscoreNameInput" 
+                        class="flag-highscore-name-input raleway" 
+                        maxlength="20"
+                        @input="handleHighscoreNameChange">
+            <div style="display: flex; width: 100%; justify-content: center; gap: 20px;">
+                <button v-if="gotNewGlobalHighcore" class="vine-button" style="font-size: 12pt; margin-top: 1rem;"
+                    @click="submitHighscore"
+                    :class="highscoreName.length==0 ? 'disabled' : ''"
+                    :disabled="highscoreName.length==0">
+                        Submit
+                </button>
+                <button v-else class="vine-button" style="font-size: 12pt; margin-top: 1rem;"
+                    @click="timerFinishRef?.close()">
+                        Close
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <button @click="testpython">Hello</button>
 </template>
   
 <script lang="ts">
     import '@/assets/flags.css';
-    import { PropType, defineComponent, computed, ref, onMounted, onUnmounted, onUpdated, } from 'vue';
+    import { defineComponent, ref, onMounted, onUnmounted, } from 'vue';
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import FlagAnswer from './FlagAnswer.vue';
-    import { FlagAnswerData, FlagGameOptions, FlagHighscores } from '@/types';
+    import { FlagAnswerData, FlagGameOptions, FlagHighscore, FlagHighscores } from '@/types';
     import { GetDefaultFlagGameOptions } from '@/utils';
-    import { Feature } from 'geojson';
-    import Globe, { GlobeInstance } from 'globe.gl';
     import GlobeGL from './GlobeGL.vue';
     import localforage from 'localforage';
 
@@ -301,7 +371,8 @@
                 const goodForAnswerPool = this.tempOptions.multipleAnswerMode == 'switch';
                 return (goodForName || goodForFlag) && goodForAnswerPool;
             },
-            formatTime(milliseconds: number): string {
+            formatTime(milliseconds: number | undefined): string {
+                if(!milliseconds) return '--';
                 const totalSeconds = Math.floor(milliseconds / 1000)
                 const ms = Math.floor((milliseconds % 1000) / 10)
                 
@@ -345,17 +416,19 @@
                 return 'Timer / Highscores';
             },
             getHighscoreData(questionMode : string, answerMode : string, region : string){
-                if(!this.loadedHighscoreData) return '--';
+                const useThisHighscore = this.highscoreDisplayMode === 'personal' ? 
+                                         this.loadedHighscoreData : this.globalHighscoreData;
+                if(!useThisHighscore) return null;
 
-                for (let index = 0; index < this.loadedHighscoreData.highscores.length; index++) {
-                    const element = this.loadedHighscoreData.highscores[index];
+                for (let index = 0; index < useThisHighscore.highscores.length; index++) {
+                    const element = useThisHighscore.highscores[index];
                     if(element.questionMode != questionMode) continue;
                     if(element.answerMode != answerMode) continue;
                     if(element.region != region) continue;
 
-                    return this.formatTime(element.time);
+                    return element;
                 }
-                return '--';
+                return null;
             },
             flagAnswerDisplayStyle(){
                 if(this.currentOptions.answerMode == 'flag'){
@@ -374,12 +447,19 @@
                         return 'margin-top: 1rem';
                     }
                 }
+            },
+            defaultIfNull(data : any, defa : string){
+                if(!data){
+                    return defa;
+                }
+                return data;
             }
         },
         setup() {
             // options
             const optionsDialogRef = ref<HTMLDialogElement>();
             const timerDialogRef = ref<HTMLDialogElement>();
+            const timerFinishRef = ref<HTMLDialogElement>();
             const currentOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
             const tempOptions = ref<FlagGameOptions>(GetDefaultFlagGameOptions());
             const countSlider = ref<HTMLInputElement>();
@@ -405,6 +485,7 @@
             const feedbackClass = ref("");
             const autoOptionFocused = ref(-1);
 
+
             let startTime : Date;
             let rafId: number | null = null;
             const totalTimeElapsed = ref(0);
@@ -412,6 +493,12 @@
             const displayScore = ref(false);
 
             const loadedHighscoreData = ref<FlagHighscores | null>();
+            const globalHighscoreData = ref<FlagHighscores | null>();
+            const highscoreDisplayMode = ref<'personal' | 'global'>('personal');
+            const gotNewPersonalHighcore = ref(false);
+            const gotNewGlobalHighcore = ref(false);
+            const highscoreNameInput = ref<HTMLInputElement>();
+            const highscoreName = ref<string>('');
 
             const highscoreModes = [
                 ['flag', 'name'],
@@ -429,6 +516,10 @@
             const flagContentDiv = ref<HTMLDivElement>();
             const globeAnswerRef = ref<InstanceType<typeof GlobeGL>>();
             const globeQuestionRef = ref<InstanceType<typeof GlobeGL>>();
+            const answerTempHighlight = ref<string>("");
+            const globeAnswerMode = ref<string>("highlight");
+
+            let waitingForSomething = false;
 
             onMounted(()=>{
                 loadInFlagData();
@@ -436,6 +527,7 @@
                 rafId = requestAnimationFrame(timerUpdate);
 
                 getHighscores();
+                getGlobalHighscores();
             })
 
             async function getHighscores(){
@@ -478,7 +570,8 @@
                     });
                     
                     allFlagData.forEach(element => {
-                        answerList.value.push(element);
+                        if(element.countryName[0].toLowerCase() == 'b')
+                            answerList.value.push(element);
                     });
                     
                     regionList.value = [...new Set(answerList.value.map(x=>x.area))];
@@ -493,6 +586,13 @@
                 if(!pseudoRandomPool.value || pseudoRandomPool.value.length == 0){
                     pseudoRandomPool.value = answerPool.value.filter(x=>true);
                 }
+
+                answerTempHighlight.value = '';
+                globeAnswerMode.value = 'click';
+                setTimeout(() => {
+                    globeAnswerRef.value?.showUniformColor();
+                }, 25);
+
                 // Choose a random flag
                 let randomIndex = Math.floor(Math.random() * pseudoRandomPool.value.length);
                 correctAnswer.value = pseudoRandomPool.value[randomIndex];
@@ -518,7 +618,7 @@
                     }
 
                     setTimeout(() => {
-                        globeQuestionRef.value?.refreshHighlight();
+                        globeQuestionRef.value?.showCountry(correctAnswer.value!.countryName);
                     }, 25);
                 }
 
@@ -542,6 +642,8 @@
             }
 
             function skipQuestion(){
+                if(waitingForSomething) return;
+
                 if(currentOptions.value.questionMode != 'name'){
                     feedbackText.value = `That was <b>${correctAnswer.value?.countryName}</b>`
                 }
@@ -549,7 +651,13 @@
                     timing.value = false;
                 }
                 answeredList.value.push(correctAnswer.value!.countryName);
-                generateQuestion();
+
+                if(currentOptions.value.answerMode == 'globe'){
+                    showCorrectCountryOnGlobe();
+                }
+                else{
+                    generateQuestion();
+                }
             }
 
             function getRandomOptions(correctAnswer : FlagAnswerData, numOptions : number) {
@@ -566,6 +674,8 @@
             }
 
             function handleAnswerPicked(answerPicked : FlagAnswerData){
+                if(waitingForSomething) return;
+                
                 autoOptionFocused.value = -1;
 
                 if(nameInput.value){
@@ -575,12 +685,7 @@
                 }
 
                 if(correctAnswer.value?.countryName == answerPicked.countryName){
-                    if(currentOptions.value.answerMode == 'globe' || currentOptions.value.answerMode == 'flag'){
-                        feedbackText.value = `✅ <b>Correct!<b>`;
-                    }
-                    else if (currentOptions.value.answerMode == 'name'){
-                        feedbackText.value = `✅ <b>${answerPicked.countryName}</b> is correct!`
-                    }
+                    feedbackText.value = `✅ <b>${answerPicked.countryName}</b> is correct!`
                     feedbackClass.value = "feedback-correct";
                     answeredList.value.push(correctAnswer.value!.countryName);
 
@@ -589,9 +694,14 @@
                         if(timing.value == true){
                             timing.value = false;
                             displayScore.value = true;
+                            gotNewGlobalHighcore.value = false;
+                            gotNewPersonalHighcore.value = false;
 
                             // Look for this mode in the highscores
                             tryUpdateHighscores(totalTimeElapsed.value);
+
+                            timerFinishRef.value?.showModal();
+                            console.log("highscore values: " + gotNewGlobalHighcore.value + gotNewPersonalHighcore.value);
                         }
                         answeredList.value = [];
                         forceGenerateAnswerPool = true;
@@ -621,6 +731,8 @@
                     region = currentOptions.value.regionFilter[0];
                 }
 
+                checkForGlobalHighscore();
+
                 // Check to see if this time exists
                 for (let index = 0; index < loadedHighscoreData.value.highscores.length; index++) {
                     const element = loadedHighscoreData.value.highscores[index];
@@ -629,10 +741,12 @@
                     if(element.region != region) continue;
 
                     if(time < element.time){
+                        console.log("New personal highscore! " + time + " old time: " + element.time);
+                        gotNewPersonalHighcore.value = true;
                         loadedHighscoreData.value.highscores[index].time = time;
                         localforage.setItem('highscores', JSON.stringify(loadedHighscoreData.value));
-                        return;
                     }
+                    return;
                 }
                 
                 // Otherwise, add it
@@ -643,10 +757,12 @@
                     time: time,
                     name: ''
                 });
+                gotNewPersonalHighcore.value = true;
                 localforage.setItem('highscores', JSON.stringify(loadedHighscoreData.value));
             }
 
             function openSettings(){
+                timing.value = false;
                 tempOptions.value = JSON.parse(JSON.stringify(currentOptions.value));
                 optionsDialogRef.value?.showModal();
             }
@@ -809,6 +925,21 @@
                 }
             }
 
+            function showCorrectCountryOnGlobe(){
+                if(globeAnswerRef.value == null) return;
+
+                answerTempHighlight.value = correctAnswer.value!.countryName;
+                globeAnswerMode.value = 'highlight';
+                waitingForSomething = true;
+                
+                globeAnswerRef.value!.showCountry(correctAnswer.value!.countryName);
+
+                setTimeout(() => {
+                    generateQuestion();
+                    waitingForSomething = false;
+                }, 2000);
+            }
+
             const simulateTabNavigation = (reverse: boolean = false): void => {
                 const focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
                 const elements = Array.from(document.querySelectorAll(focusableElements)) as HTMLElement[];
@@ -926,6 +1057,108 @@
                 rafId = requestAnimationFrame(timerUpdate)
             }
 
+            function testpython(){
+                timerFinishRef.value?.showModal();
+            }
+
+
+            function getGlobalHighscores(){
+                globalHighscoreData.value = {highscores: []};
+                const baseUrl = 'http://127.0.0.1:5000';
+                fetch(baseUrl + '/send?', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if(data['message']==''){
+                        console.log("hs data was empty");
+                        return;
+                    }
+                    const x = JSON.parse(data['message']);
+                    for (let index = 0; index < x.length; index++) {
+                        const element = x[index];
+                        const qaData = element.mode.split("/");
+                        const hsData : FlagHighscore = {
+                            questionMode: qaData[0],
+                            answerMode: qaData[1],
+                            region: element.region,
+                            time: element.time,
+                            name: element.name
+                        }
+                        globalHighscoreData.value!.highscores.push(hsData);
+                    }
+                })
+                .catch(error => {
+                    console.log('Failed to fetch highscores, using empty array');
+                });
+            }
+
+            function checkForGlobalHighscore(){
+                if(!globalHighscoreData.value){
+                    console.warn("did not have global high score data");
+                    return;
+                }
+                
+                const time = totalTimeElapsed.value;
+                let region = 'All';
+                if(currentOptions.value.regionFilter.length == 1){
+                    region = currentOptions.value.regionFilter[0];
+                }
+                // Go thru our local global highscores and see if this is less
+                for (let index = 0; index < globalHighscoreData.value.highscores.length; index++) {
+                    const element = globalHighscoreData.value.highscores[index];
+                    if(element.questionMode != currentOptions.value.questionMode) continue;
+                    if(element.answerMode != currentOptions.value.answerMode) continue;
+                    if(element.region != region) continue;
+
+                    if(time < element.time){
+                        gotNewGlobalHighcore.value = true;
+                    }
+                    return;
+                }
+                gotNewGlobalHighcore.value = true;
+            }
+
+            function submitHighscore(){
+                timerFinishRef.value?.close();
+                let region = 'All';
+                if(currentOptions.value.regionFilter.length == 1){
+                    region = currentOptions.value.regionFilter[0];
+                }
+
+                let name = highscoreName.value.replace(/[^a-zA-Z0-9_-]/g, '');
+
+                const baseUrl = 'http://127.0.0.1:5000';
+                const params = new URLSearchParams({
+                    name: name,
+                    mode: `${currentOptions.value.questionMode}/${currentOptions.value.answerMode}`,
+                    region: region,
+                    time_ms: totalTimeElapsed.value.toString(),
+                });
+                fetch(baseUrl + '/receive?' + params.toString(), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({message: ""}),
+                });
+            }
+
+            const handleHighscoreNameChange = (event: Event): void => {
+                const target = event.target as HTMLInputElement;
+                const value = target.value;
+
+                highscoreName.value = value;
+            };
+
             return {
                 openSettings, optionsDialogRef, closeSettings, question, countSlider,
                 answerList, questionAnswerList, feedbackText, handleAnswerPicked, 
@@ -936,7 +1169,10 @@
                 skipQuestion, flagContentDiv, globeAnswerRef, handleFlagCountryClicked, correctAnswer,
                 globeQuestionRef, timerDialogRef, clickTimer, cycleHighscoreDisplay, highscoreModes,
                 highscoreModeDisplayIndex, closeTimer, timing, startTimer, totalTimeElapsed, pseudoRandomPool,
-                answerPool, displayScore, loadedHighscoreData, answeredList
+                answerPool, displayScore, loadedHighscoreData, answeredList, answerTempHighlight, globeAnswerMode,
+                testpython, timerFinishRef, submitHighscore, highscoreDisplayMode, globalHighscoreData,
+                highscoreNameInput, gotNewPersonalHighcore, gotNewGlobalHighcore, highscoreName,
+                handleHighscoreNameChange
             }
         },
     }

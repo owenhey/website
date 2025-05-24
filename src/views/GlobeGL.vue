@@ -2,6 +2,7 @@
     <div ref="globeDiv" class="globe-canvas">
 
     </div>
+    <span style="position: absolute; bottom: 10px;">{{ countryName }}</span>
 </template>
   
 <script lang="ts">
@@ -35,48 +36,56 @@
             let globe : GlobeInstance | null;
             const globeDiv = ref<HTMLDivElement>();
 
-            function refreshHighlight(){
+            function showUniformColor(){
+                console.log("Showing uniform color");
+                if(!globe) return;
+                globe.polygonCapColor((d:any)=>{
+                    return '#DCA';
+                });
+            }
+
+            function showCountry(countryName : string){
+                console.log("Refreshing highlight: " + props.countryName + " mode is: " + props.mode);
                 if(!globe) return;
                 globe!.polygonCapColor((d:any)=>{
-                    if(props.mode === 'click'){
-                        return '#DCA';
-                    }
-                    else if(props.mode==='highlight'){
-                        if(d.properties.ADMIN.toLowerCase() === props.countryName.toLowerCase()){
-                            const bboxMiddle = [d.bbox[0] + d.bbox[2], d.bbox[1] + d.bbox[3]];
-                            bboxMiddle[0] /= 2;
-                            bboxMiddle[1] /= 2;
-                            let altitude = 1;
+                    if(d.properties.ADMIN.toLowerCase() === countryName.toLowerCase()){
+                        const bboxMiddle = [d.bbox[0] + d.bbox[2], d.bbox[1] + d.bbox[3]];
+                        bboxMiddle[0] /= 2;
+                        bboxMiddle[1] /= 2;
+                        let altitude = 1;
 
-                            const maxDiff = Math.max(Math.abs(d.bbox[0] - d.bbox[2]), Math.abs(d.bbox[1] - d.bbox[3]));
-                            if(maxDiff < 2){
-                                altitude = .5;
-                            }
-                            else if(maxDiff < 5){
-                                altitude = .9;
-                            }
-                            else if (maxDiff < 15){
-                                altitude = 1
-                            }
-                            else {
-                                altitude = 1.25;
-                            }
-
-
-                            if(d.properties.ADMIN.toLowerCase() == 'russia'){ // have to manually fix russia
-                                bboxMiddle[0] = 90 // longitude
-                                bboxMiddle[1] = 60 // latitude
-                                altitude = 1.5;
-                            }
-
-                            
-                            globe?.pointOfView({
-                                lat: bboxMiddle[1],
-                                lng: bboxMiddle[0],
-                                altitude: altitude
-                            }, 500);
-                            return '#F00';
+                        const maxDiff = Math.max(Math.abs(d.bbox[0] - d.bbox[2]), Math.abs(d.bbox[1] - d.bbox[3]));
+                        if(maxDiff < 2){
+                            altitude = .5;
                         }
+                        else if(maxDiff < 5){
+                            altitude = .9;
+                        }
+                        else if (maxDiff < 15){
+                            altitude = 1
+                        }
+                        else {
+                            altitude = 1.25;
+                        }
+
+
+                        if(d.properties.ADMIN.toLowerCase() == 'russia'){ // have to manually fix russia
+                            bboxMiddle[0] = 90 // longitude
+                            bboxMiddle[1] = 60 // latitude
+                            altitude = 1.5;
+                        }
+
+                        
+                        globe?.pointOfView({
+                            lat: bboxMiddle[1],
+                            lng: bboxMiddle[0],
+                            altitude: altitude
+                        }, 500);
+                        console.log("Returning a special color");
+                        return '#F00';
+                    }
+                    if(d.properties.ADMIN.toLowerCase() == 'india'){
+                        console.log("About to return baes color for india");
                     }
                     return '#DCA';
                 });
@@ -87,9 +96,9 @@
             ];
 
             function openGlobe(){
+                console.log("Generating globe");
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
-                    console.log("Generating globe");
                     globe = new Globe(globeDiv.value!)
                         .globeImageUrl('/worldmap_blank.png')
                         .lineHoverPrecision(0)
@@ -102,15 +111,13 @@
                         .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
                         .polygonStrokeColor(() => '#111');
 
-                        if(props.mode === 'click'){
-                            globe
-                            .onPolygonClick(hoverD => handleCountryClick(hoverD))
-                            .onPolygonHover(hoverD => globe!
-                                .polygonCapColor(d => d === hoverD ? '#FFD' : '#DCA'))
-                            .polygonsTransitionDuration(50);
-                        }
+                        globe
+                        .onPolygonClick(hoverD => handleCountryClick(hoverD))
+                        .onPolygonHover(hoverD => globe!
+                            .polygonCapColor(d => d === hoverD && props.mode == 'click' ? '#FFD' : '#DCA'))
+                        .polygonsTransitionDuration(50);
 
-                        refreshHighlight();
+                        showUniformColor();
 
                         const controls = globe.controls();
                         controls.dampingFactor = .3;
@@ -134,10 +141,12 @@
             })
 
             function handleCountryClick(name : any){
+                if(props.mode !== 'click') return;
+
                 emit('onCountryClick', name.properties!.ADMIN);
             }
 
-            return {globeDiv, refreshHighlight}
+            return {globeDiv, showUniformColor, showCountry}
         },
     }
 );

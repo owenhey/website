@@ -389,3 +389,12 @@
     margin-left: auto;
     text-align: right;
 }
+
+.flag-highscore-name-input{
+    border-radius: 5px;
+    height: 2rem;
+    padding: 5px;
+    outline: none;
+    font-size: 12pt;
+    margin-top: .5rem;
+}
