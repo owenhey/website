@@ -332,7 +332,7 @@
             </div>
         </div>
     </dialog>
-    <button @click="testpython">Hello</button>
+    <!-- <button @click="testpython">Hello</button> -->
 </template>
   
 <script lang="ts">
@@ -413,7 +413,7 @@
                 else if(this.displayScore){
                     return `Done! - ${this.formatTime(this.totalTimeElapsed)}`;
                 }
-                return 'Timer / Highscores';
+                return 'Highscores / Timer';
             },
             getHighscoreData(questionMode : string, answerMode : string, region : string){
                 const useThisHighscore = this.highscoreDisplayMode === 'personal' ? 
@@ -491,6 +491,7 @@
             const totalTimeElapsed = ref(0);
             const timing = ref(false);
             const displayScore = ref(false);
+            let failedTimedGuesses = 0;
 
             const loadedHighscoreData = ref<FlagHighscores | null>();
             const globalHighscoreData = ref<FlagHighscores | null>();
@@ -708,15 +709,28 @@
                     generateQuestion();
                 }
                 else{
+                    let introText = '';
+                    if(timing.value){
+                        failedTimedGuesses++;
+                        if(failedTimedGuesses >= 1){
+                            if(timing.value){
+                                timing.value = false;
+                                introText = '<b>FAILED </b><br><br>';
+                            }
+                        }
+                        else{
+                            introText = `${failedTimedGuesses}/3 wrong <br><br>`
+                        }
+                    }
                     feedbackClass.value = "shake";
                     setTimeout(() => {
                         feedbackClass.value = "";
                     }, 500);
                     if(currentOptions.value.answerMode === 'flag'){
-                        feedbackText.value = `Incorrect! That's <b>${answerPicked.countryName}</b>`;
+                        feedbackText.value = introText + `Incorrect! That's <b>${answerPicked.countryName}</b>`;
                     }
                     else{
-                        feedbackText.value = `<b>${answerPicked.countryName}</b> is incorrect!`;
+                        feedbackText.value = introText + `<b>${answerPicked.countryName}</b> is incorrect!`;
                     }
                 }
             }
@@ -1054,6 +1068,7 @@
 
                 currentOptions.value.multipleAnswerMode = 'checkoff';
                 forceGenerateAnswerPool = true;
+                failedTimedGuesses = 0;
 
                 closeTimer();
                 generateAnswerPool();

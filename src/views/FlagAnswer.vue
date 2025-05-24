@@ -7,7 +7,7 @@
    <button @click="onClick" v-if="display==='flag'" class="flag-button-holder" 
         :style="greyOut ? 'opacity: 20%' : ''"
         :disabled="greyOut">
-        <img :src="answerData.imageUrl"> 
+        <img :src="answerData.imageUrl" draggable="false"> 
    </button>
 </template>
   
