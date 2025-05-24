@@ -570,8 +570,7 @@
                     });
                     
                     allFlagData.forEach(element => {
-                        if(element.countryName[0].toLowerCase() == 'b')
-                            answerList.value.push(element);
+                        answerList.value.push(element);
                     });
                     
                     regionList.value = [...new Set(answerList.value.map(x=>x.area))];
