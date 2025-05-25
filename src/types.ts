@@ -9,6 +9,7 @@ export interface FlagAnswerData{
     countryName : string;
     imageUrl : string;
     area: string;
+    hasGlobeData: boolean;
 }
 
 export interface FlagGameOptions{

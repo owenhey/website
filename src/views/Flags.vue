@@ -573,7 +573,8 @@
                             return {
                                 countryName: values[1], // Country column
                                 imageUrl: values[2],    // Flag_image_url column
-                                area: values[3]         // Region column
+                                area: values[3],
+                                hasGlobeData: values[4] == 'True'  // Is there globe data?
                             };
                     });
                     
@@ -836,7 +837,11 @@
                 answerPool.value = answerList.value;
                 answeredList.value = [];
                 if(currentOptions.value.regionFilter.length !== 0){
-                    answerPool.value = answerList.value.filter(x=>currentOptions.value.regionFilter.includes(x.area));
+                    const hasGlobe = currentOptions.value.answerMode == 'globe' || currentOptions.value.questionMode == 'globe';
+                    answerPool.value = answerList.value.filter(x=>{
+                        const allowedWithGlobe = !hasGlobe || x.hasGlobeData;
+                        return allowedWithGlobe && currentOptions.value.regionFilter.includes(x.area);
+                    });
                 }
                 pseudoRandomPool.value = answerPool.value.filter(x=>true);
             }
