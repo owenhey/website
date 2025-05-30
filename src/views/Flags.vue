@@ -1127,6 +1127,12 @@
                 closeTimer();
                 generateAnswerPool();
                 generateQuestion();
+
+                setTimeout(() => {
+                    if(nameInput.value != null){
+                        nameInput.value.focus();
+                    }
+                }, 25);
             }
 
             const timerUpdate = () => {
