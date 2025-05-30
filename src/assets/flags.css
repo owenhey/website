@@ -53,6 +53,12 @@
     pointer-events: all;
 }
 
+@media (max-width: 500px) {
+    .flags-qa-direction {
+        flex-direction: column;
+    }
+}
+
 .flag-question {
     display: flex;
     flex-direction: column;
@@ -121,6 +127,7 @@
 .flag-answer-display{
     max-width: 1000px;
     width: 500px;
+    max-width: 95vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -360,10 +367,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 550px;
-    height: 550px;
-    min-width: 550px;
-    min-height: 550px;
+    width: 450px;
+    height: 450px;
+    max-width: 95vw;
+    max-height: 95vw;
     border: 2px solid black;
     border-radius: 10px;
     overflow: hidden;

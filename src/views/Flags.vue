@@ -13,7 +13,7 @@
                     Game Options
                 </button>
             </div>
-            <div class="flag-question-answer">
+            <div class="flag-question-answer flags-qa-direction">
                 <div class="flag-question">
                     <span v-html="question" style="text-align: center; height: 3rem; width: 20rem;"
                     :style="currentOptions.questionMode == 'globe' ? 'width: 30rem;' : 'width: 20rem;'"></span>
@@ -91,7 +91,7 @@
                     </div>
                     <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
                         <GlobeGL 
-                            :size="550"
+                            :size="500"
                             ref="globeAnswerRef"
                             :country-name="answerTempHighlight"
                             :mode="globeAnswerMode"
@@ -437,22 +437,7 @@
                 return null;
             },
             flagAnswerDisplayStyle(){
-                if(this.currentOptions.answerMode == 'flag'){
-                    if(this.currentOptions.questionMode == 'name'){
-                        return 'margin-top: 1rem';
-                    }
-                    else{ // globe
-                        return 'margin-top: 1rem';
-                    }
-                }
-                else{
-                    if(this.currentOptions.questionMode == 'globe'){
-                        return 'margin-top: 15rem';
-                    }
-                    else{ // flag
-                        return 'margin-top: 1rem';
-                    }
-                }
+                return 'margin-top: 1rem';
             },
             defaultIfNull(data : any, defa : string){
                 if(!data){
