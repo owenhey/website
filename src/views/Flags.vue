@@ -53,7 +53,7 @@
                             v-for="(answer, index) in questionAnswerList"
                             :answerData="answer"
                             :display="currentOptions.answerMode"
-                            :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) ? true : false"
+                            :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) && !timing ? true : false"
                             @onClick="handleAnswerPicked">
                         </FlagAnswer>
                     </div>
@@ -273,7 +273,7 @@
             <h3 style="margin-top: 0;">Timer</h3>
             <span v-if="(currentOptions.answerMode == 'flag' || (currentOptions.answerMode == 'name' && currentOptions.nameEntryType == 'button')) && isTimedRunValid()"
                 style="display: block;">
-                <i>Note: All timed runs use <b>persistent answer pool</b> mode.</i>
+                <i>Note: Timed runs use certain options based on the region selected.</i>
             </span>
             <span v-if="isTimedRunValid()" style="display: block; margin-top: .5rem;">
                 Selected region:
@@ -442,7 +442,7 @@
                         return 'margin-top: 1rem';
                     }
                     else{ // globe
-                        return 'margin-top: 10rem';
+                        return 'margin-top: 1rem';
                     }
                 }
                 else{
@@ -557,9 +557,39 @@
                 }
             })
 
-            async function loadInFlagData(){
+            const flagMap: { [countryName: string]: string } = {};
+
+            async function loadFlagMap() {
                 try {
                     const response = await fetch('/flags.csv');
+                    const csvText = await response.text();
+                    const lines = csvText.split('\n');
+                    
+                    lines.slice(1).forEach(line => {
+                        if (line.trim() === '') return;
+                        
+                        const [country, flagData] = line.split(',');
+                        flagMap[country] = flagData || "";
+                    });
+                    
+                    console.log(`Loaded ${Object.keys(flagMap).length} flags`);
+                } catch (error) {
+                    console.error('Error loading flag map:', error);
+                }
+            }
+
+            function getCountryFlag(countryName: string): string {
+                const flagData = flagMap[countryName];
+                if (!flagData) return "";
+                
+                return `data:image/svg+xml;base64,${flagData}`;
+            }
+
+            async function loadInFlagData(){
+                try {
+                    await loadFlagMap();
+
+                    const response = await fetch('/country_data.csv');
                     const csvText = await response.text();
                     const lines = csvText.split('\n');
                     const headers = lines[0].split(',');
@@ -572,7 +602,7 @@
                             const values = line.split(',');
                             return {
                                 countryName: values[1], // Country column
-                                imageUrl: values[2],    // Flag_image_url column
+                                imageUrl: getCountryFlag(values[1]),    // Flag_image_url column
                                 area: values[3],
                                 hasGlobeData: values[4] == 'True'  // Is there globe data?
                             };
@@ -599,7 +629,7 @@
                 globeAnswerMode.value = 'click';
                 setTimeout(() => {
                     globeAnswerRef.value?.showCountry();
-                }, 25);
+                }, 100);
 
                 // Choose a random flag
                 let randomIndex = Math.floor(Math.random() * pseudoRandomPool.value.length);
@@ -703,12 +733,12 @@
                     feedbackClass.value = "feedback-correct";
                     answeredList.value.push(correctAnswer.value!.countryName);
 
-                    setTimeout(() => {
-                        flagContentDiv.value!.scrollTo({
-                        top: 0,
-                        behavior: 'smooth' 
-                    });
-                    }, 25);
+                    // setTimeout(() => {
+                    //     flagContentDiv.value!.scrollTo({
+                    //     top: 0,
+                    //     behavior: 'smooth' 
+                    // });
+                    // }, 25);
 
                     // Check for a timed run to have finished
                     if(pseudoRandomPool.value.length == 0){
@@ -814,8 +844,12 @@
                         forceGenerateAnswerPool = true;
                     }
                     generateAnswerPool();
-                    generateQuestion();
                     tempFlagAnswer.value = null;
+                    feedbackText.value = '';
+
+                    setTimeout(() => {
+                        generateQuestion();
+                    }, 100);
                 }
             }
 
@@ -836,13 +870,13 @@
             function generateAnswerPool(){
                 answerPool.value = answerList.value;
                 answeredList.value = [];
-                if(currentOptions.value.regionFilter.length !== 0){
-                    const hasGlobe = currentOptions.value.answerMode == 'globe' || currentOptions.value.questionMode == 'globe';
-                    answerPool.value = answerList.value.filter(x=>{
-                        const allowedWithGlobe = !hasGlobe || x.hasGlobeData;
-                        return allowedWithGlobe && currentOptions.value.regionFilter.includes(x.area);
-                    });
-                }
+
+                const hasGlobe = currentOptions.value.answerMode == 'globe' || currentOptions.value.questionMode == 'globe';
+                answerPool.value = answerList.value.filter(x=>{
+                    const allowedWithGlobe = !hasGlobe || x.hasGlobeData;
+                    const matchesAreaFilter = currentOptions.value.regionFilter.length == 0 || currentOptions.value.regionFilter.includes(x.area);
+                    return allowedWithGlobe && matchesAreaFilter;
+                });
                 pseudoRandomPool.value = answerPool.value.filter(x=>true);
             }
 
@@ -973,7 +1007,7 @@
                 
                 setTimeout(() => {
                     globeAnswerRef.value!.showCountry();
-                }, 25);
+                }, 100);
 
                 setTimeout(() => {
                     generateQuestion();
@@ -1030,7 +1064,7 @@
 
                 setTimeout(() => {
                     globeAnswerRef.value?.showCountry();
-                }, 25);
+                }, 100);
             }
 
             function handleFlagCountryClicked(countryName : string){
@@ -1092,9 +1126,18 @@
                 startTime = new Date();
                 timing.value = true;
 
-                currentOptions.value.multipleAnswerMode = 'checkoff';
+                // Meaning ALL region
+                if(currentOptions.value.regionFilter.length == 0 || currentOptions.value.regionFilter.length > 1){
+                    currentOptions.value.multipleAnswerMode = 'switch';
+                    currentOptions.value.answerCount = 10;
+                }
+                else{
+                    currentOptions.value.multipleAnswerMode = 'checkoff';
+                }
                 forceGenerateAnswerPool = true;
                 failedTimedGuesses = 0;
+                feedbackText.value = '';
+                tempFlagAnswer.value = null;
 
                 closeTimer();
                 generateAnswerPool();
@@ -1116,7 +1159,7 @@
             function getGlobalHighscores(){
                 globalHighscoreData.value = {highscores: []};
                 // const baseUrl = 'http://127.0.0.1:5000';
-                const baseUrl = 'http://oysterhey.com:5000';
+                const baseUrl = 'https://oysterhey.com';
                 fetch(baseUrl + '/send?', {
                     method: 'GET',
                     headers: {
@@ -1189,7 +1232,7 @@
                 let name = highscoreName.value.replace(/[^a-zA-Z0-9_\s-]/g, '').trim();
 
                 // const baseUrl = 'http://127.0.0.1:5000';
-                const baseUrl = 'http://oysterhey.com:5000';
+                const baseUrl = 'https://oysterhey.com';
                 const params = new URLSearchParams({
                     name: name,
                     mode: `${currentOptions.value.questionMode}/${currentOptions.value.answerMode}`,

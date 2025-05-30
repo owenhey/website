@@ -30,8 +30,8 @@
                     </p>
                     <p style="margin-top: .5rem;">
                         The professional soccer team I follow, Tottenham Hotspur, is doing dreadfully at the moment, so to
-                        distract myself from that I like to work on little coding challenges. You can learn
-                        more about some of these projects under the Writing page.
+                        distract myself from that I like to work on personal coding challenges. You can learn
+                        more about some of these projects under the Writing page, or play one of them on the Flags page.
                     </p>
                     <h2 style="margin-top: 1rem;">Contact</h2>
                     <p style="margin-top: .5rem;">

@@ -21,9 +21,9 @@ export function ParseString(text : string) : string{
 export function GetDefaultFlagGameOptions() : FlagGameOptions{
     return {
         answerCount: 8,
-        questionMode: 'name',
+        questionMode: 'flag',
         answerMode: 'globe',
-        nameEntryType: 'inputField',
+        nameEntryType: 'button',
         multipleAnswerMode: 'switch',
         regionFilter: []
     }

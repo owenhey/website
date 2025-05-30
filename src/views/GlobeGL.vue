@@ -36,7 +36,6 @@
             const globeDiv = ref<HTMLDivElement>();
 
             function showCountry(){
-                console.log("Refreshing highlight: " + props.countryName + " mode is: " + props.mode);
                 if(!globe) return;
                 globe!.polygonCapColor((d:any)=>{
                     if(d.properties.ADMIN.toLowerCase() === props.countryName.toLowerCase()){
@@ -72,11 +71,7 @@
                             lng: bboxMiddle[0],
                             altitude: altitude
                         }, 500);
-                        console.log("Returning a special color");
                         return '#F00';
-                    }
-                    if(d.properties.ADMIN.toLowerCase() == 'india'){
-                        console.log("About to return baes color for india");
                     }
                     return '#DCA';
                 });
@@ -87,7 +82,6 @@
             ];
 
             function openGlobe(){
-                console.log("Generating globe");
                 fetch('/country_data.geojson').then(res => res.json()).then(countries =>
                 {
                     globe = new Globe(globeDiv.value!)
@@ -100,7 +94,8 @@
                         .polygonsData(countries.features.filter((d:Feature) => d.properties?.ISO_A2 !== 'AQ'))
                         .polygonAltitude((d : any)  => raisedCountries.includes(d.properties.ADMIN) ? 0.011 : 0.01)
                         .polygonSideColor(() => 'rgba(0, 100, 100, 0.15)')
-                        .polygonStrokeColor(() => '#111');
+                        .polygonStrokeColor(() => '#111')
+                        .polygonCapColor(()=>'#DCA');
 
                         globe
                         .onPolygonClick(hoverD => handleCountryClick(hoverD))

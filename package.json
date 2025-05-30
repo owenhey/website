@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/dev/",
+    "build:dev": "vite build --base=/dev/",
+    "build": "vite build",
     "preview": "vite preview --port 4174"
   },
   "dependencies": {

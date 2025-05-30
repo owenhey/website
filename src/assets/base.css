@@ -223,7 +223,7 @@ span, p, label{
   left: -41%;
   height: 100%;
   width: 150%;
-  background-image: url(src/assets/png/vert-vine.png);
+  background-image: url(/src/assets/png/vert-vine.png);
   background-size: 100%;
   z-index: 1;
   pointer-events: none;
@@ -249,7 +249,7 @@ span, p, label{
   top: 0;
   height: 100%;
   width: 150%;
-  background-image: url(src/assets/png/vert-vine-r.png);
+  background-image: url(/src/assets/png/vert-vine-r.png);
   background-size: 100%;
   z-index: 1;
   pointer-events: none;
