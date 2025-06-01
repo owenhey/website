@@ -594,6 +594,9 @@
                     });
                     
                     allFlagData.forEach(element => {
+                        const names = ['Benin', 'Burkina Faso', 'Djibouti', 'Eritrea', 'Eswatini', 'Gambia', 'Guinea', 'Guinea-Bissau', 'Togo'];
+                        if(names.includes(element.countryName)){
+                        }
                         answerList.value.push(element);
                     });
                     
@@ -1114,7 +1117,7 @@
                 // Meaning ALL region
                 if(currentOptions.value.regionFilter.length == 0 || currentOptions.value.regionFilter.length > 1){
                     currentOptions.value.multipleAnswerMode = 'switch';
-                    currentOptions.value.answerCount = 10;
+                    currentOptions.value.answerCount = 20;
                 }
                 else{
                     currentOptions.value.multipleAnswerMode = 'checkoff';
