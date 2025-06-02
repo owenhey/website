@@ -103,7 +103,7 @@
                             .polygonCapColor((d:any) => {
                                 return d === hoverD && props.mode == 'click' ? '#FFD' : 
                                     d.properties.ADMIN.toLowerCase() == props.countryName.toLowerCase() ? '#F00' : '#DCA'
-                }           ))
+                        }))
                         .polygonsTransitionDuration(50);
 
                         const controls = globe.controls();
