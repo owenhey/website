@@ -4,11 +4,12 @@
             <Nav class="flags-nav-header"></Nav>
             <h1 style="text-align: center; margin-top: 1rem;">Welcome to the flag game</h1>
             <div style="display: flex; width: fit-content; justify-content: center; gap: 20px;">
-                <button class="vine-button" style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" 
-                    @click="clickTimer">
+                <button class="vine-button"
+                    style="width: 12em; margin-right: auto; font-size: 10pt; margin-bottom: .5rem;" @click="clickTimer">
                     {{getTimerButtonText()}}
                 </button>
-                <button class="vine-button" style="width: 10em; margin-left: auto; font-size: 10pt; margin-bottom: .5rem;" 
+                <button class="vine-button"
+                    style="width: 10em; margin-left: auto; font-size: 10pt; margin-bottom: .5rem;"
                     @click="openSettings">
                     Game Options
                 </button>
@@ -16,151 +17,116 @@
             <div class="flag-question-answer flags-qa-direction">
                 <div class="flag-question">
                     <span v-html="question" style="text-align: center; height: 3rem; width: 20rem;"
-                    :style="currentOptions.questionMode == 'globe' ? 'width: 30rem;' : 'width: 20rem;'"></span>
-                    <button 
-                        class="vine-button" 
-                        style="font-size: 10pt; translate: 0px -5px;"
-                        @click="skipQuestion"
-                        >Skip
+                        :style="currentOptions.questionMode == 'globe' ? 'width: 30rem;' : 'width: 20rem;'"></span>
+                    <button class="vine-button" style="font-size: 10pt; translate: 0px -5px;" @click="skipQuestion">Skip
                     </button>
-                    <div v-if="currentOptions.questionMode==='flag'" 
-                        class="flag-button-holder no-input" 
+                    <div v-if="currentOptions.questionMode==='flag'" class="flag-button-holder no-input"
                         style="height: 35vh; width: auto;">
-                        <img :src="questionFlagUrl"> 
+                        <img :src="questionFlagUrl">
                     </div>
                     <div class="globe-container" v-if="currentOptions.questionMode === 'globe'"
-                    style="height: 400px; width: 400px; min-height: 400px; min-width: 400px;">
-                        <GlobeGL 
-                            ref="globeQuestionRef"
-                            :size="400"
-                            :mode="'highlight'"
+                        style="height: 400px; width: 400px; min-height: 400px; min-width: 400px;">
+                        <GlobeGL ref="globeQuestionRef" :size="400" :mode="'highlight'"
                             :countryName="correctAnswer?.countryName">
                         </GlobeGL>
                     </div>
                     <span class="flag-feedback-text" v-html="feedbackText" :class="feedbackClass"></span>
                     <FlagAnswer v-if="tempFlagAnswer != null && currentOptions.answerMode == 'flag'"
-                        :answer-data="tempFlagAnswer"
-                        :display="'flag'"
-                        :interactable="false">
+                        :answer-data="tempFlagAnswer" :display="'flag'" :interactable="false">
 
                     </FlagAnswer>
                 </div>
                 <div class="flag-answer">
-                    <div class="flag-answer-display" 
+                    <div class="flag-answer-display"
                         v-if="(currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField') && currentOptions.answerMode !== 'globe'"
                         :style="flagAnswerDisplayStyle()">
-                        <FlagAnswer
-                            v-for="(answer, index) in questionAnswerList"
-                            :answerData="answer"
+                        <FlagAnswer v-for="(answer, index) in questionAnswerList" :answerData="answer"
                             :display="currentOptions.answerMode"
                             :grey-out="currentOptions.multipleAnswerMode==='checkoff' && answeredList.includes(answer.countryName) && !timing ? true : false"
                             @onClick="handleAnswerPicked">
                         </FlagAnswer>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem; width: 28rem;" 
+                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem; width: 28rem;"
                         v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
-                        <input class="flag-game-input raleway" 
-                            @input="handleNameEntryInputChange" 
-                            ref="nameInput" 
-                            tabindex="1"
-                            @keydown="handleNameInputKey"
+                        <input class="flag-game-input raleway" @input="handleNameEntryInputChange" ref="nameInput"
+                            tabindex="1" autocomplete="cc-csc" type="text" @keydown="handleNameInputKey"
                             @focus="autoOptionFocused = -1">
-                        <button 
-                            class="vine-button" 
-                            style="font-size: 10pt;" 
-                            :tabindex="7" 
-                            @click="tryGuessOfInput()"
-                            @keydown="handleGuessInputKey"
-                            ref="guessButton">
+                        <button class="vine-button" style="font-size: 10pt;" :tabindex="7" @click="tryGuessOfInput()"
+                            @keydown="handleGuessInputKey" ref="guessButton">
                             Guess
                         </button>
                     </div>
-                    <div class="flags-auto-options" 
+                    <div class="flags-auto-options"
                         v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                         <template v-for="(option, index) in autoInputOptions">
-                            <button class="flag-game-input-auto-option" 
-                                v-if="index < 5" :tabindex="index + 2"
-                                :id="`autoOption${index}`"
-                                @keydown="handleAutoOptionKey"
-                                @click="handleAnswerPicked(option)"
-                                @focus="handleAutoOptionFocused(index)"
+                            <button class="flag-game-input-auto-option" v-if="index < 5" :tabindex="index + 2"
+                                :id="`autoOption${index}`" @keydown="handleAutoOptionKey"
+                                @click="handleAnswerPicked(option)" @focus="handleAutoOptionFocused(index)"
                                 :style="getAutoOptionBorderStyle(index == 0, index == autoInputOptions.length - 1 || index == 4)">
                                 {{ option.countryName }}
                             </button>
                         </template>
                     </div>
                     <div class="globe-container" v-if="currentOptions.answerMode === 'globe'">
-                        <GlobeGL 
-                            :size="500"
-                            ref="globeAnswerRef"
-                            :country-name="answerTempHighlight"
-                            :mode="globeAnswerMode"
-                            @onCountryClick="handleFlagCountryClicked">
+                        <GlobeGL :size="500" ref="globeAnswerRef" :country-name="answerTempHighlight"
+                            :mode="globeAnswerMode" @onCountryClick="handleFlagCountryClicked">
                         </GlobeGL>
                     </div>
                 </div>
             </div>
         </div>
-	</div>
+    </div>
     <dialog ref="optionsDialogRef">
         <div class="flags-options-dialog">
             <h2>Flag Game Settings</h2>
             <h3>Question Mode</h3>
             <div class="flag-mode-settings">
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.questionMode === 'flag' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.questionMode === 'flag' ? 'selected' : ''"
                     @click="tempOptions.questionMode = 'flag'">
                     Flag
                 </button>
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.questionMode === 'name' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.questionMode === 'name' ? 'selected' : ''"
                     @click="tempOptions.questionMode = 'name'">
                     Name
                 </button>
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.questionMode === 'globe' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.questionMode === 'globe' ? 'selected' : ''"
                     @click="tempOptions.questionMode = 'globe'">
                     Globe
                 </button>
             </div>
             <h3 v-if="tempOptions.answerMode == 'name'">Answer Mode</h3>
             <div class="flag-mode-settings">
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.answerMode === 'flag' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.answerMode === 'flag' ? 'selected' : ''"
                     @click="tempOptions.answerMode = 'flag'">
                     Flag
                 </button>
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.answerMode === 'name' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.answerMode === 'name' ? 'selected' : ''"
                     @click="tempOptions.answerMode = 'name'">
                     Name
                 </button>
-                <button class="flag-toggle-button" 
-                    :class="tempOptions.answerMode === 'globe' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="tempOptions.answerMode === 'globe' ? 'selected' : ''"
                     @click="tempOptions.answerMode = 'globe'">
                     Globe
                 </button>
             </div>
             <h3 :style="tempOptions.answerMode==='name' ? '' : 'opacity: 20%'">Name Input Type</h3>
             <div class="flag-mode-settings" :style="tempOptions.answerMode==='name' ? '' : 'opacity: 20%'">
-                <button class="flag-toggle-button"
-                    :disabled="!(tempOptions.answerMode==='name')"
+                <button class="flag-toggle-button" :disabled="!(tempOptions.answerMode==='name')"
                     :class="tempOptions.nameEntryType === 'button' ? 'selected' : ''"
                     @click="tempOptions.nameEntryType = 'button'">
                     Button
                 </button>
-                <button class="flag-toggle-button"
-                    :disabled="!(tempOptions.answerMode==='name')"
+                <button class="flag-toggle-button" :disabled="!(tempOptions.answerMode==='name')"
                     :class="tempOptions.nameEntryType === 'inputField' ? 'selected' : ''"
                     @click="tempOptions.nameEntryType = 'inputField'">
                     Input Field
                 </button>
             </div>
-            <h3 
+            <h3
                 :style="tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button')? '' : 'opacity: 20%'">
                 Answer Pool Type
             </h3>
-            <div class="flag-mode-settings" 
+            <div class="flag-mode-settings"
                 :style="tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button') ? '' : 'opacity: 20%'">
                 <button class="flag-toggle-button"
                     :disabled="!(tempOptions.answerMode == 'flag'|| (tempOptions.answerMode == 'name' && tempOptions.nameEntryType == 'button'))"
@@ -179,16 +145,12 @@
                 Answer Count: {{ tempOptions.answerCount }}
             </h3>
             <input type="range" min="2" max="20" value="6" class="flag-count-slider" ref="countSlider"
-                :style="showAnswerCountSlider() ? '' : 'opacity: 20%'"
-                :disabled="!showAnswerCountSlider()"
-                style="margin-bottom: 1rem;"
-                @input="handleSliderChange">
+                :style="showAnswerCountSlider() ? '' : 'opacity: 20%'" :disabled="!showAnswerCountSlider()"
+                style="margin-bottom: 1rem;" @input="handleSliderChange">
             <h3>Regions</h3>
             <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                <button class="flag-toggle-button" v-for="region in regionList"
-                    :class="(tempOptions.regionFilter.includes(region)) ? 
-                     'selected' : ''"
-                     @click="toggleRegion(region)">
+                <button class="flag-toggle-button" v-for="region in regionList" :class="(tempOptions.regionFilter.includes(region)) ? 
+                     'selected' : ''" @click="toggleRegion(region)">
                     {{ region }}
                 </button>
             </div>
@@ -196,16 +158,10 @@
                 <span style="color: red;" v-if="tempOptions.answerMode === tempOptions.questionMode">
                     Answer and question mode cannot match.
                 </span>
-                <button 
-                    class="vine-button" 
-                    style="font-size: 12pt;" 
-                    @click="closeSettings">Cancel
+                <button class="vine-button" style="font-size: 12pt;" @click="closeSettings">Cancel
                 </button>
-                <button 
-                    class="vine-button" 
-                    style="font-size: 12pt;" 
-                    :disabled="tempOptions.answerMode === tempOptions.questionMode"
-                    @click="saveSettings">Save
+                <button class="vine-button" style="font-size: 12pt;"
+                    :disabled="tempOptions.answerMode === tempOptions.questionMode" @click="saveSettings">Save
                 </button>
             </div>
         </div>
@@ -214,55 +170,59 @@
         <div class="flags-options-dialog" style="width: 375px">
             <h3 style="margin-top: 0;">Showing highscores for:</h3>
             <div style="display: flex; width: 100%; gap: 10px; justify-content: center;">
-                <button class="flag-toggle-button"
-                    :class="highscoreDisplayMode === 'global' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="highscoreDisplayMode === 'global' ? 'selected' : ''"
                     @click="highscoreDisplayMode = 'global'">
                     Global
                 </button>
-                <button class="flag-toggle-button"
-                    :class="highscoreDisplayMode === 'personal' ? 'selected' : ''"
+                <button class="flag-toggle-button" :class="highscoreDisplayMode === 'personal' ? 'selected' : ''"
                     @click="highscoreDisplayMode = 'personal'">
                     Personal
                 </button>
             </div>
             <button class="vine-button" style="margin: auto; margin-top: 1rem; font-size: 10pt; width: 10rem;"
-            @click="cycleHighscoreDisplay">
-                {{ capitalize(highscoreModes[highscoreModeDisplayIndex][0]) }} / {{ capitalize(highscoreModes[highscoreModeDisplayIndex][1]) }}
+                @click="cycleHighscoreDisplay">
+                {{ capitalize(highscoreModes[highscoreModeDisplayIndex][0]) }} / {{
+                capitalize(highscoreModes[highscoreModeDisplayIndex][1]) }}
             </button>
             <div class="highscores-table" style="margin-top: 1rem;">
                 <div class="highscore-row" style="margin-bottom: .5rem;">
                     <h4 class="highscore-region">Region</h4>
-                    <h4 v-if="highscoreDisplayMode === 'global'" style="margin-left: auto;" class="highscore-region">Name</h4>
-                    <h4 style="width: 4rem;" :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">Time</h4>
+                    <h4 v-if="highscoreDisplayMode === 'global'" style="margin-left: auto;" class="highscore-region">
+                        Name</h4>
+                    <h4 style="width: 4rem;"
+                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'"
+                        class="highscore-time">Time</h4>
                 </div>
-                <div class="highscore-row" style="padding-bottom: .3rem; padding-top: .3rem; background-color: var(--lightwhite1);">
+                <div class="highscore-row"
+                    style="padding-bottom: .3rem; padding-top: .3rem; background-color: var(--lightwhite1);">
                     <span class="highscore-region">All</span>
-                    <span v-if="highscoreDisplayMode === 'global'" style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
-                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
-                        highscoreModes[highscoreModeDisplayIndex][1], 'All')?.name, 
+                    <span v-if="highscoreDisplayMode === 'global'"
+                        style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
+                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0],
+                        highscoreModes[highscoreModeDisplayIndex][1], 'All')?.name,
                         '--')}}
                     </span>
-                    <span 
-                        style="width: 4rem;"
-                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">
-                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                    <span style="width: 4rem;"
+                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'"
+                        class="highscore-time">
+                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0],
                         highscoreModes[highscoreModeDisplayIndex][1], 'All')?.time) }}
                     </span>
                 </div>
-                <div class="highscore-row" 
-                        v-for="(region, index) in regionList"
-                         style="padding-bottom: .3rem; padding-top: .3rem;"
-                         :style="'background-color: ' + (index % 2 == 0 ? 'var(--lightwhite2)' : 'var(--lightwhite1)')">
+                <div class="highscore-row" v-for="(region, index) in regionList"
+                    style="padding-bottom: .3rem; padding-top: .3rem;"
+                    :style="'background-color: ' + (index % 2 == 0 ? 'var(--lightwhite2)' : 'var(--lightwhite1)')">
                     <span class="highscore-region">{{ region }}</span>
-                    <span v-if="highscoreDisplayMode === 'global'" style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
-                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
-                        highscoreModes[highscoreModeDisplayIndex][1], region)?.name, 
+                    <span v-if="highscoreDisplayMode === 'global'"
+                        style="margin-left: auto; text-align: right; padding-left: .25rem;" class="highscore-time">
+                        {{defaultIfNull(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0],
+                        highscoreModes[highscoreModeDisplayIndex][1], region)?.name,
                         '--')}}
                     </span>
-                    <span 
-                        style="width: 4rem;"
-                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'" class="highscore-time">
-                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0], 
+                    <span style="width: 4rem;"
+                        :style="highscoreDisplayMode === 'global' ? 'margin-left: 1rem;' : 'margin-left: auto;'"
+                        class="highscore-time">
+                        {{ formatTime(getHighscoreData(highscoreModes[highscoreModeDisplayIndex][0],
                         highscoreModes[highscoreModeDisplayIndex][1], region)?.time) }}
                     </span>
                 </div>
@@ -271,7 +231,8 @@
             <div style="background-color: #000; height: 1px; width: 100%;"></div>
             <br>
             <h3 style="margin-top: 0;">Timer</h3>
-            <span v-if="(currentOptions.answerMode == 'flag' || (currentOptions.answerMode == 'name' && currentOptions.nameEntryType == 'button')) && isTimedRunValid()"
+            <span
+                v-if="(currentOptions.answerMode == 'flag' || (currentOptions.answerMode == 'name' && currentOptions.nameEntryType == 'button')) && isTimedRunValid()"
                 style="display: block;">
                 <i>Note: Timed runs use certain options based on the region selected.</i>
             </span>
@@ -284,22 +245,18 @@
             <span v-else style="display: block; margin-top: .5rem; color: red;">
                 Region filter not valid for a timed run.
             </span>
-            <span v-if="isTimedRunValid()" 
-                style="display: block; margin-top: .5rem;">
+            <span v-if="isTimedRunValid()" style="display: block; margin-top: .5rem;">
                 Starting run for mode:
             </span>
-            <span v-if="isTimedRunValid()" 
-                style="display: block; margin-top: .25rem;">
+            <span v-if="isTimedRunValid()" style="display: block; margin-top: .25rem;">
                 <b>{{ capitalize(currentOptions.questionMode) }} / {{capitalize(currentOptions.answerMode) }}</b>
             </span>
             <div style="display: flex; justify-content: space-between; margin-top: 1rem;">
                 <button class="vine-button" style="font-size: 12pt;" @click="closeTimer">
                     Close
                 </button>
-                <button class="vine-button" style="font-size: 12pt;"
-                :disabled="!isTimedRunValid()"
-                :class="isTimedRunValid() ? '' : 'disabled'"
-                @click="startTimer">
+                <button class="vine-button" style="font-size: 12pt;" :disabled="!isTimedRunValid()"
+                    :class="isTimedRunValid() ? '' : 'disabled'" @click="startTimer">
                     Start
                 </button>
             </div>
@@ -309,7 +266,8 @@
         <div class="flags-options-dialog" style="width: 350px">
             <h2>Timed run complete!</h2>
             <h3>Settings</h3>
-            <p style="margin-bottom: .5rem;"> Mode:  {{ capitalize(currentOptions.questionMode) }} / {{ capitalize(currentOptions.answerMode) }}</p>
+            <p style="margin-bottom: .5rem;"> Mode: {{ capitalize(currentOptions.questionMode) }} / {{
+                capitalize(currentOptions.answerMode) }}</p>
             <p> Region: {{ getRegionFilterString() }}</p>
             <br>
             <h3>Your time:</h3>
@@ -318,22 +276,22 @@
             <br>
             <h3 v-if="gotNewPersonalHighcore">Personal Highscore!</h3>
             <h3 v-if="gotNewGlobalHighcore">Global Highscore!</h3>
-            <span  v-if="gotNewGlobalHighcore" >Enter name: </span> 
-                <input v-if="gotNewGlobalHighcore" 
-                        ref="highscoreNameInput" 
-                        class="flag-highscore-name-input raleway" 
-                        maxlength="20"
-                        @input="handleHighscoreNameChange">
+            <span v-if="gotNewGlobalHighcore">Enter name: </span>
+            <input v-if="gotNewGlobalHighcore" 
+                ref="highscoreNameInput" 
+                class="flag-highscore-name-input raleway"
+                autocomplete="cc-csc" 
+                maxlength="20" 
+                @input="handleHighscoreNameChange">
             <div style="display: flex; width: 100%; justify-content: center; gap: 20px;">
                 <button v-if="gotNewGlobalHighcore" class="vine-button" style="font-size: 12pt; margin-top: 1rem;"
-                    @click="submitHighscore"
-                    :class="highscoreName.length==0 ? 'disabled' : ''"
+                    @click="submitHighscore" :class="highscoreName.length==0 ? 'disabled' : ''"
                     :disabled="highscoreName.length==0">
-                        Submit
+                    Submit
                 </button>
                 <button v-else class="vine-button" style="font-size: 12pt; margin-top: 1rem;"
                     @click="timerFinishRef?.close()">
-                        Close
+                    Close
                 </button>
             </div>
         </div>
@@ -1126,6 +1084,9 @@
                 failedTimedGuesses = 0;
                 feedbackText.value = '';
                 tempFlagAnswer.value = null;
+                if(nameInput.value){
+                    nameInput.value.value = '';
+                }
 
                 closeTimer();
                 generateAnswerPool();

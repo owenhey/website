@@ -62,7 +62,7 @@ using inverse kinematics to respond dynamically to the spider's movement.
 
 [subtitle] Music
 
-[paragraph] My good friend Andrew Khanschasoff worked on the music for this game, and absolutely 
+[paragraph] My good friend Andrew Khanschassoff worked on the music for this game, and absolutely 
 knocked it out of the park. Every soundtrack has a unique feel that totally fits with the vibe, 
 [b]and it was his FIRST time making music[b]. It really takes the game from something fun to
 something special.
@@ -74,4 +74,5 @@ I think I prefer shorter game jams. This was really fun, but by a couple weeks i
 Doing game jams with a friend makes it so much more fun.
 I was disappointed with the reception of the game — we didn't do enough work to promote / advertise the game once we finished it, and it didn't get much traction within the jam itself. Next time, I'd like to prioritize this a little to make sure more people see / play the game.
 
-[paragraph] Overall, this was an awesome experience and I hope to do more game jams in the future. Andy
+[paragraph]
+This was a great experience and I hope to do more game jams in the future!

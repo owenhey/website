@@ -56,6 +56,7 @@
 @media (max-width: 500px) {
     .flags-qa-direction {
         flex-direction: column;
+        gap: 2rem;
     }
 }
 

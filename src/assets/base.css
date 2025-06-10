@@ -402,9 +402,9 @@ span, p, label{
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Creates 2 equal columns */
   gap: 5%;
-  width: 75%;
+  width: 100%;
+  max-width: 500px;
   margin-bottom: 50px;
-  position: relative;;
 }
 
 .window-link{

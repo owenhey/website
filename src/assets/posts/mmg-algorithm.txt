@@ -80,11 +80,6 @@ of explaining, but know that this algorithm would be running on all runes and th
 
 [paragraph]
 Since both the rune's points and the drawn glyph's points are in [code]0-1[code] space, a naive solution would be to loop
-through all the points in the rune, and find the closest point to them from the drawn points. This has two major
-flaws.
-
-[paragraph]
-Since both the rune's points and the drawn glyph's points are in [code]0-1[code] space, a naive solution would be to loop
 through all the points in the rune, and find the closest point to them from the drawn points. Then you could
 then reward score for having points that have very close minimums to the desired points. This has two major
 flaws.

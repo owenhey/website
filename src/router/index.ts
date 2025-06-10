@@ -65,6 +65,11 @@ const router = createRouter({
           path: 'rune-algorithm',
           name: 'rune-algorithm',
           component: Post,
+        },
+        {
+          path: 'charchase',
+          name: 'charchase',
+          component: Post,
         }
       ]
     },

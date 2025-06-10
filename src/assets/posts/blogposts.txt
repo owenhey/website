@@ -17,7 +17,7 @@ declared in your [code]package.json[code].
 
 [paragraph] I say this, but am just as guilty of it as the next programmer. And when I was making 
 this website and was presented with the need for some kind of "post" system, I decided to make my own.
-I can recognize that it was a silly decision, but it has also been a fun challenge.
+I can recognize that it was probably a waste of time, but it has also been a fun challenge.
 
 [subtitle] What I was looking for
 [paragraph] I started by making a list of what I wanted this system, whether it was a fully-fleshed out 
@@ -28,7 +28,7 @@ Support rich text
 Easily add images, gifs, and videos
 Extremely customizable
 
-[paragraph] I ended up deciding on defining a new [i][link]Lightweight Markup Language,https://en.wikipedia.org/wiki/Lightweight_markup_language[link][i].
+[paragraph] I ended up deciding on defining a new [link]Lightweight Markup Language,https://en.wikipedia.org/wiki/Lightweight_markup_language[link].
 Basically, I could define each post in a single text file, that uses a custom format to define things like
 paragraphs, italics, and lists.
 
