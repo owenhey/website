@@ -18,6 +18,7 @@
 
 .flags-content{
     overflow-y: scroll;
+    overflow-x: hidden;
     width: fit-content;
     height: fit-content;
     max-height: 100vh;
@@ -53,10 +54,28 @@
     pointer-events: all;
 }
 
-@media (max-width: 500px) {
+.flag-question-holder {
+    width: auto !important;
+    max-width: 100% !important;
+}
+
+@media (max-width: 640px) {
     .flags-qa-direction {
         flex-direction: column;
         gap: 2rem;
+    }
+
+    .flag-question-holder {
+        width: 80vw !important;
+    }
+
+    .flag-question{
+        flex-basis: 250px !important;
+    }
+
+    .globe-container{
+        width: 80vw !important;
+        height: 80vw !important;
     }
 }
 
@@ -69,10 +88,20 @@
     flex-basis: 400px;
     pointer-events: all;
     flex-shrink: 1;
+    max-width: 90vw;
 }
 
 .flag-answer{
     flex-shrink: 0;
+    max-width: 90vw;
+    outline: none;
+}
+
+.flag-input-container{
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: -1rem; 
+    max-width: 90vw;
 }
 
 .flags-base span{
@@ -126,9 +155,8 @@
 }
 
 .flag-answer-display{
-    max-width: 1000px;
     width: 500px;
-    max-width: 95vw;
+    max-width: 90vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -137,18 +165,28 @@
 
 .flag-name-button{
     background-color: var(--buttonbase);
+    color: var(--brown);
     box-shadow: 3px 6px 3px var(--shadowbrown);
     border-radius: 5px;
     padding: 1em;
     margin-bottom: 1rem;
     border: none;
-    color: var(--brown);
     transition: .08s background-color linear, .08s color linear;
 }
+
+
 
 .flag-name-button:not(:disabled):hover{
     background-color: var(--darkgreen);
     color: var(--lightwhite);
+}
+
+@media (hover: none) {
+    .flag-name-button:not(:disabled):hover {
+        /* reset hover styles on touch devices */
+        background-color: var(--buttonbase);
+        color: var(--brown);
+    } 
 }
 
 .flag-button-holder{
@@ -170,9 +208,14 @@
     padding: 5px;
 }
 
-.flag-button-holder:not(.no-input):not(:disabled):active,
 .flag-button-holder:not(.no-input):not(:disabled):hover{
     background-color: var(--green);
+}
+
+@media (hover: none) {
+    .flag-button-holder:not(.no-input):not(:disabled):hover {
+        background-color: transparent;
+    }
 }
 
 .flag-button-holder > img{
@@ -187,6 +230,7 @@
     width: fit-content;
     height: 2.5em;
     border-radius: .5em;
+    color: var(--brown);
     border: none;
     font-size: 10pt;
     background-color: var(--buttonbase);
@@ -323,6 +367,7 @@
 
 .flag-game-input{
     width: 20rem;
+    max-width: 60vw;
     height: 2.25rem;
     font-size: 16pt;
     padding: .25rem;
@@ -338,7 +383,8 @@
     display: flex;
     flex-direction: column;
     height: 200px;
-    translate: 2.3rem 1rem;
+    margin-top: 1rem;
+    align-items: center;
 }
 
 .flag-game-input-auto-option{
@@ -347,10 +393,24 @@
     font-size: 12pt;
     padding: .25rem;
     border: 1.5px solid black;
+    color: var(--black);
     border-radius: 5px;
     outline: none;
     transition: background-color .15s linear, color .15s linear;
     background-color: white;
+}
+
+@media (min-width: 641px) {
+    .flags-auto-options {
+        translate: -2.3rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .flag-game-input-auto-option{
+        font-size: 8pt;
+        width: 80vw;
+    }
 }
 
 .flag-game-input-auto-option:hover,

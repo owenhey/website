@@ -29,7 +29,7 @@
                 </li>
             </ul>
             <span v-if="section.sectionType === 'html'" 
-                v-html="section.content[0]">
+                v-html="FormatText(section.content[0])">
             </span>
             <div style="height: 1rem;" v-if="section.sectionType==='html'">
 
@@ -81,7 +81,8 @@
             },
 
             FormatText(text : string){
-                return ParseString(text);
+                const viewportWidth = window.innerWidth;
+                return ParseString(text, viewportWidth);
             }
         },
         setup() {

@@ -147,6 +147,7 @@ span, p, label{
   text-align: center;
   display: flex;
   flex-shrink: 0;
+  color: var(--brown);
   align-items: center;
   justify-content: center;
   user-select: none;
@@ -473,6 +474,7 @@ span, p, label{
 .post-button-latest{
   width: 100%;
   display: flex;
+  min-height: 125px;
   position: relative;
   padding: .5rem;
   gap: .5rem;
@@ -487,6 +489,22 @@ span, p, label{
   transition: .15s background-color;
   margin-bottom: 1rem;
   outline: none;
+}
+
+@media (max-width: 640px) {
+  .post-button-latest {
+    height: 200px;
+  }
+
+  .post-card-grid{
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .post-card-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
 }
 
 .post-button-latest .post-date{
@@ -529,6 +547,8 @@ span, p, label{
   aspect-ratio: 1;
   height: 100%;
   border-radius: 1rem;
+  max-width: 20vw;
+  max-height: 20vw;
 }
 
 .post-button-card {
@@ -602,6 +622,16 @@ span, p, label{
   box-shadow: 5px 5px 5px var(--shadowbrown);
   display: flex;
   position: relative;
+}
+
+@media (max-width: 640px) {
+  .portfolio-spotlight {
+    flex-direction: column-reverse;
+  }
+
+  .portfolio-spotlight > div{
+    width: calc(100% - 1rem) !important;
+  }
 }
 
 .portfolio-spotlight-image-section{
@@ -722,6 +752,12 @@ span, p, label{
   box-shadow: 5px 5px 5px var(--shadowbrown);
   color: var(--brown);
   position: relative;
+}
+
+@media (max-width: 640px) {
+  .portfolio-button{
+    max-width: 45%;
+  }
 }
 
 .empty-portfolio-button{

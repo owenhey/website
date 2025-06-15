@@ -20,12 +20,10 @@
                         :style="currentOptions.questionMode == 'globe' ? 'width: 30rem;' : 'width: 20rem;'"></span>
                     <button class="vine-button" style="font-size: 10pt; translate: 0px -5px;" @click="skipQuestion">Skip
                     </button>
-                    <div v-if="currentOptions.questionMode==='flag'" class="flag-button-holder no-input"
-                        style="height: 35vh; width: auto;">
+                    <div v-if="currentOptions.questionMode==='flag'" class="flag-button-holder no-input flag-question-holder">
                         <img :src="questionFlagUrl">
                     </div>
-                    <div class="globe-container" v-if="currentOptions.questionMode === 'globe'"
-                        style="height: 400px; width: 400px; min-height: 400px; min-width: 400px;">
+                    <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
                         <GlobeGL ref="globeQuestionRef" :size="400" :mode="'highlight'"
                             :countryName="correctAnswer?.countryName">
                         </GlobeGL>
@@ -36,7 +34,7 @@
 
                     </FlagAnswer>
                 </div>
-                <div class="flag-answer">
+                <div class="flag-answer" id="flag-answer-id" tabindex="0">
                     <div class="flag-answer-display"
                         v-if="(currentOptions.answerMode !== 'name' || currentOptions.nameEntryType !== 'inputField') && currentOptions.answerMode !== 'globe'"
                         :style="flagAnswerDisplayStyle()">
@@ -46,7 +44,7 @@
                             @onClick="handleAnswerPicked">
                         </FlagAnswer>
                     </div>
-                    <div style="display: flex; gap: 10px; margin-bottom: -1rem; translate: 2.3rem; width: 28rem;"
+                    <div class="flag-input-container"
                         v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                         <input class="flag-game-input raleway" @input="handleNameEntryInputChange" ref="nameInput"
                             tabindex="1" autocomplete="cc-csc" type="text" @keydown="handleNameInputKey"
@@ -623,6 +621,15 @@
                 }
 
                 pseudoRandomPool.value.splice(randomIndex, 1);
+
+                // Unfocus things so that mobile doesn't color it green
+                setTimeout(() => {
+                    if(currentOptions.value.answerMode === 'flag' ||
+                        currentOptions.value.answerMode === 'name' && currentOptions.value.nameEntryType === 'button'
+                    ){
+                        document.getElementById('flag-answer-id')?.focus();
+                    }
+                }, 25);
             }
 
             function skipQuestion(){

@@ -12,7 +12,7 @@ where you play as a hopeless romantic knight who kills various creatures.
 
 [paragraph] Here is a trailer I made for the game.
 
-[html]<iframe width="560" height="315" src="https://www.youtube.com/embed/OlGU9s1o-Bs?si=USq50_isolnLFyxG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[html]<iframe width="[youtube_width]" height="[youtube_height]" src="https://www.youtube.com/embed/OlGU9s1o-Bs?si=USq50_isolnLFyxG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 [title] Highlights
 [paragraph] I want to highlight a few things that I'm particularily proud of.
