@@ -103,7 +103,7 @@ span, p, label{
 }
 
 .main-content{
-  width: 80%;
+  width: 92%;
   max-width: 900px;
   height: 100%;
   background-color: var(--lightbrown);
@@ -829,8 +829,4 @@ span, p, label{
 .resume-button:focus{
   background-color: var(--darkgreen);
   text-decoration: underline;
-}
-
-.globe-canvas{
-  
 }

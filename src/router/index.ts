@@ -7,6 +7,7 @@ import Flags from '@/views/Flags.vue'
 import Post from '@/views/Posts/Post.vue'
 import AllPosts from '@/views/Posts/AllPosts.vue'
 import GlobeGL from '@/views/GlobeGL.vue'
+import Words from '@/views/Words.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -25,6 +26,11 @@ const router = createRouter({
       path: '/portfolio',
       name: 'portfolio',
       component: Portfolio
+    },
+    {
+      path: '/words',
+      name: 'words',
+      component: Words
     },
     {
       path: '/globe',

@@ -32,3 +32,11 @@ export interface FlagHighscore{
     time : number;
     name: string;
 }
+
+export interface WordGameData {
+    word: string;
+    letters: string[];
+    wildcardReason: string;
+    wildcard: string;
+    synonyms: string[];
+}
