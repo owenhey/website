@@ -193,6 +193,7 @@
                     word: word,
                 });
                 fetch(baseUrl + '/get_cluedle_count?' + getParams.toString())
+                    .then(response => response.json())
                     .then(data => playerCount.value = data.count);
             }
 
