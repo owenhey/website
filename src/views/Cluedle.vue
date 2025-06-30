@@ -11,7 +11,7 @@
                                 (how to play)
                             </button>
                         </div>
-                        <div style="font-size: 13pt; margin-top: .5rem;"><b>{{ playerCount }}</b> {{playerCount == 1 ? 'person has' : 'people have'}} has played today!</div>
+                        <div style="font-size: 13pt; margin-top: .5rem;"><b>{{ playerCount }}</b> {{playerCount == 1 ? 'person has' : 'people have'}} played today!</div>
                     </div>
 
                     <div class="letters-section">
@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="input-section">
-                        <div v-if="attempts < 4"
+                        <div v-if="!gameOver"
                         class="attempts-counter" style="margin-bottom: 1rem; margin-top: 1rem;">
                             {{ maxAttempts - attempts }} attempt{{attempts == 3 ? '' : 's'}} left
                         </div>
@@ -170,8 +170,9 @@
 
             function initializeGame(){
                 const today = new Date();
-                const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24) + 7);
-                const randomGame = gameData[daysSinceEpoch % gameData.length];
+                console.log('Local time:', today.toString());
+                const localDaysSinceEpoch = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24) + 8);
+                const randomGame = gameData[localDaysSinceEpoch % gameData.length];
 
                 currentGame.value = randomGame;
                 guessInput.value = '';
