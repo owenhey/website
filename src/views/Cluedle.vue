@@ -11,6 +11,7 @@
                                 (how to play)
                             </button>
                         </div>
+                        <div style="font-size: 13pt; margin-top: .5rem;"><b>{{ playerCount }}</b> {{playerCount == 1 ? 'person has' : 'people have'}} has played today!</div>
                     </div>
 
                     <div class="letters-section">
@@ -140,6 +141,8 @@
             const faqOptionsRef = ref<HTMLDialogElement>();
             const scrollingContent = ref<HTMLDivElement>();
 
+            const playerCount = ref(0);
+
             const formattedDate = computed(() => {
                 const today = new Date();
                 return today.toLocaleDateString('en-US', { 
@@ -179,7 +182,34 @@
                 revealedSynonyms.value = [true, false, false, false];
                 
                 revealedLetters.value = [];
+
+                getPlayerCount(currentGame.value.word);
             };
+
+            const getPlayerCount = async (word : string) => {
+                // const baseUrl = 'http://127.0.0.1:5000';
+                const baseUrl = 'https://oysterhey.com';
+                const getParams = new URLSearchParams({
+                    word: word,
+                });
+                fetch(baseUrl + '/get_cluedle_count?' + getParams.toString())
+                    .then(data => playerCount.value = data.count);
+            }
+
+            const sendPlayerCount = async (word : string) => {
+                // const baseUrl = 'http://127.0.0.1:5000';
+                const baseUrl = 'https://oysterhey.com';
+                const params = new URLSearchParams({
+                    word: word, 
+                });
+                fetch(baseUrl + '/cluedle_count?' + params.toString(), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({message: ""}),
+                });
+            }
 
             function handleSubmitGuess(){
                 if (!currentGame.value || gameWon.value || gameOver.value || !guessInput.value.trim()) return;
@@ -200,6 +230,9 @@
                     revealedSynonyms.value = [true, true, true, true];
                     const allLetters = [...new Set(currentGame.value.word.split(''))];
                     revealedLetters.value = allLetters;
+
+                    sendPlayerCount(currentGame.value.word);
+                    playerCount.value++;
                 } else {
                     incorrectGuess.value = guess;
                     
@@ -215,6 +248,9 @@
                         revealedSynonyms.value = [true, true, true, true];
                         const allLetters = [...new Set(currentGame.value.word.split(''))];
                         revealedLetters.value = allLetters;
+
+                        sendPlayerCount(currentGame.value.word);
+                        playerCount.value++;
                     }
                 }
                 
@@ -272,7 +308,8 @@
                 skip,
                 scrollingContent,
                 formattedDate,
-                knownLetters
+                knownLetters,
+                playerCount
             };
         },
     }

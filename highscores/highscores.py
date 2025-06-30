@@ -7,11 +7,16 @@ app = Flask(__name__)
 CORS(app)
 
 highscores = []
+cluedle_counts = {}
 
 def saveData():
     print("saving data")
     with open("highscores.txt", "w") as f:
         json.dump(highscores, f)
+
+def saveCluedleData():
+    with open("cluedle_counts.txt", "w") as f:
+        json.dump(cluedle_counts, f)
  
 def loadInData():
     global highscores
@@ -20,6 +25,19 @@ def loadInData():
         with open("highscores.txt", "r") as f:
             highscores = json.load(f)
             print("Loaded in the data: " + json.dumps(highscores))
+
+def loadCluedleData():
+    global cluedle_counts
+    if os.path.exists("cluedle_counts.txt"):
+        with open("cluedle_counts.txt", "r") as f:
+            cluedle_counts = json.load(f)
+
+def cleanupOldWords():
+    global cluedle_counts
+    if len(cluedle_counts) > 3:
+        sorted_words = sorted(cluedle_counts.items(), key=lambda x: x[1], reverse=True)
+        cluedle_counts = dict(sorted_words[:3])
+        saveCluedleData()
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -76,6 +94,38 @@ def handleNewTime(name, mode, region, time):
     else:
         return False
 
+@app.route('/cluedle_count', methods=['POST'])
+def cluedle_count():
+    word = request.args.get('word', 'NOWORD')
+    
+    if word == 'NOWORD':
+        return jsonify({"status": "error", "message": "No word provided"})
+    
+    global cluedle_counts
+    
+    if word in cluedle_counts:
+        cluedle_counts[word] += 1
+    else:
+        cluedle_counts[word] = 1
+    
+    cleanupOldWords()
+    saveCluedleData()
+    
+    return jsonify({"status": "success", "count": cluedle_counts[word]})
+
+@app.route('/get_cluedle_count', methods=['GET'])
+def get_cluedle_count():
+    word = request.args.get('word', 'NOWORD')
+    
+    if word == 'NOWORD':
+        return jsonify({"status": "error", "message": "No word provided"})
+    
+    global cluedle_counts
+    count = cluedle_counts.get(word, 0)
+    
+    return jsonify({"count": count})
+
 if __name__ == '__main__':
     loadInData()
+    loadCluedleData()
     app.run(debug=True)

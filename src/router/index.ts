@@ -7,7 +7,7 @@ import Flags from '@/views/Flags.vue'
 import Post from '@/views/Posts/Post.vue'
 import AllPosts from '@/views/Posts/AllPosts.vue'
 import GlobeGL from '@/views/GlobeGL.vue'
-import Words from '@/views/Words.vue'
+import Cluedle from '@/views/Cluedle.vue'
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -34,7 +34,7 @@ const router = createRouter({
     {
       path: '/cluedle',
       name: 'cluedle',
-      component: Words
+      component: Cluedle
     },
     {
       path: '/globe',
