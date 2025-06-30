@@ -6,12 +6,15 @@
                     <div class="word-game-container">
                     <div class="game-header">
                         <h1>the word game</h1>
-                        <div class="game-date">Friday, June 27, 2025</div>
+                        <div class="game-date">{{ formattedDate }}</div>
                     </div>
 
                     <div class="letters-section">
                         <div class="letters-title">Known Letters</div>
-                        <div class="known-letters">{{ revealedLetters.join(' ') }}</div>
+                        <div class="known-letters"
+                            :style="gameOver ? '' : 'width: 5em;'">
+                            {{ knownLetters }}
+                        </div>
                     </div>
 
                     <div class="clues-section">
@@ -36,6 +39,10 @@
                     </div>
 
                     <div class="input-section">
+                        <div v-if="attempts < 4"
+                        class="attempts-counter" style="margin-bottom: 1rem; margin-top: 1rem;">
+                            {{ maxAttempts - attempts }} attempt{{attempts == 3 ? '' : 's'}} left
+                        </div>
                         <input 
                             type="text" 
                             class="guess-input" 
@@ -62,10 +69,6 @@
                         </button>
                     </div>
 
-                    <div class="attempts-counter">
-                        Attempts: {{ attempts }}/{{ maxAttempts }}
-                    </div>
-
                     <div v-if="gameWon" class="game-result win">
                         <h3>Congratulations!</h3>
                         <p>You guessed "{{ currentGame?.word }}" correctly!</p>
@@ -89,18 +92,17 @@
 	</div>
     <dialog ref="faqOptionsRef">
         <div class="words-faq-dialog">
-            <h2 style="text-align: center;">How to play</h2>
+            <h2>
+                Try to guess the secret word each day using the clues!
+            </h2>
             <p>
-                The four words in the grid are related to / synonyms of the secret word.
+                An example of a solved puzzle to get you started:
             </p>
             <br>
-            <p>
-                The known letters are part of the secret word, though not necessarily in that order.
-            </p>
-            <br>
-            <p>
-                The wildcard is also related to the word, but in a less direct / trickier way.
-            </p>
+            <div style="margin: 0; padding: 0; display: flex; align-items: center; flex-direction: column;">
+                <img class="words-tut-image" src="/src/assets/png/word-game-tut-1.png">
+                <img class="words-tut-image" src="/src/assets/png/word-game-tut-2.png">
+            </div>
             <br>
             <button class="vine-button" style="font-size: 12pt; margin: auto;" @click="faqOptionsRef?.close()">Close</button>
         </div>
@@ -113,43 +115,7 @@
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import { WordGameData } from '@/types';
-
-    const gameData: WordGameData[] = [
-        {
-            word: "GOLDFISH",
-            letters: ['S','G'],
-            wildcard: "SNACK",
-            wildcardReason: 'Goldfish is also a type of snack.',
-            synonyms: ["MEMORY", "ANIMAL", "AQUATIC", "PET"]
-        },
-        {
-            word: "POKE",
-            letters: ['K','P'],
-            wildcard: "SUSHI",
-            wildcardReason: 'Poke is also a dish with raw fish, or sushi, in it.',
-            synonyms: ["FINGER", "FLIRT", "JAB", "PROD"]
-        },
-        {
-            word: "DRAGON",
-            letters: ['R','N'],
-            wildcard: "BENEDICT",
-            wildcardReason: 'Benedict Cumberpatch played the dragon Smaug in the new Hobbit movies.',
-            synonyms: ["GOLD", "FLAMES", "FLIGHT", "MONSTER"]
-        },
-        {
-            word: "KNIGHT",
-            letters: ['H','N'],
-            wildcard: "DARK",
-            wildcardReason: "It is dark at night, which is a homophone for knight.",
-            synonyms: ["HORSEBACK", "MEDIEVAL", "JOUST", "WARRIOR"]
-        },
-    ].map(game => ({
-        ...game,
-        word: game.word.toUpperCase(),
-        letters: game.letters.map(l => l.toUpperCase()),
-        wildcard: game.wildcard.toUpperCase(),
-        synonyms: game.synonyms.map(s => s.toUpperCase())
-    }));
+    import { gameData } from '../gamedata';
 
     export default defineComponent({
         name: 'Words',
@@ -170,9 +136,34 @@
             const faqOptionsRef = ref<HTMLDialogElement>();
             const scrollingContent = ref<HTMLDivElement>();
 
+            const formattedDate = computed(() => {
+                const today = new Date();
+                return today.toLocaleDateString('en-US', { 
+                    weekday: 'long', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+            });
+
+            const knownLetters = computed(()=>{
+                let ret = '';
+                for(let i = 0; i < Math.max(3, revealedLetters.value.length); i++){
+                    if(revealedLetters.value.length > i){
+                        ret += revealedLetters.value[i];
+                    }
+                    else{
+                        ret += "?";
+                    }
+                    ret += ' ';
+                }
+                ret = ret.trim();
+                console.log(ret);
+                return ret;
+            });
+
             function initializeGame(){
                 const today = new Date();
-                const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24) + 3);
+                const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24) + 7);
                 const randomGame = gameData[daysSinceEpoch % gameData.length];
 
                 currentGame.value = randomGame;
@@ -183,7 +174,7 @@
                 incorrectGuess.value = '';
                 revealedSynonyms.value = [true, false, false, false];
                 
-                revealedLetters.value = [...randomGame.letters[0]];
+                revealedLetters.value = [];
             };
 
             function handleSubmitGuess(){
@@ -213,10 +204,8 @@
                         newRevealedSynonyms[newAttempts] = true;
                         revealedSynonyms.value = newRevealedSynonyms;
                         
-                        if (newAttempts === 1) {
-                            const newLetter = currentGame.value.letters[1];
-                            revealedLetters.value = [...revealedLetters.value, newLetter];
-                        }
+                        const newLetter = currentGame.value.letters[newAttempts - 1];
+                        revealedLetters.value = [...revealedLetters.value, newLetter];
                     } else {
                         gameOver.value = true;
                         revealedSynonyms.value = [true, true, true, true];
@@ -232,7 +221,6 @@
                 initializeGame();
                 faqOptionsRef.value?.showModal();
 
-                // when the keyboard closes, scroll to the top
                 window.addEventListener('focusout', handleFocusOut);
                 window.addEventListener('scroll', handleScroll);
             });
@@ -278,7 +266,9 @@
                 handleSubmitGuess,
                 faqOptionsRef,
                 skip,
-                scrollingContent
+                scrollingContent,
+                formattedDate,
+                knownLetters
             };
         },
     }
