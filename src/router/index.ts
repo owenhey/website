@@ -29,7 +29,11 @@ const router = createRouter({
     },
     {
       path: '/words',
-      name: 'words',
+      redirect: '/cluedle'
+    },
+    {
+      path: '/cluedle',
+      name: 'cluedle',
       component: Words
     },
     {

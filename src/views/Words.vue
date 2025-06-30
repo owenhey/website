@@ -5,8 +5,12 @@
 			<div ref="scrollingContent" class="scrolling-content">
                     <div class="word-game-container">
                     <div class="game-header">
-                        <h1>the word game</h1>
-                        <div class="game-date">{{ formattedDate }}</div>
+                        <h1>Cluedle</h1>
+                        <div class="game-date">{{ formattedDate }}
+                            <button @click="faqOptionsRef?.showModal()" class="how-to-play-btn">
+                                (how to play)
+                            </button>
+                        </div>
                     </div>
 
                     <div class="letters-section">
@@ -115,7 +119,7 @@
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
     import { WordGameData } from '@/types';
-    import { gameData } from '../gamedata';
+    import { gameData } from '../gameData';
 
     export default defineComponent({
         name: 'Words',

@@ -77,7 +77,7 @@
                     ],
                     content: [
                         "[link][i]Nunaka: My Village[i],https://www.fablevisionstudios.com/game-nunaka[link] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with the Chugachmiut organization to create something that would excite their youth about their culture.",
-                        "The game takes place in a styalized replica of the tribe's town, with elders and talking animals to guide the player through various minigames and activities.",
+                        "The game takes place in a stylized replica of the community's town, with elders and talking animals to guide the player through various minigames and activities.",
                         "The minigames focus on individual aspects of daily life, including fishing, cooking, and bead-jewlery making.",
                         "Nunaka: My Village can be found on the iOS and Android app stores.",
                     ],
@@ -113,6 +113,17 @@
                         "Independently designed and developed over a single weekend.",
                         "The highest score as of March 2nd, 2025, is [b]792[b]. Email me if you beat it!",
                         "[link]Source Code,https://github.com/owenhey/ludum-dare-2024[link]"
+                    ],
+                },
+                {
+                    title: "Cluedle",
+                    date: "June 2025",
+                    images: [
+                        '/src/assets/png/word-game-tut-1.png',
+                    ],
+                    content: [
+                        "A daily game word game where you're given clues about a secret word (inspired by Wordle and the like), playable on my website.",
+                        "[link]Link here!,https://oysterhey.com/#/cluedle[link]"
                     ],
                 },
                 {
