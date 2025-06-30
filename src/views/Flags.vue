@@ -47,7 +47,7 @@
                     <div class="flag-input-container"
                         v-if="currentOptions.answerMode === 'name' && currentOptions.nameEntryType === 'inputField'">
                         <input class="flag-game-input raleway" @input="handleNameEntryInputChange" ref="nameInput"
-                            tabindex="1" autocomplete="cc-csc" type="text" @keydown="handleNameInputKey"
+                            tabindex="1" autocomplete="off" type="text" @keydown="handleNameInputKey"
                             @focus="autoOptionFocused = -1">
                         <button class="vine-button" style="font-size: 10pt;" :tabindex="7" @click="tryGuessOfInput()"
                             @keydown="handleGuessInputKey" ref="guessButton">
@@ -278,7 +278,7 @@
             <input v-if="gotNewGlobalHighcore" 
                 ref="highscoreNameInput" 
                 class="flag-highscore-name-input raleway"
-                autocomplete="cc-csc" 
+                autocomplete="off"
                 maxlength="20" 
                 @input="handleHighscoreNameChange">
             <div style="display: flex; width: 100%; justify-content: center; gap: 20px;">

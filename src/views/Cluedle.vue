@@ -55,7 +55,8 @@
                             v-model="guessInput"
                             @keyup.enter="handleSubmitGuess"
                             :disabled="gameOver"
-                            autocomplete="cc-csc"
+                            name="guess"
+                            autocomplete="off"
                         >
                         <button 
                             class="guess-button vine-button"
