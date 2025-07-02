@@ -35,8 +35,9 @@ def loadCluedleData():
 def cleanupOldWords():
     global cluedle_counts
     if len(cluedle_counts) > 3:
-        sorted_words = sorted(cluedle_counts.items(), key=lambda x: x[1], reverse=True)
-        cluedle_counts = dict(sorted_words[:3])
+        # Keep the 3 most recently added words (last 3 items)
+        recent_words = list(cluedle_counts.items())[-3:]
+        cluedle_counts = dict(recent_words)
         saveCluedleData()
 
 @app.route('/', methods=['GET'])
