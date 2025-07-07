@@ -55,7 +55,7 @@ export const gameData: WordGameData[] = [
         letters: ['S', 'B', 'A'],
         wildcard: "Mister",
         wildcardReason: 'The famous YouTuber Mr. Beast',
-        synonyms: ["Controversial", "contest", "content", "youtube"]
+        synonyms: ["scary", "animal", "savage", "creature"]
     },
     {
         word: "TEA",
@@ -77,6 +77,20 @@ export const gameData: WordGameData[] = [
         wildcard: "MEN",
         wildcardReason: "Of Mice and Men - famous book",
         synonyms: ["Laboratory", "Cheese", "Disney", "Rodent"]
+    },
+    {
+        word: "PUBLIC",
+        letters: ['L', 'P', 'U'],
+        wildcard: "ENEMY",
+        wildcardReason: '"Public Enemy #1", for example',
+        synonyms: ["Open", "Library", "Free", "Communal"]
+    },
+    {
+        word: "INSPECT",
+        letters: ['I', 'S', 'P'],
+        wildcard: "GADGET",
+        wildcardReason: 'Referencing Inspector Gadget',
+        synonyms: ["Research", "Detect", "Evidence", "Approve"]
     },
 
 

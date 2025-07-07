@@ -60,6 +60,7 @@
                         >
                         <button 
                             class="guess-button vine-button"
+                            @touchend="handleTouchEnd"
                             @click="handleSubmitGuess"
                             :disabled="gameOver || !guessInput.trim()"
                         >
@@ -154,6 +155,17 @@
             });
 
             const knownLetters = computed(()=>{
+                if(gameOver.value){
+                    let ret = '';
+                    for(let i = 0; i < revealedLetters.value.length; i++){
+                        if(revealedLetters.value.length > i){
+                            ret += revealedLetters.value[i];
+                        }
+                        ret += ' ';
+                    }
+                    ret = ret.trim();
+                    return ret;
+                }
                 let ret = '';
                 for(let i = 0; i < Math.max(3, revealedLetters.value.length); i++){
                     if(revealedLetters.value.length > i){
@@ -165,15 +177,14 @@
                     ret += ' ';
                 }
                 ret = ret.trim();
-                console.log(ret);
                 return ret;
             });
 
             function initializeGame(){
                 const today = new Date();
-                console.log('Local time:', today.toString());
-                const localDaysSinceEpoch = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24) + 8);
-                const randomGame = gameData[localDaysSinceEpoch % gameData.length];
+                let daysSince0 = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24));
+                daysSince0 -= 20265;
+                const randomGame = gameData[daysSince0 % gameData.length];
 
                 currentGame.value = randomGame;
                 guessInput.value = '';
@@ -231,8 +242,7 @@
                     gameOver.value = true;
                     incorrectGuess.value = '';
                     revealedSynonyms.value = [true, true, true, true];
-                    const allLetters = [...new Set(currentGame.value.word.split(''))];
-                    revealedLetters.value = allLetters;
+                    revealedLetters.value = currentGame.value.word.split(' ');
 
                     sendPlayerCount(currentGame.value.word);
                     playerCount.value++;
@@ -249,9 +259,7 @@
                     } else {
                         gameOver.value = true;
                         revealedSynonyms.value = [true, true, true, true];
-                        const allLetters = [...new Set(currentGame.value.word.split(''))];
-                        revealedLetters.value = allLetters;
-
+                        revealedLetters.value = currentGame.value.word.split(' ');
                         sendPlayerCount(currentGame.value.word);
                         playerCount.value++;
                     }
@@ -286,6 +294,13 @@
                 }
             }
 
+            function handleTouchEnd(event: TouchEvent) {
+                event.preventDefault();
+                if (!gameOver.value && guessInput.value.trim()) {
+                    handleSubmitGuess();
+                }
+            }
+
             onUnmounted(()=>{
                 window.removeEventListener('scroll', handleScroll);
                 window.removeEventListener('focusout', handleFocusOut);
@@ -312,7 +327,8 @@
                 scrollingContent,
                 formattedDate,
                 knownLetters,
-                playerCount
+                playerCount,
+                handleTouchEnd
             };
         },
     }
