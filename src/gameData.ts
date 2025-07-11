@@ -92,6 +92,55 @@ export const gameData: WordGameData[] = [
         wildcardReason: 'Referencing Inspector Gadget',
         synonyms: ["Research", "Detect", "Evidence", "Approve"]
     },
+    {
+        word: "CLUE",
+        letters: ['L', 'U', 'C'],
+        wildcard: "MIRROR",
+        wildcardReason: 'Mirror references looking back at the game itself - Cluedle',
+        synonyms: ["Puzzle", "Detective", "Lead", "Hint"]
+    },
+    {
+        word: "OCEAN",
+        letters: ['C', 'O', 'N'],
+        wildcard: "HEIST",
+        wildcardReason: "Ocean's Eleven - the famous heist movie",
+        synonyms: ["DEEP", "WAVES", "BLUE", "SALTWATER"]
+    },
+    {
+        word: "TIGER",
+        letters: ['G', 'T', 'R'],
+        wildcard: "WOOD",
+        wildcardReason: "Tiger Woods the golfer",
+        synonyms: ["STRIPE", "POUNCE", "JUNGLE", "FELINE"]
+    },
+    {
+        word: "BUTTERFLY",
+        letters: ['F', 'T', 'B'],
+        wildcard: "EFFECT",
+        wildcardReason: "The butterfly effect from chaos theory",
+        synonyms: ["MIGRATE", "INSECT", "FLUTTER", "CATERPILLAR"]
+    },
+    {
+        word: "TURKEY",
+        letters: ['D', 'C', 'O'],
+        wildcard: "COLD",
+        wildcardReason: "Going cold turkey",
+        synonyms: ["Mediterranean", "GREECE", "SYRIA", "ISTANBUL"]
+    },
+    {
+        word: "PEACE",
+        letters: ['C', 'A', 'P'],
+        wildcard: "CAKE",
+        wildcardReason: "Piece of cake - piece and peace are homophones.",
+        synonyms: ["PROSPERITY", "PACIFIST", "NOBEL", "TREATY"]
+    },
+    {
+        word: "WATER",
+        letters: ['T', 'W', 'R'],
+        wildcard: "TROUBLE",
+        wildcardReason: "Bridge over Troubled Water",
+        synonyms: ["COMPOUND", "LIFE", "WET", "HYDRATION"]
+    },
 
 
 ].map(game => ({

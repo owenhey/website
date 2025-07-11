@@ -1,5 +1,6 @@
 export interface PortfolioContent{
     title: string,
+    role: string,
     content: string[],
     date: string,
     images: string[]

@@ -48,6 +48,7 @@
             const portfolioObjects = ref<PortfolioContent[]>([
                 {
                     title: "Isles of Ilkmaar",
+                    role: "Lead Developer",
                     images: [
                         '/src/assets/jpg/isles1.jpg',
                         '/src/assets/jpg/isles2.jpg',
@@ -67,23 +68,27 @@
                 },
                 {
                     title: "Nunaka: My Village",
-                    date: "2022-2023",
+                    role: "Lead Developer",
+                    date: "2022-2023, 2025-present",
                     images: [
-                        '/src/assets/jpg/chugach4.jpg',
-                        '/src/assets/jpg/chugach1.jpg',
-                        '/src/assets/jpg/chugach2.jpg',
-                        '/src/assets/jpg/chugach3.jpg',
-                        '/src/assets/jpg/chugach5.jpg',
+                        '/src/assets/jpg/nunaka1.jpg',
+                        '/src/assets/jpg/nunaka2.jpg',
+                        '/src/assets/jpg/nunaka3.jpg',
+                        '/src/assets/jpg/nunaka4.jpg',
+                        '/src/assets/jpg/nunaka5.jpg',
+                        '/src/assets/jpg/nunaka6.jpg',
+                        '/src/assets/jpg/nunaka7.jpg',
                     ],
                     content: [
-                        "[link][i]Nunaka: My Village[i],https://www.fablevisionstudios.com/game-nunaka[link] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with the Chugachmiut organization to create something that would excite their youth about their culture.",
-                        "The game takes place in a stylized replica of the community's town, with elders and talking animals to guide the player through various minigames and activities.",
+                        "[link][i]Nunaka: My Village[i],https://www.fablevisionstudios.com/game-nunaka[link] is a celebration and showcase of Sugpiaq (an Alaskan Native people) heritage. We worked with [link]Chugachmiut,https://www.chugachmiut.org/[link] to create a game showcasing Sugpiaq culture and preparing their youth for preschool and kindergarten.",
+                        "The game takes place in a stylized recreation of the community's town, with elders and talking animals to guide the player through various minigames and activities.",
                         "The minigames focus on individual aspects of daily life, including fishing, cooking, and bead-jewlery making.",
                         "Nunaka: My Village can be found on the iOS and Android app stores.",
                     ],
                 },
                 {
                     title: "Polygunners",
+                    role: "Independent",
                     date: "2022-2023",
                     images: [
                         '/src/assets/jpg/polygunners.jpg',
@@ -99,6 +104,7 @@
                 },
                 {
                     title: "Char Chase (Ludum Dare 56)",
+                    role: 'Independent',
                     date: "Oct 2024",
                     images: [
                         '/src/assets/jpg/charchase.jpg',
@@ -117,6 +123,7 @@
                 },
                 {
                     title: "Cluedle",
+                    role: 'Independent',
                     date: "June 2025",
                     images: [
                         '/src/assets/png/word-game-tut-1.png',
@@ -128,6 +135,7 @@
                 },
                 {
                     title: "Museums Around the World",
+                    role: 'Developer',
                     date: "2022-2025",
                     images: [
                         '/src/assets/jpg/ami4.jpg',
@@ -146,6 +154,7 @@
                 },
                 {
                     title: "Boss Rush 2025 - Steel Rose Revolution",
+                    role: 'Developer (team of 2)',
                     date: "Jan 2025",
                     images: [
                         '/src/assets/jpg/steelroserevolution.jpg',
@@ -163,6 +172,7 @@
                 },
                 {
                     title: "MMG",
+                    role: 'Independent',
                     date: "2024",
                     images: [
                         '/src/assets/jpg/runedrawing.jpg',
@@ -179,6 +189,7 @@
                 },
                 {
                     title: "4D Missile",
+                    role: 'Independent',
                     date: "Sept 2024",
                     images: [
                         '/src/assets/jpg/4dmissile2.jpg',

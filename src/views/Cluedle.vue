@@ -32,7 +32,7 @@
                                 {{ revealedSynonyms[index] ? synonym : '???' }}
                             </div>
                         </div>
-                        <div class="wildcard-clue">
+                        <div class="wildcard-clue" :class="gameOver ? 'over' : ''">
                             <h3>Wildcard</h3>
                             <div class="wildcard-word">{{ currentGame?.wildcard }}</div>
                             <div v-if="gameWon || gameOver" style="margin-top: 5px;">{{ currentGame?.wildcardReason }}</div>
@@ -43,7 +43,7 @@
                         "{{ incorrectGuess }}" is incorrect
                     </div>
 
-                    <div class="input-section">
+                    <div class="input-section" v-if="!gameOver">
                         <div v-if="!gameOver"
                         class="attempts-counter" style="margin-bottom: 1rem; margin-top: 1rem;">
                             {{ maxAttempts - attempts }} attempt{{attempts == 3 ? '' : 's'}} left
@@ -76,9 +76,9 @@
                         </button>
                     </div>
 
-                    <div v-if="gameWon" class="game-result win">
+                    <div v-if="gameWon" class="game-result win" style="margin-top: 5rem;">
                         <h3>Congratulations!</h3>
-                        <p>You guessed "{{ currentGame?.word }}" correctly!</p>
+                        <p>You guessed "{{ currentGame?.word }}" correctly in {{ attempts }} guess{{ attempts === 1 ? '' : 'es' }}!</p>
                     </div>
 
                     <div v-if="gameOver && !gameWon" class="game-result lose">
