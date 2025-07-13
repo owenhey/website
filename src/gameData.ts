@@ -141,6 +141,55 @@ export const gameData: WordGameData[] = [
         wildcardReason: "Bridge over Troubled Water",
         synonyms: ["COMPOUND", "LIFE", "WET", "HYDRATION"]
     },
+    {
+        word: "COOKIE",
+        letters: ['O', 'C', 'K'],
+        wildcard: "CRUMB",
+        wildcardReason: "That's the way the cookie crumbles.",
+        synonyms: ["SWEET", "BAKE", "CHIP", "JAR"]
+    },
+    {
+        word: "VANILLA",
+        letters: ['L', 'I', 'V'],
+        wildcard: "ICE",
+        wildcardReason: "Vanilla Ice the rapper.",
+        synonyms: ["DEFAULT", "PLAIN", "BEAN", "FLAVOR"]
+    },
+    {
+        word: "BABY",
+        letters: ['B', 'Y', 'A'],
+        wildcard: "BOOM",
+        wildcardReason: "Baby Boomers",
+        synonyms: ["Young", "Child", "Infant", "Newborn"]
+    },
+    {
+        word: "WINDOW",
+        letters: ['D', 'W', 'O'],
+        wildcard: "PAIN",
+        wildcardReason: "Window pane",
+        synonyms: ["SHOP", "LOOK", "SILL", "GLASS"]
+    },
+    {
+        word: "TRIVIAL",
+        letters: ['V', 'T', 'R'],
+        wildcard: "Pursue",
+        wildcardReason: "Trivial Pursuit the game",
+        synonyms: ["MINOR", "UNIMPORTANT", "EASY", "INCONSEQUENTIAL"]
+    },
+    {
+        word: "TREASURE",
+        letters: ['T', 'S', 'R'],
+        wildcard: "Nation",
+        wildcardReason: "The movie National Treasure",
+        synonyms: ["RICH", "BOOTY", "LOOT", "DIG"]
+    },
+    {
+        word: "LIME",
+        letters: ['I', 'L', 'M'],
+        wildcard: "Light",
+        wildcardReason: "Limelight - in the spotlight",
+        synonyms: ["SQUEEZE", "ACID", "GREEN", "CITRUS"]
+    },
 
 
 ].map(game => ({
