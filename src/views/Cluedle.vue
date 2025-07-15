@@ -32,7 +32,7 @@
                                 {{ revealedSynonyms[index] ? synonym : '???' }}
                             </div>
                         </div>
-                        <div class="wildcard-clue">
+                        <div class="wildcard-clue" :class="gameOver ? 'over' : ''">
                             <h3>Wildcard</h3>
                             <div class="wildcard-word">{{ currentGame?.wildcard }}</div>
                             <div v-if="gameWon || gameOver" style="margin-top: 5px;">{{ currentGame?.wildcardReason }}</div>
@@ -43,7 +43,7 @@
                         "{{ incorrectGuess }}" is incorrect
                     </div>
 
-                    <div class="input-section">
+                    <div class="input-section" v-if="!gameOver">
                         <div v-if="!gameOver"
                         class="attempts-counter" style="margin-bottom: 1rem; margin-top: 1rem;">
                             {{ maxAttempts - attempts }} attempt{{attempts == 3 ? '' : 's'}} left
@@ -60,6 +60,7 @@
                         >
                         <button 
                             class="guess-button vine-button"
+                            @touchend="handleTouchEnd"
                             @click="handleSubmitGuess"
                             :disabled="gameOver || !guessInput.trim()"
                         >
@@ -75,9 +76,9 @@
                         </button>
                     </div>
 
-                    <div v-if="gameWon" class="game-result win">
+                    <div v-if="gameWon" class="game-result win" style="margin-top: 5rem;">
                         <h3>Congratulations!</h3>
-                        <p>You guessed "{{ currentGame?.word }}" correctly!</p>
+                        <p>You guessed "{{ currentGame?.word }}" correctly in {{ attempts }} guess{{ attempts === 1 ? '' : 'es' }}!</p>
                     </div>
 
                     <div v-if="gameOver && !gameWon" class="game-result lose">
@@ -154,6 +155,17 @@
             });
 
             const knownLetters = computed(()=>{
+                if(gameOver.value){
+                    let ret = '';
+                    for(let i = 0; i < revealedLetters.value.length; i++){
+                        if(revealedLetters.value.length > i){
+                            ret += revealedLetters.value[i];
+                        }
+                        ret += ' ';
+                    }
+                    ret = ret.trim();
+                    return ret;
+                }
                 let ret = '';
                 for(let i = 0; i < Math.max(3, revealedLetters.value.length); i++){
                     if(revealedLetters.value.length > i){
@@ -165,15 +177,14 @@
                     ret += ' ';
                 }
                 ret = ret.trim();
-                console.log(ret);
                 return ret;
             });
 
             function initializeGame(){
                 const today = new Date();
-                console.log('Local time:', today.toString());
-                const localDaysSinceEpoch = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24) + 8);
-                const randomGame = gameData[localDaysSinceEpoch % gameData.length];
+                let daysSince0 = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24));
+                daysSince0 -= 20265;
+                const randomGame = gameData[daysSince0 % gameData.length];
 
                 currentGame.value = randomGame;
                 guessInput.value = '';
@@ -231,8 +242,7 @@
                     gameOver.value = true;
                     incorrectGuess.value = '';
                     revealedSynonyms.value = [true, true, true, true];
-                    const allLetters = [...new Set(currentGame.value.word.split(''))];
-                    revealedLetters.value = allLetters;
+                    revealedLetters.value = currentGame.value.word.split(' ');
 
                     sendPlayerCount(currentGame.value.word);
                     playerCount.value++;
@@ -249,9 +259,7 @@
                     } else {
                         gameOver.value = true;
                         revealedSynonyms.value = [true, true, true, true];
-                        const allLetters = [...new Set(currentGame.value.word.split(''))];
-                        revealedLetters.value = allLetters;
-
+                        revealedLetters.value = currentGame.value.word.split(' ');
                         sendPlayerCount(currentGame.value.word);
                         playerCount.value++;
                     }
@@ -286,6 +294,13 @@
                 }
             }
 
+            function handleTouchEnd(event: TouchEvent) {
+                event.preventDefault();
+                if (!gameOver.value && guessInput.value.trim()) {
+                    handleSubmitGuess();
+                }
+            }
+
             onUnmounted(()=>{
                 window.removeEventListener('scroll', handleScroll);
                 window.removeEventListener('focusout', handleFocusOut);
@@ -312,7 +327,8 @@
                 scrollingContent,
                 formattedDate,
                 knownLetters,
-                playerCount
+                playerCount,
+                handleTouchEnd
             };
         },
     }

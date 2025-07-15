@@ -1,1 +1,1 @@
-{"KNIGHT": 4}
+{"four": 4, "five": 1, "one": 1}

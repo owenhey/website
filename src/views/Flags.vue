@@ -21,7 +21,8 @@
                     <button class="vine-button" style="font-size: 10pt; translate: 0px -5px;" @click="skipQuestion">Skip
                     </button>
                     <div v-if="currentOptions.questionMode==='flag'" class="flag-button-holder no-input flag-question-holder">
-                        <img :src="questionFlagUrl">
+                        <img v-if="questionFlagUrl" :src="questionFlagUrl">
+                        <span v-else>Loading flags...</span>
                     </div>
                     <div class="globe-container" v-if="currentOptions.questionMode === 'globe'">
                         <GlobeGL ref="globeQuestionRef" :size="400" :mode="'highlight'"
