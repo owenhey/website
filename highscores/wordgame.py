@@ -4,6 +4,7 @@ class GameData:
     def __init__(self, code):
        self.code = code
        self.users = []
+       self.answers = []
 
     def addUser(self, name):
         team = "RED" if len(self.users) % 2 == 0 else "BLUE"
@@ -12,6 +13,12 @@ class GameData:
 
     def getUsers(self):
         return self.users
+
+    def addAnswer(self, name, roundNumber, answer):
+        self.answers.append((name, roundNumber, answer))
+
+    def getAnswers(self, roundNumber):
+        return self.answers[x for x in data if x[1] == roundNumber]
 
     def printState(self):
         print(self.code)
@@ -35,19 +42,49 @@ def handleNewUser(code, name):
     retData["Data"] = currentGames[code].addUser(name)
     currentGames[code].printState()
 
+def handleSendAnswer(code, name, roundIndex, answer):
+    global currentGames
+    global retData
+
+    if(code not in currentGames):
+        retData["Type"] = "INVALID"
+        retData["Data"] = "Game not created"
+        return
+    
+    retData["Type"] = "ADDED ANSWER"
+    currentGames[code].addAnswer(name, roundIndex, answer)
+
+def handleGetAnswers(code, roundIndex):
+    global currentGames
+    global retData
+
+    if(code not in currentGames):
+        retData["Type"] = "INVALID"
+        retData["Data"] = "Game not created"
+        return
+    retData["Type"] = "ANSWERS"
+    answersInRound = currentGames[code].getAnswers(roundIndex)
+    answersDict = [{'Name': n, 'Round': r, 'Answer': a} for n, r, a in answersInRound]
+
+    answers_wrapper = {"answers": answersDict}
+    retData["Data"] = json.dumps(answers_wrapper)
+    
+
 def requestUsers(code):
     global currentGames
     global retData
 
     retData["Type"] = "SEND_USERS"
     if(code not in currentGames):
-        retData["Data"] = []
-    else:
-        userList = currentGames[code].getUsers()
-        dict_list = [{'Name': k, 'Team': v} for k, v in userList]
+        retData["Type"] = "INVALID"
+        retData["Data"] = "Game not created"
+        return
+        
+    userList = currentGames[code].getUsers()
+    dict_list = [{'Name': k, 'Team': v} for k, v in userList]
 
-        users_wrapper = {"users": dict_list}
-        retData["Data"] = json.dumps(users_wrapper)
+    users_wrapper = {"users": dict_list}
+    retData["Data"] = json.dumps(users_wrapper)
 
 def handleGet(data):
     global currentGames
@@ -61,8 +98,12 @@ def handleGet(data):
     dataType = data["Type"]
     if(dataType == "MAKE_USER"):
         handleNewUser(data["Code"], data["Data"])
-    if(dataType == "REQUEST_USERS"):
+    elif(dataType == "REQUEST_USERS"):
         requestUsers(data["Code"])
+    elif(dataType == "SEND_ANSWER"):
+        handleSendAnswer(data["Code"], data["Data"], Data["Metadata1"], Data["Metadata2"])
+    elif(dataType == "GET_ANSWERS"):
+        handleGetAnswers(data["Code"], data["Data"])
 
 
     return retData
