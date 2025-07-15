@@ -2,12 +2,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 import os
+import wordgame
 
 app = Flask(__name__)
 CORS(app)
 
 highscores = []
 cluedle_counts = {}
+
+
+
 
 def saveData():
     print("saving data")
@@ -113,7 +117,7 @@ def cluedle_count():
     
     return jsonify({"status": "success", "count": cluedle_counts[word]})
 
-@app.route('/get_cluedle_count', methods=['GET'])
+@app.route('/get_cluedle_count', methods=['POST'])
 def get_cluedle_count():
     word = request.args.get('word', 'NOWORD')
     
@@ -125,7 +129,17 @@ def get_cluedle_count():
     
     return jsonify({"count": count})
 
+@app.route('/word-game', methods=['GET'])
+def word_game():
+    json_data = request.get_json()
+
+    ret = wordgame.handleGet(json_data)
+    print("Got my ret back: " + str(ret))
+
+    return jsonify({"data": ret})
+
 if __name__ == '__main__':
+    wordgame.init()
     loadInData()
     loadCluedleData()
     app.run(debug=True)
