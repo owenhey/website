@@ -35,9 +35,9 @@ export default {
 
      createUnityInstance(document.querySelector("#unity-canvas"), {
        arguments: [],
-       dataUrl: "WordGame/Builds.data.gz",
-       frameworkUrl: "WordGame/Builds.framework.js.gz",
-       codeUrl: "WordGame/Builds.wasm.gz",
+       dataUrl: "WordGame/Builds.data",
+       frameworkUrl: "WordGame/Builds.framework.js",
+       codeUrl: "WordGame/Builds.wasm",
        streamingAssetsUrl: "StreamingAssets",
        companyName: "DefaultCompany",
        productName: "word-game-mp",
