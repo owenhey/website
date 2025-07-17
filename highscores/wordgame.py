@@ -18,7 +18,7 @@ class GameData:
         self.answers.append((name, roundNumber, answer))
 
     def getAnswers(self, roundNumber):
-        return self.answers[x for x in data if x[1] == roundNumber]
+        return [x for x in self.answers if x[1] == roundNumber]
 
     def printState(self):
         print(self.code)
@@ -37,6 +37,7 @@ def handleNewUser(code, name):
 
     if(code not in currentGames):
         currentGames[code] = GameData(code)
+        print("Creating new game! " + code)
 
     retData["Type"] = "TEAM"
     retData["Data"] = currentGames[code].addUser(name)
@@ -51,7 +52,7 @@ def handleSendAnswer(code, name, roundIndex, answer):
         retData["Data"] = "Game not created"
         return
     
-    retData["Type"] = "ADDED ANSWER"
+    retData["Type"] = "GOT_ANSWER"
     currentGames[code].addAnswer(name, roundIndex, answer)
 
 def handleGetAnswers(code, roundIndex):
@@ -101,7 +102,7 @@ def handleGet(data):
     elif(dataType == "REQUEST_USERS"):
         requestUsers(data["Code"])
     elif(dataType == "SEND_ANSWER"):
-        handleSendAnswer(data["Code"], data["Data"], Data["Metadata1"], Data["Metadata2"])
+        handleSendAnswer(data["Code"], data["Data"], data["Metadata1"], data["Metadata2"])
     elif(dataType == "GET_ANSWERS"):
         handleGetAnswers(data["Code"], data["Data"])
 
