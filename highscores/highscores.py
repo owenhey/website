@@ -143,4 +143,8 @@ if __name__ == '__main__':
     wordgame.init()
     loadInData()
     loadCluedleData()
-    app.run(debug=True)
+
+    if os.getenv('FLASK_ENV') == 'production':
+        app.run(host='0.0.0.0', port=5000, debug=False)
+    else:
+        app.run(debug=True)
