@@ -130,7 +130,7 @@ def get_cluedle_count():
     
     return jsonify({"count": count})
 
-@app.route('/word-game', methods=['GET'])
+@app.route('/word-game', methods=['POST'])
 def word_game():
     json_data = request.get_json()
 
