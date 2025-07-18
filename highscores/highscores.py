@@ -118,7 +118,7 @@ def cluedle_count():
     
     return jsonify({"status": "success", "count": cluedle_counts[word]})
 
-@app.route('/get_cluedle_count', methods=['POST'])
+@app.route('/get_cluedle_count', methods=['GET'])
 def get_cluedle_count():
     word = request.args.get('word', 'NOWORD')
     

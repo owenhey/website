@@ -1,0 +1,88 @@
+_title_: Retrospective: Char Chase
+_description_: Looking at a game I made for Ludum Dare 56
+_date_: 10/20/2024
+_thumbnail_: charchase
+_url_: charchase
+-------------------------------
+[paragraph] [link]Char Chase,https://oysterhey.itch.io/char-chase[link] was the first game jam I ever participated in, and I am SO glad that I did. It was over a weekend
+in October for Ludum Dare 56. I worked alone, and made everything during that time save for the music.
+
+[subtitle] Goals
+[dotlist]
+Keep the scope small - this was my first game jam, and I wanted to make sure I was able to submit something complete and polished.
+Make something easy to pick up - I wanted to be able to share this with my friends, many of which don't play a lot of games.
+Explore a new art style - I wanted to use the jam as an opportunity to challenge myself to make something new.
+
+[subtitle] A wild two days
+[paragraph] Going into the jam, I knew that I wanted to make something involving words or letters. Maybe I had been playing
+a lot of NYT Spelling Bee lately or something, but it was something I had never done before and it interested me. I rushed
+home from work on Friday with a bunch of snacks and waited eagerly for the theme to drop at 6pm.
+
+[paragraph]
+Theme: [b]Tiny Creatures[b]
+
+[paragraph]
+I still wanted to stick with my word idea, so immediately, having the tiny creatures be letters seemed obvious. I played
+around with a couple ideas in my head before coming up with what would basically end up being the final design 
+(two days does not leave much space for iteration). Players would run around collecting letters to create a word, and
+get scored based on how long / rare the word was.
+
+[subtitle]
+Art
+
+[paragraph]
+I wanted to nail down the art style next. I barely have any art skills, but I thought I could handle drawing 
+small cute little 2d creatures that roam around a 3d world like in [link]Paper Mario, https://www.google.com/search?q=paper+mario+gameplay&sca_esv=e06f0df08cc64e4f&udm=2&biw=1149&bih=823&sxsrf=AE3TifPT3uN85ilDz9O1Nbcp6uHtV-IiYA%3A1749399413219&ei=dbdFaKGVDZqIptQP0trjoQc&ved=0ahUKEwjho-HUnOKNAxUahIkEHVLtOHQQ4dUDCBE&uact=5&oq=paper+mario+gameplay&gs_lp=EgNpbWciFHBhcGVyIG1hcmlvIGdhbWVwbGF5MgUQABiABDIFEAAYgAQyBRAAGIAEMgQQABgeMgQQABgeMgQQABgeMgYQABgFGB4yBhAAGAgYHjIGEAAYCBgeMgYQABgIGB5I-QlQhwJYtQlwAXgAkAEAmAFHoAHmBKoBATm4AQPIAQD4AQGYAgqgAocFwgIKEAAYgAQYQxiKBcICBhAAGAcYHsICBxAjGCcYyQLCAgsQABiABBixAxiDAcICDhAAGIAEGLEDGIMBGIoFmAMAiAYBkgcCMTCgB9k2sgcBObgHhQXCBwUwLjUuNcgHHQ&sclient=img[link].
+Pretty quickly I had a simple draft for a somewhat cute character, but it felt a little lifeless. I decided to take some
+inspiration from [link]Frog's Adventure,https://store.steampowered.com/app/2535670/Frogs_Adventure/[link], a game
+with a similar art style that I had played as part of a game club at work. It featured very simple two-frame animation
+that worked remarkably well to make the world feel alive.
+
+[image]/src/assets/jpg/charchase2.jpg
+The art style
+
+[paragraph]
+The animation frames I ended up drawing (below) are bad, but they're consistently bad throughout all the assets. 
+Sticking to the single, somewhat laughable art style really helped the game feel like a single experience and polished.
+I was able to whip up simple 2-frame animations for the player, creatures, and environment in about an hour. Finally, I 
+created a simple shader that cycled between the two frames of the animation to save on CPU sprite-switching performance.
+
+[image]/src/assets/jpg/char-chase-player.jpg
+The player's idle animation
+
+[paragraph]
+The last part of the art style was just to force all the character's to be straight up, but face the camera otherwise.
+The camera is quite low to the ground, so this basically prevents the 2d sprites from distorting when looked at from 
+different angles. I also added some effects like footsteps and grass shaking as you walked through it.
+
+[video]/src/assets/mp4/char_chase_example.mp4
+The final effect
+
+[subtitle]
+Balance and Design
+
+[paragraph]
+Finding a text file of all English words proved harder than I would have thought. Some data sets accepted way too many
+nonsense words or abbreviations, and others were missing basic plurals like "volcanoes". The one I eventually settled
+on is pretty good, but some people have sent me screenshots of their definitely valid words not being accepted.
+
+[paragraph]
+Scoring was fun to implement. I wanted to encourage players to submit long and unusual words, and to reward them as such.
+Unfortunately, ranking words based on "rarity" is harder than you would think. In my data set especially, plurals for words
+often came up much, much later than there singular counter parts. That lead to very uncommon words often being ranked
+as "more common" than more standard words just on the account of them having an 's' or 'ed' at the end. Eventually, 
+I pivoted a little bit away from that and based it more on the scrabble-score of the word plus a multiplier for length.
+
+[paragraph]
+After playtesting a little, I realized making longer, more complicated words, was the core fun part of the game. I started
+each run with two letters that the player had to use - but also gave them the ability to remove letters they collected that
+they didn't want. This encouraged creativity as you had to use the letters you were given, but allowed for some mistakes
+if you collected a letter you didn't end up needing.
+
+[subtitle]
+Closing thoughts
+
+[paragraph]
+This was SO fun, and I'm so glad I did it. It was the first game I've ever made that my non-gamer friends were able to play.
+The intensity of doing it over two days was thrilling. I really loved the art style, and I'd like to explore that style
+more in the future with other games.
