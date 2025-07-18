@@ -86,6 +86,11 @@ const router = createRouter({
           path: 'charchase',
           name: 'charchase',
           component: Post,
+        },
+        {
+          path: 'prototypes',
+          name: 'prototypes',
+          component: Post,
         }
       ]
     },
