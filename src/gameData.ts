@@ -302,6 +302,13 @@ export const gameData: WordGameData[] = [
         wildcardReason: "Salt and pepper",
         synonyms: ["HOT", "SEEDED", "VEGETABLE", "CHILE"]
     },
+    {
+        word: "CHERRY",
+        letters: ['C', 'R', 'H'],
+        wildcard: "TOP",
+        wildcardReason: 'Cherry on top - finishing touch',
+        synonyms: ["RED", "SWEET", "PIT", "FRUIT"]
+    },
 
 ].map(game => ({
     ...game,
