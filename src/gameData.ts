@@ -190,7 +190,118 @@ export const gameData: WordGameData[] = [
         wildcardReason: "Limelight - in the spotlight",
         synonyms: ["SQUEEZE", "ACID", "GREEN", "CITRUS"]
     },
-
+    {
+        word: "RABBIT",
+        letters: ['B', 'R', 'I'],
+        wildcard: "FOOT",
+        wildcardReason: "Rabbit's foot - a good luck charm.",
+        synonyms: ["NIMBLE", "HOP", "HARE", "BUNNY"]
+    },
+    {
+        word: "CLOUD",
+        letters: ['C', 'D', 'L'],
+        wildcard: "OWEN",
+        wildcardReason: "Owen loves clouds.",
+        synonyms: ["BEAUTIFUL", "PUFFBALL", "RAIN", "CUMULUS"]
+    },
+    {
+        word: "CLOUD",
+        letters: ['D', 'C', 'L'],
+        wildcard: "NINE",
+        wildcardReason: "Being on cloud nine",
+        synonyms: ["WHITE", "AERIAL", "PUFFY", "NIMBOSTRATUS"]
+    },
+    {
+        word: "SIGNATURE",
+        letters: ['G', 'S', 'A'],
+        wildcard: "HANCOCK",
+        wildcardReason: "John Hancock's signature is famous",
+        synonyms: ["PEN", "OFFICIAL", "DOCUMENT", "AUTOGRAPH"]
+    },
+    {
+        word: "SIGNATURE",
+        letters: ['G', 'S', 'A'],
+        wildcard: "HANCOCK",
+        wildcardReason: "John Hancock's signature is famous",
+        synonyms: ["PEN", "OFFICIAL", "DOCUMENT", "AUTOGRAPH"]
+    },
+    {
+        word: "SENSE",
+        letters: ['N', 'S', 'E'],
+        wildcard: "COMMON",
+        wildcardReason: "Common sense",
+        synonyms: ["SIGHT", "LOGIC", "SMELL", "PERCEPTION"]
+    },
+    {
+        word: "PLANET",
+        letters: ['L', 'P', 'N'],
+        wildcard: "DAILY",
+        wildcardReason: 'The Daily Planet - Superman\'s newspaper',
+        synonyms: ["SPACE", "ORBIT", "EARTH", "MARS"]
+    },
+    {
+        word: "APPLE",
+        letters: ['P', 'E', 'L'],
+        wildcard: "BIG",
+        wildcardReason: 'The Big Apple - nickname for New York City',
+        synonyms: ["CRISP", "CORE", "ORCHARD", "FRUIT"]
+    },
+    {
+        word: "PHOTO",
+        letters: ['H', 'T', 'P'],
+        wildcard: "CHEESE",
+        wildcardReason: 'Say cheese!',
+        synonyms: ["MOMENT", "FLASH", "CAMERA", "PICTURE"]
+    },
+    {
+        word: "ICEBERG",
+        letters: ['E', 'B', 'I'],
+        wildcard: "TITANIC",
+        wildcardReason: 'RIP Titanic - the iceberg that sank the ship',
+        synonyms: ["TIP", "OBSTACLE", "WATER", "FROZEN"]
+    },
+    {
+        word: "WIND",
+        letters: ['D', 'W', 'I'],
+        wildcard: "GONE",
+        wildcardReason: 'Gone with the Wind',
+        synonyms: ["BLOW", "SWOOSH", "AIR", "GUST"]
+    },
+    {
+        word: "VILLAGE",
+        letters: ['G', 'V', 'L'],
+        wildcard: "OLYMPIC",
+        wildcardReason: 'The Olympic Village',
+        synonyms: ["COMMUNITY", "HOUSING", "SETTLEMENT", "TOWN"]
+    },
+    {
+        word: "CRYSTAL",
+        letters: ['S', 'C', 'T'],
+        wildcard: "CLEAR",
+        wildcardReason: 'Crystal clear',
+        synonyms: ["LUXURY", "ROCK", "FACETED", "GEM"]
+    },
+    {
+        word: "RECORD",
+        letters: ['R', 'C', 'O'],
+        wildcard: "BROKEN",
+        wildcardReason: 'Broken record - something that is repeated often',
+        synonyms: ["WORLD", "FASTEST", "BEST", "MILESTONE"]
+    },
+    {
+        word: "DOZEN",
+        letters: ['O', 'Z', 'D'],
+        wildcard: "BAKER",
+        wildcardReason: "Baker's dozen - 13 items",
+        synonyms: ["EGGS", "MONTHS", "QUANTITY", "AMOUNT"]
+    },
+    {
+        word: "PEPPER",
+        letters: ['E', 'P', 'R'],
+        wildcard: "SALT",
+        wildcardReason: "Salt and pepper",
+        synonyms: ["HOT", "SEEDED", "VEGETABLE", "CHILE"]
+    },
 
 ].map(game => ({
     ...game,

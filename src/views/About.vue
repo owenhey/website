@@ -11,7 +11,7 @@
                     <h1 style="font-size: clamp(14pt, 3vw, 20pt); margin-bottom: .5rem;">
                         All about Owen Hey, a game developer living in Cambridge.</h1>
                     <p>
-                        I've been developing games for ten years, the last three of which at FableVision Studios in Back Bay, Boston.
+                        I've been developing games for ten years, the last three at FableVision Studios in Back Bay, Boston.
                     </p>
                     <p style="margin-top: .5rem;">
                         My strengths are my enthusiasm and attention to detail. I take pride in knowing 
