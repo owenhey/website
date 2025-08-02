@@ -85,6 +85,53 @@
                         <h3>Game Over!</h3>
                         <p>The word was "{{ currentGame?.word }}"</p>
                     </div>
+
+                    <div v-if="showStats" class="stats-display">
+                        <h3>Your Stats</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-number">{{ stats.totalWins }}</div>
+                                <div class="stat-label">Total Wins</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number bad">{{ stats.totalFailures }}</div>
+                                <div class="stat-label">Failures</div>
+                            </div>
+                        </div>
+                        <div class="guess-distribution">
+                            <h4>Guess Distribution</h4>
+                            <div class="distribution-bars">
+                                <div class="distribution-row">
+                                    <span class="guess-number">1</span>
+                                    <div class="bar-container">
+                                        <div class="bar" :style="{ width: stats.totalWins > 0 ? (stats.wins1Guess / stats.totalWins * 100) + '%' : '0%' }"></div>
+                                    </div>
+                                    <span class="count">{{ stats.wins1Guess }}</span>
+                                </div>
+                                <div class="distribution-row">
+                                    <span class="guess-number">2</span>
+                                    <div class="bar-container">
+                                        <div class="bar" :style="{ width: stats.totalWins > 0 ? (stats.wins2Guess / stats.totalWins * 100) + '%' : '0%' }"></div>
+                                    </div>
+                                    <span class="count">{{ stats.wins2Guess }}</span>
+                                </div>
+                                <div class="distribution-row">
+                                    <span class="guess-number">3</span>
+                                    <div class="bar-container">
+                                        <div class="bar" :style="{ width: stats.totalWins > 0 ? (stats.wins3Guess / stats.totalWins * 100) + '%' : '0%' }"></div>
+                                    </div>
+                                    <span class="count">{{ stats.wins3Guess }}</span>
+                                </div>
+                                <div class="distribution-row">
+                                    <span class="guess-number">4</span>
+                                    <div class="bar-container">
+                                        <div class="bar" :style="{ width: stats.totalWins > 0 ? (stats.wins4Guess / stats.totalWins * 100) + '%' : '0%' }"></div>
+                                    </div>
+                                    <span class="count">{{ stats.wins4Guess }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 <!-- 
                     <div class="new-game-section">
                         <button class="vine-button" 
@@ -121,8 +168,9 @@
     import { PropType, defineComponent, computed, onMounted, ref, onUnmounted, } from 'vue';
     import MainContent from './MainContent.vue';
     import Nav from './Nav.vue';
-    import { WordGameData } from '@/types';
+    import { WordGameData, CluedleStats } from '@/types';
     import { gameData } from '../gameData';
+    import localforage from 'localforage';
 
     export default defineComponent({
         name: 'Words',
@@ -144,6 +192,15 @@
             const scrollingContent = ref<HTMLDivElement>();
 
             const playerCount = ref(0);
+            const showStats = ref(false);
+            const stats = ref<CluedleStats>({
+                totalWins: 0,
+                wins1Guess: 0,
+                wins2Guess: 0,
+                wins3Guess: 0,
+                wins4Guess: 0,
+                totalFailures: 0
+            });
 
             const formattedDate = computed(() => {
                 const today = new Date();
@@ -197,6 +254,7 @@
                 revealedLetters.value = [];
 
                 getPlayerCount(currentGame.value.word);
+                loadUserStats();
             };
 
             const getPlayerCount = async (word : string) => {
@@ -246,6 +304,8 @@
 
                     sendPlayerCount(currentGame.value.word);
                     playerCount.value++;
+                    updateUserStats(newAttempts, true);
+                    showStats.value = true;
                 } else {
                     incorrectGuess.value = guess;
                     
@@ -262,6 +322,8 @@
                         revealedLetters.value = currentGame.value.word.split(' ');
                         sendPlayerCount(currentGame.value.word);
                         playerCount.value++;
+                        updateUserStats(newAttempts, false);
+                        showStats.value = true;
                     }
                 }
                 
@@ -310,6 +372,49 @@
                 tryAnswer('');
             }
 
+            const loadUserStats = async () => {
+                try {
+                    const savedStats = await localforage.getItem('cluedle-stats') as string;
+                    if (savedStats) {
+                        stats.value = JSON.parse(savedStats) as CluedleStats;
+                    }
+                } catch (error) {
+                    console.error('Error loading user stats:', error);
+                }
+            };
+
+            const saveUserStats = async () => {
+                try {
+                    console.dir(stats.value);
+                    await localforage.setItem('cluedle-stats', JSON.stringify(stats.value));
+                } catch (error) {
+                    console.error('Error saving user stats:', error);
+                }
+            };
+
+            const updateUserStats = async (attempts: number, won: boolean) => {
+                if (won) {
+                    stats.value.totalWins++;
+                    switch (attempts) {
+                        case 1:
+                            stats.value.wins1Guess++;
+                            break;
+                        case 2:
+                            stats.value.wins2Guess++;
+                            break;
+                        case 3:
+                            stats.value.wins3Guess++;
+                            break;
+                        case 4:
+                            stats.value.wins4Guess++;
+                            break;
+                    }
+                } else {
+                    stats.value.totalFailures++;
+                }
+                await saveUserStats();
+            };
+
             return {
                 currentGame,
                 guessInput,
@@ -328,7 +433,9 @@
                 formattedDate,
                 knownLetters,
                 playerCount,
-                handleTouchEnd
+                handleTouchEnd,
+                stats,
+                showStats
             };
         },
     }

@@ -41,3 +41,12 @@ export interface WordGameData {
     wildcard: string;
     synonyms: string[];
 }
+
+export interface CluedleStats {
+    totalWins: number;
+    wins1Guess: number;
+    wins2Guess: number;
+    wins3Guess: number;
+    wins4Guess: number;
+    totalFailures: number;
+}
