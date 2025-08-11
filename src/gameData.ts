@@ -309,6 +309,69 @@ export const gameData: WordGameData[] = [
         wildcardReason: 'Cherry on top - finishing touch',
         synonyms: ["RED", "SWEET", "PIT", "FRUIT"]
     },
+    {
+        word: "OWL",
+        letters: ['L', 'W', 'O'],
+        wildcard: "SUPERB",
+        wildcardReason: 'The superbowl',
+        synonyms: ["NECK", "NOCTURAL", "BIRD", "HOOT"]
+    },
+    {
+        word: "CRUISE",
+        letters: ['S', 'C', 'R'],
+        wildcard: "THOMAS",
+        wildcardReason: 'Tom Cruise the actor',
+        synonyms: ["COASTAL", "VACATION", "OCEAN", "YACHT"]
+    },
+    {
+        word: "INTERNET",
+        letters: ['R', 'I', 'N'],
+        wildcard: "EXPLORER",
+        wildcardReason: 'Internet explorer the web browser',
+        synonyms: ["CONNECTED", "NETWORK", "ONLINE", "WWW"]
+    },
+    {
+        word: "ZOMBIE",
+        letters: ['B', 'M', 'Z'],
+        wildcard: "CRANBERRY",
+        wildcardReason: 'The song "Zombie" by The Cranberries',
+        synonyms: ["HORROR", "BITE", "INFECTION", "UNDEAD"]
+    },
+    {
+        word: "POTATO",
+        letters: ['O', 'P', 'T'],
+        wildcard: "FAMINE",
+        wildcardReason: 'The Irish potato famine',
+        synonyms: ["GROW", "CHIP", "FRY", "TUBER"]
+    },
+    {
+        word: "SPINACH",
+        letters: ['A', 'C', 'S'],
+        wildcard: "POPEYE",
+        wildcardReason: 'Popeye loves spinach',
+        synonyms: ["HEALTH", "GREEN", "SUPERFOOD", "LEAF"]
+    },
+    {
+        word: "STAR",
+        letters: ['A', 'S', 'R'],
+        wildcard: "MICHELIN",
+        wildcardReason: 'Michelin stars given to restaurants',
+        synonyms: ["ENERGY", "FUSION", "BRIGHT", "SUN"]
+    },
+    {
+        word: "STALK",
+        letters: ['L', 'K', 'S'],
+        wildcard: "BEAN",
+        wildcardReason: 'Beanstalk',
+        synonyms: ["TAIL", "CREEP", "FOLLOW", "HUNT"]
+    },
+    {
+        word: "THRONE",
+        letters: ['O', 'H', 'T'],
+        wildcard: "GAME",
+        wildcardReason: 'Game of Thrones',
+        synonyms: ["LEADER", "CHAIR", "KING", "SEAT"]
+    },
 
 ].map(game => ({
     ...game,

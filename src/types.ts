@@ -49,4 +49,6 @@ export interface CluedleStats {
     wins3Guess: number;
     wins4Guess: number;
     totalFailures: number;
+    streak: number;
+    lastCluedleIndex: number;
 }

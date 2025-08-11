@@ -95,7 +95,11 @@
                             </div>
                             <div class="stat-item">
                                 <div class="stat-number bad">{{ stats.totalFailures }}</div>
-                                <div class="stat-label">Failures</div>
+                                <div class="stat-label">Misses</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ stats.streak }}</div>
+                                <div class="stat-label">Current Streak</div>
                             </div>
                         </div>
                         <div class="guess-distribution">
@@ -193,13 +197,16 @@
 
             const playerCount = ref(0);
             const showStats = ref(false);
+            const originalLastCluedleIndex = ref(-1);
             const stats = ref<CluedleStats>({
                 totalWins: 0,
                 wins1Guess: 0,
                 wins2Guess: 0,
                 wins3Guess: 0,
                 wins4Guess: 0,
-                totalFailures: 0
+                totalFailures: 0,
+                streak: 0,
+                lastCluedleIndex: -1
             });
 
             const formattedDate = computed(() => {
@@ -241,7 +248,8 @@
                 const today = new Date();
                 let daysSince0 = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24));
                 daysSince0 -= 20265;
-                const randomGame = gameData[daysSince0 % gameData.length];
+                const finalIndex = daysSince0 % gameData.length;
+                const randomGame = gameData[finalIndex];
 
                 currentGame.value = randomGame;
                 guessInput.value = '';
@@ -254,7 +262,9 @@
                 revealedLetters.value = [];
 
                 getPlayerCount(currentGame.value.word);
-                loadUserStats();
+                loadUserStats().then(() => {
+                    updateStreak(finalIndex);
+                });
             };
 
             const getPlayerCount = async (word : string) => {
@@ -291,6 +301,11 @@
             function tryAnswer(answer : string){
                 if(currentGame.value == null) return;
 
+                const today = new Date();
+                let daysSince0 = Math.floor((today.getTime() - today.getTimezoneOffset() * 60 * 1000) / (1000 * 60 * 60 * 24));
+                daysSince0 -= 20265;
+                const currentIndex = daysSince0 % gameData.length;
+
                 const guess = answer;
                 const newAttempts = attempts.value + 1;
                 attempts.value = newAttempts;
@@ -304,7 +319,7 @@
 
                     sendPlayerCount(currentGame.value.word);
                     playerCount.value++;
-                    updateUserStats(newAttempts, true);
+                    updateUserStats(newAttempts, true, currentIndex);
                     showStats.value = true;
                 } else {
                     incorrectGuess.value = guess;
@@ -322,7 +337,7 @@
                         revealedLetters.value = currentGame.value.word.split(' ');
                         sendPlayerCount(currentGame.value.word);
                         playerCount.value++;
-                        updateUserStats(newAttempts, false);
+                        updateUserStats(newAttempts, false, currentIndex);
                         showStats.value = true;
                     }
                 }
@@ -378,6 +393,8 @@
                     if (savedStats) {
                         stats.value = JSON.parse(savedStats) as CluedleStats;
                     }
+                    // Store the original value before any updates
+                    originalLastCluedleIndex.value = stats.value.lastCluedleIndex;
                 } catch (error) {
                     console.error('Error loading user stats:', error);
                 }
@@ -392,25 +409,51 @@
                 }
             };
 
-            const updateUserStats = async (attempts: number, won: boolean) => {
-                if (won) {
-                    stats.value.totalWins++;
-                    switch (attempts) {
-                        case 1:
-                            stats.value.wins1Guess++;
-                            break;
-                        case 2:
-                            stats.value.wins2Guess++;
-                            break;
-                        case 3:
-                            stats.value.wins3Guess++;
-                            break;
-                        case 4:
-                            stats.value.wins4Guess++;
-                            break;
+            const updateStreak = (currentIndex: number) => {
+                // Only update streak if this is a new day
+                if (stats.value.lastCluedleIndex !== currentIndex) {
+                    // Check if streak should continue (played yesterday)
+                    const expectedPreviousIndex = (currentIndex - 1 + gameData.length) % gameData.length;
+                    
+                    if (stats.value.lastCluedleIndex === expectedPreviousIndex || stats.value.lastCluedleIndex === -1) {
+                        // Continue or start streak
+                        stats.value.streak = stats.value.lastCluedleIndex === -1 ? 1 : stats.value.streak + 1;
+                    } else {
+                        // Reset streak if gap in days
+                        stats.value.streak = 1;
                     }
-                } else {
-                    stats.value.totalFailures++;
+                    
+                    stats.value.lastCluedleIndex = currentIndex;
+                    saveUserStats();
+                }
+            };
+
+            const updateUserStats = async (attempts: number, won: boolean, currentIndex: number) => {
+                // Only update stats if this is the first completion for today
+                if (originalLastCluedleIndex.value !== currentIndex) {
+                    if (won) {
+                        stats.value.totalWins++;
+                        switch (attempts) {
+                            case 1:
+                                stats.value.wins1Guess++;
+                                break;
+                            case 2:
+                                stats.value.wins2Guess++;
+                                break;
+                            case 3:
+                                stats.value.wins3Guess++;
+                                break;
+                            case 4:
+                                stats.value.wins4Guess++;
+                                break;
+                        }
+                    } else {
+                        stats.value.totalFailures++;
+                        // Reset streak on failure
+                        stats.value.streak = 0;
+                    }
+                    // Update lastCluedleIndex to mark this day as completed
+                    stats.value.lastCluedleIndex = currentIndex;
                 }
                 await saveUserStats();
             };
