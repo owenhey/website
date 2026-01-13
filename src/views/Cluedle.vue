@@ -346,6 +346,25 @@
             }
 
             onMounted(() => {
+                // Check for URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                console.log("search params: " + window.location.search);
+                const streakParam = urlParams.get('streak');
+
+                console.log(urlParams.entries.length);
+                
+                if (streakParam) {
+                    const streakValue = parseInt(streakParam, 10);
+                    if (!isNaN(streakValue) && streakValue >= 0) {
+                        // Update the stats with the new streak value
+                        console.log("New streak is: " + streakValue);
+                        loadUserStats().then(() => {
+                            stats.value.streak = streakValue;
+                            saveUserStats();
+                        });
+                    }
+                }
+
                 initializeGame();
                 faqOptionsRef.value?.showModal();
 

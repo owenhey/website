@@ -1,0 +1,79 @@
+_title_: Tracking 2025
+_description_: A data-driven retrospective about my life in 2025
+_date_: 08/12/2026
+_thumbnail_: 2025_6
+_url_: tracking2025
+-------------------------------
+[paragraph]
+Last year I started a spreadsheet where I scored and wrote a small blurb about every day of my life. It really wasn't
+much of a hassle to do, and it gave me some fun insights into trends over the year. I really don't think it's a great 
+tool for improving or shaping my life in any way, but, I do think it's fun. I documented 
+[link]2024 in a blog post,https://oysterhey.com/#/writing/daily-data[link], and I'm doing the same this year.
+
+[subtitle]The change from last year
+
+[paragraph]
+I slightly changed my scoring system from last year. The main difference was that I aimed for a five (5) 
+be an absolutely average day. In some rating systems, a 4/10 would be considered awful. 
+But in mine, a four is just a slightly bad day. As follows:
+
+[dotlist]
+[b]1-3[b]: Very bad days. Whatever happened on a three or lower really affected me and made me upset.
+[b]4-6[b]: Pretty plain days. As much as I want something really exciting to happen to me every day, most days are pretty normal and small things push to either side of five.
+[b]7-8[b]: Good days! Usually not something that really stands out more than that day, but I ended the day in a really good mood.
+[b]9-10[b]: Fantastic days. These are the ones that I'll remember for years to come.
+
+[subtitle] Main figures
+[dotlist]
+Average Rating: ............ [b]6.17[b]
+Median Rating: .............. [b]6[b]
+Mode Rating: .................. [b]7[b]
+Standard Deviation: ... [b]1.46[b]
+
+[image]/src/assets/jpg/2025_1.jpg
+
+[paragraph]Interestingly, compared to last year, this year was much less up and down. I think that's mostly because I took a lot of
+new and exciting vacations last year, and so every couple months there was a big spike. Also like last year, the year
+slowly got better over time. I think this is mostly due to the majority of the sad winter months being at the beginning of the year. 
+Also, my partner was studying abroad for the first few months of the year.
+
+[image]/src/assets/jpg/2025_2.jpg
+My worst days changed from Wednesdays to Thursdays this year!
+
+[image]/src/assets/jpg/2025_3.jpg
+Just like last year, the highlights of my year are always the vacations
+
+[subtitle] Tottenham
+
+[paragraph] My beloved soccer team, Tottenham Hotspur, had a rough year to say the least. Even though they
+won their first major title in 17 years, the calendar year was largely an embarrassment. They almost got relegated
+in the 2024/2025 season, and the 2025/2026 season has not started much better. The results of this can be 
+clearly shown in the data.
+
+[image]/src/assets/jpg/2025_4.jpg
+
+[paragraph] It really says something when the thing you've been looking forward to all week - your favorite
+sports team playing - has a [i]lower[i] average score than a typical day.
+
+[subtitle]Words
+[paragraph]
+I wrote a new python script this year to look at the average ratings of days based on specific words that were mentioned.
+Several of my friends show up more than ten times in the data, but I removed them from this graph.
+
+[image]/src/assets/jpg/2025_5.jpg
+
+[paragraph] I think it's funny how food motivated I am. Three out of the top five words are food-related. Somehow,
+I'm not surprised in the slightest. I was also sick SO many times this year, and I'm glad that shows up in the data as
+a consistent reason why my days were bad.
+
+[image]/src/assets/jpg/2025_6.jpg
+How capitalist of me
+
+[subtitle] Takeaways
+
+[paragraph] As mentioned before, I don't think there's much value in taking this type of thing too seriously. I mostly do
+it for fun. But, if I had to draw any sort of conclusion, it's that I should try to be less reliant on big vacations
+to consistently improve my days. The highs from my vacations this year were a little lower than last year, and I think
+that is telling me that I should look for more close-to-home things to excite me in 2026.
+
+[paragraph] Thanks for reading!

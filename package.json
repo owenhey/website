@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build:dev": "vite build --base=/dev/",
-    "build": "vite build",
+    "build": "vite build && npx tsx scripts/calculate-game-date.ts",
     "preview": "vite preview --port 4174"
   },
   "dependencies": {

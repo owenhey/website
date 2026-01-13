@@ -88,8 +88,8 @@ const router = createRouter({
           component: Post,
         },
         {
-          path: 'prototypes',
-          name: 'prototypes',
+          path: 'tracking2025',
+          name: 'tracking2025',
           component: Post,
         }
       ]
